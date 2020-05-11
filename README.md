@@ -27,6 +27,7 @@ REQUIRES (currently):
   
 TODO:
 
-  integrate database with api
-  build more beautiful front end
-  add in addition features like rating/searching for recipies
+	  integrate database with api
+	  build more beautiful front end
+	  add in addition features like rating or searching for recipies
+  
