@@ -5,7 +5,8 @@ This site will eventually be a place where home cooks can come to save old recip
 
 Meats:
 
-  1 pound ground beef
+  	1 pound ground beef
+  
 Vegetables:
 
 	4 large tomatoes
@@ -20,8 +21,8 @@ Other:
   
 REQUIRES (currently):
 
-  npm install
-  npm start
+	  npm install
+	  npm start
   
   
 TODO:
