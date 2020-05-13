@@ -1,23 +1,23 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
 
-export const AddRecipie = () => {
-    const [name, setRecipieName] = useState("");
+export const AddRecipe = () => {
+    const [name, setRecipeName] = useState("");
     const [servings, setServings] = useState(1);
-    const [URL, setRecipieURL] = useState("");
+    const [URL, setRecipeURL] = useState("");
     const [errors, setErrors] = useState([]);
 
-    const { addRecipie } = useContext(GlobalContext);
-    const { recipies } = useContext(GlobalContext);
+    const { addRecipe } = useContext(GlobalContext);
+    const { recipes } = useContext(GlobalContext);
 
     const onSubmit = (e) => {
         e.preventDefault();
         setErrors([]);
         const errors = [];
-        recipies.forEach((recipie) => {
-            if (recipie.name === name) {
+        recipes.forEach((recipe) => {
+            if (recipe.name === name) {
                 console.log("non unique name");
-                errors.push("Recipie name must be unique");
+                errors.push("Recipe name must be unique");
                 return;
             }
         });
@@ -26,19 +26,19 @@ export const AddRecipie = () => {
             return;
         }
 
-        const newRecipie = {
+        const newRecipe = {
             id: Math.floor(Math.random() * 100000000),
             name,
             servings,
             URL,
             ingredients: ["Salt", "Pepper"],
         };
-        addRecipie(newRecipie);
+        addRecipe(newRecipe);
     };
 
     return (
         <>
-            <h3>Add new Recipie</h3>
+            <h3>Add new Recipe</h3>
             <form onSubmit={onSubmit}>
                 {errors.map((error) => (
                     <p className="error" key={error}>
@@ -47,7 +47,7 @@ export const AddRecipie = () => {
                 ))}
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
-                    <input type="text" value={name} onChange={(e) => setRecipieName(e.target.value)} placeholder="Enter Name..." required="required" />
+                    <input type="text" value={name} onChange={(e) => setRecipeName(e.target.value)} placeholder="Enter Name..." required="required" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="amount">Servings</label>
@@ -55,9 +55,9 @@ export const AddRecipie = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="servings">URL</label>
-                    <input type="text" value={URL} onChange={(e) => setRecipieURL(e.target.value)} placeholder="Enter URL..." />
+                    <input type="text" value={URL} onChange={(e) => setRecipeURL(e.target.value)} placeholder="Enter URL..." />
                 </div>
-                <button className="btn">Add Recipie</button>
+                <button className="btn">Add Recipe</button>
             </form>
         </>
     );

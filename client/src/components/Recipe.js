@@ -2,11 +2,11 @@ import React, { useContext, useState, useRef } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import Chevron from "./chevron";
 
-export const Recipie = ({ recipie }) => {
+export const Recipe = ({ recipe }) => {
     // Reducers
-    const { deleteRecipieIngredient } = useContext(GlobalContext);
-    const { deleteRecipie } = useContext(GlobalContext);
-    const { addRecipieIngredient } = useContext(GlobalContext);
+    const { deleteRecipeIngredient } = useContext(GlobalContext);
+    const { deleteRecipe } = useContext(GlobalContext);
+    const { addRecipeIngredient } = useContext(GlobalContext);
 
     // Set/Update state
     const [setActive, setActiveState] = useState("");
@@ -15,7 +15,7 @@ export const Recipie = ({ recipie }) => {
     const [ingredient, setIngredient] = useState("");
     const content = useRef(null);
 
-    const name = recipie.name.length > 20 ? `${recipie.name.substring(0, 20)}...` : recipie.name;
+    const name = recipe.name.length > 20 ? `${recipe.name.substring(0, 20)}...` : recipe.name;
 
     const toggleAccordion = (props) => {
         setActiveState(setActive === "" ? "active" : "");
@@ -25,42 +25,42 @@ export const Recipie = ({ recipie }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        addRecipieIngredient(recipie.id, ingredient);
+        addRecipeIngredient(recipe.id, ingredient);
         setIngredient("");
-        setHeightState(`${content.current.scrollHeight + content.current.scrollHeight / recipie.ingredients.length}px`);
+        setHeightState(`${content.current.scrollHeight + content.current.scrollHeight / recipe.ingredients.length}px`);
     };
 
     return (
         <>
             <div>
                 <button className={`accordion-btn ${setActive}`} onClick={toggleAccordion}>
-                    <li className={recipie.ingredients.length > 0 ? "positive" : "zero"}>
-                        <ul className="recipieAttributes">
+                    <li className={recipe.ingredients.length > 0 ? "positive" : "zero"}>
+                        <ul className="recipeAttributes">
                             <li key="name" className="attribute">
                                 {name}
                             </li>
                             <li key="servings" className="attribute">
-                                Servings: {recipie.servings}
+                                Servings: {recipe.servings}
                             </li>
                             <li key="ingredientCount" className="attribute">
-                                Ingredients: {recipie.ingredients.length} &nbsp;&nbsp;
+                                Ingredients: {recipe.ingredients.length} &nbsp;&nbsp;
                                 <Chevron className={`${setRotate}`} width={10} fill={"#777"} />
                             </li>
                         </ul>
                     </li>
                 </button>
-                <button onClick={() => deleteRecipie(recipie.id)} className="delete-btn">
+                <button onClick={() => deleteRecipe(recipe._id)} className="delete-btn">
                     x
                 </button>
             </div>
 
             <div ref={content} style={{ maxHeight: `${setHeight}` }} className="accordion-content">
                 <ul className="list">
-                    {recipie.ingredients.map((ingredient, index) => {
+                    {recipe.ingredients.map((ingredient, index) => {
                         return (
                             <li key={index} className="ingredient">
                                 {index + 1}: {ingredient}
-                                <button onClick={() => deleteRecipieIngredient(recipie.id, ingredient)} className="delete-ingredient-btn">
+                                <button onClick={() => deleteRecipeIngredient(recipe._id, ingredient)} className="delete-ingredient-btn">
                                     x
                                 </button>
                             </li>

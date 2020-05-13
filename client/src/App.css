@@ -114,7 +114,7 @@ input[type="number"] {
     margin: 10px 0;
     border-right: 5px solid #c0392b;
 }
-.recipieAttributes {
+.recipeAttributes {
     width: 100%;
     list-style: none;
 }

@@ -2,8 +2,8 @@ import React from "react";
 import { Header } from "./components/Header";
 // import { Balance } from "./components/Balance";
 // import { IncomeExpenses } from "./components/IncomeExpenses";
-import { RecipieList } from "./components/RecipieList";
-import { AddRecipie } from "./components/AddRecipie";
+import { RecipeList } from "./components/RecipeList";
+import { AddRecipe } from "./components/AddRecipe";
 
 import { GlobalProvider } from "./context/GlobalState";
 
@@ -14,8 +14,8 @@ function App() {
         <GlobalProvider>
             <Header />
             <div className="container">
-                <RecipieList />
-                <AddRecipie />
+                <RecipeList />
+                <AddRecipe />
             </div>
         </GlobalProvider>
     );

@@ -1,9 +1,12 @@
 import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
+import axios from "axios";
 
 // Initial state
 const initialState = {
-    recipies: [],
+    recipes: [],
+    error: null,
+    loading: true,
 };
 
 // Create context
@@ -13,44 +16,102 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
-    // Recipie Actions
-    function deleteRecipie(id) {
-        dispatch({
-            type: "DELETE_RECIPIE",
-            payload: id,
-        });
+    //
+    async function getRecipes() {
+        try {
+            const res = await axios.get("/api/v1/recipes");
+            console.log(res.data.data);
+            dispatch({
+                type: "GET_RECIPES",
+                payload: res.data.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
     }
 
-    function addRecipie(recipie) {
-        dispatch({
-            type: "ADD_RECIPIE",
-            payload: recipie,
-        });
+    // Recipe Actions
+    async function deleteRecipe(id) {
+        try {
+            await axios.delete(`/api/v1/recipes/${id}`);
+            dispatch({
+                type: "DELETE_RECIPE",
+                payload: id,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
+    }
+
+    async function addRecipe(recipe) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        try {
+            const res = await axios.post("/api/v1/recipes", recipe, config);
+            dispatch({
+                type: "ADD_RECIPE",
+                payload: res.data.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
     }
 
     // Ingredient Actions
-    function deleteRecipieIngredient(recipieId, ingredientIndex) {
-        dispatch({
-            type: "DELETE_RECIPIE_INGREDIENT",
-            payload: [recipieId, ingredientIndex],
-        });
+    async function deleteRecipeIngredient(recipeId, ingredient) {
+        try {
+            await axios.delete(`/api/v1/recipes/${recipeId}/${ingredient}`);
+            dispatch({
+                type: "DELETE_RECIPE_INGREDIENT",
+                payload: [recipeId, ingredient],
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
     }
 
-    function addRecipieIngredient(recipieId, ingredient) {
-        dispatch({
-            type: "ADD_RECIPIE_INGREDIENT",
-            payload: [recipieId, ingredient],
-        });
+    async function addRecipeIngredient(recipeId, ingredient) {
+        // TODO:
+        // try {
+        //     const res = await axios.post("/api/v1/recipes", recipe);
+        //     dispatch({
+        //         type: "ADD_RECIPE_INGREDIENT",
+        //         payload: [recipeId, ingredient],
+        //     });
+        // } catch (error) {
+        //     dispatch({
+        //         type: "RECIPE_ERROR",
+        //         payload: error.response.data.error,
+        //     });
+        // }
     }
 
     return (
         <GlobalContext.Provider
             value={{
-                recipies: state.recipies,
-                deleteRecipie,
-                addRecipie,
-                deleteRecipieIngredient,
-                addRecipieIngredient,
+                recipes: state.recipes,
+                error: state.error,
+                loading: state.loading,
+                getRecipes,
+                deleteRecipe,
+                addRecipe,
+                deleteRecipeIngredient,
+                addRecipeIngredient,
             }}
         >
             {children}
