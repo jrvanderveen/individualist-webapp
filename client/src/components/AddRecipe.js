@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
+import { H3 } from "../elements/index";
 
 export const AddRecipe = () => {
     const [name, setRecipeName] = useState("");
@@ -38,7 +39,7 @@ export const AddRecipe = () => {
 
     return (
         <>
-            <h3>Add new Recipe</h3>
+            <H3>Add new Recipe</H3>
             <form onSubmit={onSubmit}>
                 {errors.map((error) => (
                     <p className="error" key={error}>

@@ -1,10 +1,10 @@
 import React, { useContext, useState, useRef } from "react";
 import { GlobalContext } from "../context/GlobalState";
+import { Ingredient } from "./Ingredient";
 import Chevron from "./chevron";
 
 export const Recipe = ({ recipe }) => {
     // Reducers
-    const { deleteRecipeIngredient } = useContext(GlobalContext);
     const { deleteRecipe } = useContext(GlobalContext);
     const { addRecipeIngredient } = useContext(GlobalContext);
 
@@ -14,7 +14,6 @@ export const Recipe = ({ recipe }) => {
     const [setRotate, setRotateState] = useState("accordion-icon");
     const [ingredient, setIngredient] = useState("");
     const content = useRef(null);
-
     const name = recipe.name.length > 20 ? `${recipe.name.substring(0, 20)}...` : recipe.name;
 
     const toggleAccordion = (props) => {
@@ -25,9 +24,9 @@ export const Recipe = ({ recipe }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        addRecipeIngredient(recipe.id, ingredient);
+        addRecipeIngredient(recipe._id, ingredient);
         setIngredient("");
-        setHeightState(`${content.current.scrollHeight + content.current.scrollHeight / recipe.ingredients.length}px`);
+        setHeightState(`${content.current.scrollHeight + content.current.scrollHeight / (recipe.ingredients.length + 1)}px`);
     };
 
     return (
@@ -57,14 +56,7 @@ export const Recipe = ({ recipe }) => {
             <div ref={content} style={{ maxHeight: `${setHeight}` }} className="accordion-content">
                 <ul className="list">
                     {recipe.ingredients.map((ingredient, index) => {
-                        return (
-                            <li key={index} className="ingredient">
-                                {index + 1}: {ingredient}
-                                <button onClick={() => deleteRecipeIngredient(recipe._id, ingredient)} className="delete-ingredient-btn">
-                                    x
-                                </button>
-                            </li>
-                        );
+                        return <Ingredient key={index} recipeId={recipe._id} ingredient={ingredient} index={index + 1} />;
                     })}
                     <li className="ingredient">
                         <form onSubmit={onSubmit}>

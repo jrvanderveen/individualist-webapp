@@ -20,7 +20,6 @@ export const GlobalProvider = ({ children }) => {
     async function getRecipes() {
         try {
             const res = await axios.get("/api/v1/recipes");
-            console.log(res.data.data);
             dispatch({
                 type: "GET_RECIPES",
                 payload: res.data.data,
@@ -86,19 +85,19 @@ export const GlobalProvider = ({ children }) => {
     }
 
     async function addRecipeIngredient(recipeId, ingredient) {
-        // TODO:
-        // try {
-        //     const res = await axios.post("/api/v1/recipes", recipe);
-        //     dispatch({
-        //         type: "ADD_RECIPE_INGREDIENT",
-        //         payload: [recipeId, ingredient],
-        //     });
-        // } catch (error) {
-        //     dispatch({
-        //         type: "RECIPE_ERROR",
-        //         payload: error.response.data.error,
-        //     });
-        // }
+        console.log(recipeId, ingredient);
+        try {
+            await axios.post(`/api/v1/recipes/${recipeId}/${ingredient}`);
+            dispatch({
+                type: "ADD_RECIPE_INGREDIENT",
+                payload: [recipeId, ingredient],
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
     }
 
     return (

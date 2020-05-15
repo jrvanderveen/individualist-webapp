@@ -20,7 +20,6 @@ export default (state, action) => {
             state.recipes.forEach((recipe) => {
                 console.log(recipe._id, action.payload[0]);
                 if (recipe._id === action.payload[0]) {
-                    console.log("hre");
                     recipe.ingredients = recipe.ingredients.filter((ingredient) => ingredient !== action.payload[1]);
                 }
             });

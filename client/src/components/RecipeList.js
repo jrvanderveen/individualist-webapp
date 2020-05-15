@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Recipe } from "./Recipe";
+import { H3 } from "../elements/index";
 
 import { GlobalContext } from "../context/GlobalState";
 
@@ -12,10 +13,10 @@ export const RecipeList = () => {
     }, []);
     return (
         <>
-            <h3>Recipes</h3>
+            <H3>Recipes</H3>
             <ul className="list">
                 {recipes.map((recipe) => (
-                    <Recipe key={recipe.id} recipe={recipe} />
+                    <Recipe key={recipe._id} recipe={recipe} />
                 ))}
             </ul>
         </>
