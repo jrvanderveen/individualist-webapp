@@ -20,14 +20,13 @@ Other:
     red wine
     8 ounce tomatoe sauce
 
-REQUIRES:
+REQUIRES (currently):
 
-    Mongo Atlas DB
-    npm install
-    npm run dev (server back end locally, runs client code on http://localhost:3000/)
+      npm install
+      npm start
 
 TODO:
 
+      integrate database with api
       build more beautiful front end
-      Create export shopping list functionality
       add in addition features like rating or searching for recipes
