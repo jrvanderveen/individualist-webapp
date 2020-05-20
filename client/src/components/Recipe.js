@@ -2,6 +2,23 @@ import React, { useContext, useState, useRef } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import { Ingredient } from "./Ingredient";
 import Chevron from "./chevron";
+import { List, AccordionButton, Wrapper, DeleteButton, Input } from "../elements/index";
+import styled from "styled-components";
+
+const Ul = styled.ul`
+    width: 100%;
+    list-style: none;
+`;
+const Li = styled.li`
+    float: left;
+    width: 33%;
+`;
+
+const AccordionContent = styled.div`
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: ${(props) => props.maxHeight};
+`;
 
 export const Recipe = ({ recipe }) => {
     // Reducers
@@ -11,7 +28,7 @@ export const Recipe = ({ recipe }) => {
     // Set/Update state
     const [setActive, setActiveState] = useState("");
     const [setHeight, setHeightState] = useState("0px");
-    const [setRotate, setRotateState] = useState("accordion-icon");
+    const [setRotate, setRotateState] = useState("");
     const [ingredient, setIngredient] = useState("");
     const content = useRef(null);
     const name = recipe.name.length > 20 ? `${recipe.name.substring(0, 20)}...` : recipe.name;
@@ -19,49 +36,46 @@ export const Recipe = ({ recipe }) => {
     const toggleAccordion = (props) => {
         setActiveState(setActive === "" ? "active" : "");
         setHeightState(setActive === "active" ? "0px" : `${content.current.scrollHeight}px`);
-        setRotateState(setActive === "active" ? "accordion-icon" : "accordion-icon rotate");
+        setRotateState(setActive === "active" ? "" : "rotate");
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
         addRecipeIngredient(recipe._id, ingredient);
         setIngredient("");
+        //On submit will create another ingredient so need to set height to content height + 1 so create ingredient LI appears
         setHeightState(`${content.current.scrollHeight + content.current.scrollHeight / (recipe.ingredients.length + 1)}px`);
     };
 
     return (
         <>
-            <div>
-                <button className={`accordion-btn ${setActive}`} onClick={toggleAccordion}>
-                    <li className={recipe.ingredients.length > 0 ? "positive" : "zero"}>
-                        <ul className="recipeAttributes">
-                            <li key="name" className="attribute">
-                                {name}
-                            </li>
-                            <li key="servings" className="attribute">
-                                Servings: {recipe.servings}
-                            </li>
-                            <li key="ingredientCount" className="attribute">
+            <Wrapper className="Accordion Wrapper">
+                <AccordionButton className="Accordion Button" active={setActive} onClick={toggleAccordion}>
+                    <List ingredientCount={recipe.ingredients.length} isRecipe>
+                        <Ul>
+                            <Li key="name">{name}</Li>
+                            <Li key="servings">Servings: {recipe.servings}</Li>
+                            <Li key="ingredientCount">
                                 Ingredients: {recipe.ingredients.length} &nbsp;&nbsp;
-                                <Chevron className={`${setRotate}`} width={10} fill={"#777"} />
-                            </li>
-                        </ul>
-                    </li>
-                </button>
-                <button onClick={() => deleteRecipe(recipe._id)} className="delete-btn">
+                                <Chevron rotate={setRotate} />
+                            </Li>
+                        </Ul>
+                    </List>
+                </AccordionButton>
+                <DeleteButton isRecipe onClick={() => deleteRecipe(recipe._id)}>
                     x
-                </button>
-            </div>
+                </DeleteButton>
+            </Wrapper>
 
-            <div ref={content} style={{ maxHeight: `${setHeight}` }} className="accordion-content">
+            <AccordionContent ref={content} maxHeight={setHeight} className="Accordion Content">
                 <ul className="list">
                     {recipe.ingredients.map((ingredient, index) => {
                         return <Ingredient key={index} recipeId={recipe._id} ingredient={ingredient} index={index + 1} />;
                     })}
-                    <li className="ingredient">
+                    <List isIngredient>
                         <form onSubmit={onSubmit}>
                             <div className="form-group">
-                                <input
+                                <Input
                                     className="form-control"
                                     value={ingredient}
                                     onChange={(e) => setIngredient(e.target.value)}
@@ -70,9 +84,9 @@ export const Recipe = ({ recipe }) => {
                                 />
                             </div>
                         </form>
-                    </li>
+                    </List>
                 </ul>
-            </div>
+            </AccordionContent>
         </>
     );
 };

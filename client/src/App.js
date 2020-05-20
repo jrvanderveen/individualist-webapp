@@ -4,7 +4,6 @@ import { RecipeList } from "./components/RecipeList";
 import { AddRecipe } from "./components/AddRecipe";
 
 import { GlobalProvider } from "./context/GlobalState";
-import Dropdown from "react-bootstrap/Dropdown";
 import "./App.css";
 import styled, { createGlobalStyle } from "styled-components";
 
@@ -26,7 +25,11 @@ const GlobalStyle = createGlobalStyle`
 
     * {
         box-sizing: border-box;
-    }
+    } 
+    .error {
+    color: #c0392b;
+}
+
 `;
 
 const Container = styled.section`

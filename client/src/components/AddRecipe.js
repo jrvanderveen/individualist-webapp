@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
-import { H3 } from "../elements/index";
+import { H3, Input, Label, Button } from "../elements/index";
 
 export const AddRecipe = () => {
     const [name, setRecipeName] = useState("");
@@ -47,18 +47,18 @@ export const AddRecipe = () => {
                     </p>
                 ))}
                 <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input type="text" value={name} onChange={(e) => setRecipeName(e.target.value)} placeholder="Enter Name..." required="required" />
+                    <Label htmlFor="name">Name</Label>
+                    <Input type="text" value={name} onChange={(e) => setRecipeName(e.target.value)} placeholder="Enter Name..." required="required" />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="amount">Servings</label>
-                    <input type="number" min="1" value={servings} onChange={(e) => setServings(e.target.value)} placeholder="Enter Servings..." />
+                    <Label htmlFor="amount">Servings</Label>
+                    <Input type="number" min="1" value={servings} onChange={(e) => setServings(e.target.value)} placeholder="Enter Servings..." />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="servings">URL</label>
-                    <input type="text" value={URL} onChange={(e) => setRecipeURL(e.target.value)} placeholder="Enter URL..." />
+                    <Label htmlFor="servings">URL</Label>
+                    <Input type="text" value={URL} onChange={(e) => setRecipeURL(e.target.value)} placeholder="Enter URL..." />
                 </div>
-                <button className="btn">Add Recipe</button>
+                <Button isAddRecipeButton>Add Recipe</Button>
             </form>
         </>
     );

@@ -14,7 +14,7 @@ export const RecipeList = () => {
     return (
         <>
             <H3>Recipes</H3>
-            <ul className="list">
+            <ul>
                 {recipes.map((recipe) => (
                     <Recipe key={recipe._id} recipe={recipe} />
                 ))}
