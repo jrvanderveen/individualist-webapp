@@ -6,7 +6,7 @@ import axios from "axios";
 const initialState = {
     recipes: [],
     error: null,
-    loading: true,
+    creatingShoppingList: true,
 };
 
 // Create context
@@ -85,9 +85,14 @@ export const GlobalProvider = ({ children }) => {
     }
 
     async function addRecipeIngredient(recipeId, ingredient) {
-        console.log(recipeId, ingredient);
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
         try {
-            await axios.post(`/api/v1/recipes/${recipeId}/${ingredient}`);
+            await axios.post(`/api/v1/recipes/${recipeId}/${ingredient.name}`, ingredient, config);
             dispatch({
                 type: "ADD_RECIPE_INGREDIENT",
                 payload: [recipeId, ingredient],
@@ -105,7 +110,7 @@ export const GlobalProvider = ({ children }) => {
             value={{
                 recipes: state.recipes,
                 error: state.error,
-                loading: state.loading,
+                creatingShoppingList: state.creatingShoppingList,
                 getRecipes,
                 deleteRecipe,
                 addRecipe,

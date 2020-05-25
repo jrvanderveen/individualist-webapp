@@ -6,7 +6,6 @@ const AccordionIcon = styled.svg`
     transition: transform 0.3s;
     width: 10px;
     fill: #777;
-    ${(props) => console.log(props)}
     ${(props) =>
         props.rotate === "rotate" &&
         `

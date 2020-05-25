@@ -52,7 +52,6 @@ exports.addRecipe = async (req, res, next) => {
 // @route DELETE /api/v1/recipes:id
 // @access Public
 exports.deleteRecipe = async (req, res, next) => {
-    console.log(req.params.id);
     try {
         const recipe = await Recipe.findById(req.params.id);
 
@@ -80,8 +79,9 @@ exports.deleteRecipe = async (req, res, next) => {
 // @route DELETE /api/v1/recipes:recipe_id/:ingredient
 // @access Public
 exports.deleteRecipeIngredient = async (req, res, next) => {
+    console.log(req.params);
     try {
-        await Recipe.updateOne({ _id: req.params.recipe_id }, { $pull: { ingredients: req.params.ingredient } });
+        await Recipe.updateOne({ _id: req.params.recipe_id }, { $pull: { ingredients: { name: req.params.ingredient } } });
 
         return res.status(200).json({
             success: true,
@@ -108,7 +108,7 @@ exports.addRecipeIngredient = async (req, res, next) => {
                 error: "No recipe found",
             });
         }
-        await Recipe.updateOne({ _id: req.params.recipe_id }, { $push: { ingredients: req.params.ingredient } });
+        await Recipe.updateOne({ _id: req.params.recipe_id }, { $push: { ingredients: req.body } });
 
         return res.status(200).json({
             success: true,

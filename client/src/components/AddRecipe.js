@@ -32,7 +32,10 @@ export const AddRecipe = () => {
             name,
             servings,
             URL,
-            ingredients: ["Salt", "Pepper"],
+            ingredients: [
+                { name: "Salt", grocerySection: "Other" },
+                { name: "Pepper", grocerySection: "Produce" },
+            ],
         };
         addRecipe(newRecipe);
     };

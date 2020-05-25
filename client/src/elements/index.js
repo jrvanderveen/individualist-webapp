@@ -8,5 +8,6 @@ import AccordionButton from "./AccordionButton";
 import List from "./List";
 import Wrapper from "./Wrapper";
 import DeleteButton from "./DeleteButton";
+import Link from "./Link";
 
-export { H1, H3, H4, Input, Label, Button, List, AccordionButton, Wrapper, DeleteButton };
+export { H1, H3, H4, Input, Label, Button, List, AccordionButton, Wrapper, DeleteButton, Link };

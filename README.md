@@ -30,4 +30,5 @@ TODO:
 
       build more beautiful front end
       Create export shopping list functionality
+            Allow user to select recipies to add then create new view of all ingredients seperated and sorted.  This new list can have items deleted.
       add in addition features like rating or searching for recipes

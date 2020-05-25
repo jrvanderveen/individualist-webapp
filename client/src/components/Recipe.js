@@ -1,35 +1,41 @@
 import React, { useContext, useState, useRef } from "react";
 import { GlobalContext } from "../context/GlobalState";
-import { Ingredient } from "./Ingredient";
+import { Ingredients } from "./Ingredients";
 import Chevron from "./chevron";
-import { List, AccordionButton, Wrapper, DeleteButton, Input } from "../elements/index";
+import { List, AccordionButton, Wrapper, DeleteButton, Link } from "../elements/index";
 import styled from "styled-components";
+import { CheckMark } from "./CheckMark";
 
 const Ul = styled.ul`
     width: 100%;
     list-style: none;
 `;
+
 const Li = styled.li`
     float: left;
     width: 33%;
 `;
 
 const AccordionContent = styled.div`
-    overflow: hidden;
+    ${(props) => console.log(props)};
+    overflow: ${(props) => (props.maxHeight === "0px" ? "hidden" : "")};
     transition: max-height 0.3s ease;
-    max-height: ${(props) => props.maxHeight};
+    height: ${(props) => props.maxHeight};
+`;
+
+const StyledLink = styled(Link)`
+    color: blue;
+    font-size: 75%;
 `;
 
 export const Recipe = ({ recipe }) => {
     // Reducers
     const { deleteRecipe } = useContext(GlobalContext);
-    const { addRecipeIngredient } = useContext(GlobalContext);
 
     // Set/Update state
     const [setActive, setActiveState] = useState("");
     const [setHeight, setHeightState] = useState("0px");
     const [setRotate, setRotateState] = useState("");
-    const [ingredient, setIngredient] = useState("");
     const content = useRef(null);
     const name = recipe.name.length > 20 ? `${recipe.name.substring(0, 20)}...` : recipe.name;
 
@@ -39,17 +45,14 @@ export const Recipe = ({ recipe }) => {
         setRotateState(setActive === "active" ? "" : "rotate");
     };
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        addRecipeIngredient(recipe._id, ingredient);
-        setIngredient("");
-        //On submit will create another ingredient so need to set height to content height + 1 so create ingredient LI appears
-        setHeightState(`${content.current.scrollHeight + content.current.scrollHeight / (recipe.ingredients.length + 1)}px`);
-    };
-
     return (
         <>
             <Wrapper className="Accordion Wrapper">
+                <CheckMark />
+                <DeleteButton isRecipe onClick={() => deleteRecipe(recipe._id)}>
+                    x
+                </DeleteButton>
+                <StyledLink text="Website" href={recipe.URL} />
                 <AccordionButton className="Accordion Button" active={setActive} onClick={toggleAccordion}>
                     <List ingredientCount={recipe.ingredients.length} isRecipe>
                         <Ul>
@@ -62,30 +65,10 @@ export const Recipe = ({ recipe }) => {
                         </Ul>
                     </List>
                 </AccordionButton>
-                <DeleteButton isRecipe onClick={() => deleteRecipe(recipe._id)}>
-                    x
-                </DeleteButton>
             </Wrapper>
-
+            {/* Accordion Content contains list of ingredients */}
             <AccordionContent ref={content} maxHeight={setHeight} className="Accordion Content">
-                <ul className="list">
-                    {recipe.ingredients.map((ingredient, index) => {
-                        return <Ingredient key={index} recipeId={recipe._id} ingredient={ingredient} index={index + 1} />;
-                    })}
-                    <List isIngredient>
-                        <form onSubmit={onSubmit}>
-                            <div className="form-group">
-                                <Input
-                                    className="form-control"
-                                    value={ingredient}
-                                    onChange={(e) => setIngredient(e.target.value)}
-                                    placeholder="Enter Ingredient..."
-                                    required="required"
-                                />
-                            </div>
-                        </form>
-                    </List>
-                </ul>
+                <Ingredients recipe={recipe} setHeightState={setHeightState} currContent={content.current} />
             </AccordionContent>
         </>
     );

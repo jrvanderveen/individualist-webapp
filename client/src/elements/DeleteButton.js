@@ -14,6 +14,14 @@ export default styled.button`
     ${Wrapper}:hover & {
         opacity: 1;
     }
-    position: ${(props) => (props.isIngredient ? "absolute" : "relative")};
-    transform: ${(props) => (props.isIngredient ? "translate(-170%, -0%)" : "translate(-100%, -170%)")};
+
+    position: absolute;
+
+    top: 0px;
+    right: 0px;
+    transform: ${(props) => (props.isIngredient ? "translate(100%, 50%)" : "translate(100%, 170%)")};
 `;
+/* 
+    position: ${(props) => (props.isIngredient ? "absolute" : "relative")};  else recpe *
+    transform: ${(props) => (props.isIngredient ? "translate(-170%, -0%)" : "translate(-100%, -170%)")}; else recpe
+    */
