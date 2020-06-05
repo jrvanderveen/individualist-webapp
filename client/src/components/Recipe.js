@@ -4,7 +4,7 @@ import { Ingredients } from "./Ingredients";
 import Chevron from "./chevron";
 import { List, AccordionButton, Wrapper, DeleteButton, Link } from "../elements/index";
 import styled from "styled-components";
-import { CheckMark } from "./CheckMark";
+import { SelectRecipeButton } from "./SelectRecipeButton";
 
 const Ul = styled.ul`
     width: 100%;
@@ -17,7 +17,6 @@ const Li = styled.li`
 `;
 
 const AccordionContent = styled.div`
-    ${(props) => console.log(props)};
     overflow: ${(props) => (props.maxHeight === "0px" ? "hidden" : "")};
     transition: max-height 0.3s ease;
     height: ${(props) => props.maxHeight};
@@ -48,7 +47,7 @@ export const Recipe = ({ recipe }) => {
     return (
         <>
             <Wrapper className="Accordion Wrapper">
-                <CheckMark />
+                <SelectRecipeButton active={recipe.forShoppingList} recipe_id={recipe._id} />
                 <DeleteButton isRecipe onClick={() => deleteRecipe(recipe._id)}>
                     x
                 </DeleteButton>

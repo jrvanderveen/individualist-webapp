@@ -6,6 +6,6 @@ router.route("/").get(getRecipes).post(addRecipe);
 
 router.route("/:id").delete(deleteRecipe);
 
-router.route("/:recipe_id/:ingredient").post(addRecipeIngredient).delete(deleteRecipeIngredient);
+router.route("/:recipe_id/:ingredient_id").post(addRecipeIngredient).delete(deleteRecipeIngredient);
 
 module.exports = router;

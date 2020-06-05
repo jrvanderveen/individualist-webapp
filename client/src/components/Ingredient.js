@@ -11,7 +11,7 @@ export const Ingredient = ({ recipeId, ingredient, index }) => {
     return (
         <Wrapper>
             <List isIngredient>
-                <DeleteButton isIngredient onClick={() => deleteRecipeIngredient(recipeId, ingredient.name)}>
+                <DeleteButton isIngredient onClick={() => deleteRecipeIngredient(recipeId, ingredient)}>
                     x
                 </DeleteButton>
                 {index} : {ingredient.name}

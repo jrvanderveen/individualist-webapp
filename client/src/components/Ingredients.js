@@ -11,8 +11,14 @@ const Form = styled.form`
     width: 100%;
 `;
 
-const Div = styled.div`
+const Table = styled.table`
     width: 100%;
+`;
+const TableBody = styled.tbody``;
+const TR = styled.tr``;
+const TD = styled.td`
+    width: 100%;
+    padding-left: ${(props) => (props.isRight ? "10px" : "5px")};
 `;
 
 export const Ingredients = ({ recipe, setHeightState, currContent }) => {
@@ -41,23 +47,33 @@ export const Ingredients = ({ recipe, setHeightState, currContent }) => {
             })}
             <List isIngredient className="New Ingredient List">
                 <Form onSubmit={onSubmit}>
-                    <Div>
-                        <Input
-                            isIngredient
-                            value={ingredient}
-                            onChange={(e) => setIngredient(e.target.value)}
-                            placeholder="Enter Ingredient..."
-                            required="required"
-                        />
-                        <Wrapper grocerySection className="Grocery Section DropDown Wrapper">
-                            <DropDownButton default="Other" handleChange={setGrocerySection} />
-                        </Wrapper>
-                    </Div>
-                    <Div>
-                        <Button type="submit" ingredient>
-                            Save
-                        </Button>
-                    </Div>
+                    <Table>
+                        <TableBody>
+                            <TR>
+                                <TD>
+                                    <Input
+                                        isIngredient
+                                        value={ingredient}
+                                        onChange={(e) => setIngredient(e.target.value)}
+                                        placeholder="Enter Ingredient..."
+                                        required="required"
+                                    />
+                                </TD>
+                                <TD isRight>
+                                    <Wrapper grocerySection className="Grocery Section DropDown Wrapper">
+                                        <DropDownButton default="Other" handleChange={setGrocerySection} />
+                                    </Wrapper>
+                                </TD>
+                            </TR>
+                            <TR>
+                                <TD colSpan={2}>
+                                    <Button type="submit" ingredient>
+                                        Save
+                                    </Button>
+                                </TD>
+                            </TR>
+                        </TableBody>
+                    </Table>
                 </Form>
             </List>
         </ul>

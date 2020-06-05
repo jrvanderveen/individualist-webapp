@@ -1,4 +1,5 @@
 # cooking-with-code
+Using this project to teach myself node/react/full stack application building.  
 
 SUMMARY:
 
@@ -6,7 +7,7 @@ This site will eventually be a place where home cooks can come to save old recip
 
 Meats:
 
-1 pound ground beef
+    1 pound ground beef
 
 Vegetables:
 
@@ -31,4 +32,4 @@ TODO:
       build more beautiful front end
       Create export shopping list functionality
             Allow user to select recipies to add then create new view of all ingredients seperated and sorted.  This new list can have items deleted.
-      add in addition features like rating or searching for recipes
+      add in additional features like rating or searching for recipes

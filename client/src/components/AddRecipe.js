@@ -15,9 +15,8 @@ export const AddRecipe = () => {
         e.preventDefault();
         setErrors([]);
         const errors = [];
-        recipes.forEach((recipe) => {
+        Object.entries(recipes).forEach(([_id, recipe]) => {
             if (recipe.name === name) {
-                console.log("non unique name");
                 errors.push("Recipe name must be unique");
                 return;
             }
@@ -32,10 +31,7 @@ export const AddRecipe = () => {
             name,
             servings,
             URL,
-            ingredients: [
-                { name: "Salt", grocerySection: "Other" },
-                { name: "Pepper", grocerySection: "Produce" },
-            ],
+            ingredients: [],
         };
         addRecipe(newRecipe);
     };

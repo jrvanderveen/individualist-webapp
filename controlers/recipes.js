@@ -1,4 +1,5 @@
 const Recipe = require("../models/recipe");
+const ObjectID = require("mongoose").Types.ObjectId;
 
 // @desc Get all recipes
 // @route GET /api/v1/recipes
@@ -79,9 +80,9 @@ exports.deleteRecipe = async (req, res, next) => {
 // @route DELETE /api/v1/recipes:recipe_id/:ingredient
 // @access Public
 exports.deleteRecipeIngredient = async (req, res, next) => {
-    console.log(req.params);
+    console.log(req.params.ingredient_id);
     try {
-        await Recipe.updateOne({ _id: req.params.recipe_id }, { $pull: { ingredients: { name: req.params.ingredient } } });
+        await Recipe.updateOne({ _id: req.params.recipe_id }, { $pull: { ingredients: { _id: ObjectID(req.params.ingredient_id) } } });
 
         return res.status(200).json({
             success: true,
@@ -108,12 +109,14 @@ exports.addRecipeIngredient = async (req, res, next) => {
                 error: "No recipe found",
             });
         }
-        await Recipe.updateOne({ _id: req.params.recipe_id }, { $push: { ingredients: req.body } });
+        ingredient = req.body;
+        ingredient._id = ObjectID();
+        await Recipe.updateOne({ _id: req.params.recipe_id }, { $push: { ingredients: ingredient } });
 
         return res.status(200).json({
             success: true,
             data: {
-                ingredient: req.params.ingredient,
+                ingredient: ingredient,
                 recipe: req.params.recipe_id,
             },
         });

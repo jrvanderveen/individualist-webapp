@@ -4,9 +4,10 @@ import axios from "axios";
 
 // Initial state
 const initialState = {
-    recipes: [],
-    error: null,
+    recipes: {},
+    // recipesForShoppingList: [],
     creatingShoppingList: true,
+    error: null,
 };
 
 // Create context
@@ -71,7 +72,7 @@ export const GlobalProvider = ({ children }) => {
     // Ingredient Actions
     async function deleteRecipeIngredient(recipeId, ingredient) {
         try {
-            await axios.delete(`/api/v1/recipes/${recipeId}/${ingredient}`);
+            await axios.delete(`/api/v1/recipes/${recipeId}/${ingredient._id}`);
             dispatch({
                 type: "DELETE_RECIPE_INGREDIENT",
                 payload: [recipeId, ingredient],
@@ -92,10 +93,24 @@ export const GlobalProvider = ({ children }) => {
         };
 
         try {
-            await axios.post(`/api/v1/recipes/${recipeId}/${ingredient.name}`, ingredient, config);
+            const res = await axios.post(`/api/v1/recipes/${recipeId}/${ingredient.name}`, ingredient, config);
             dispatch({
                 type: "ADD_RECIPE_INGREDIENT",
-                payload: [recipeId, ingredient],
+                payload: [recipeId, res.data.data.ingredient],
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
+    }
+
+    function setRecipeForShoppingList(recipeId) {
+        try {
+            dispatch({
+                type: "SET_RECIPE_FOR_SHOPPING_LIST",
+                payload: recipeId,
             });
         } catch (error) {
             dispatch({
@@ -116,6 +131,7 @@ export const GlobalProvider = ({ children }) => {
                 addRecipe,
                 deleteRecipeIngredient,
                 addRecipeIngredient,
+                setRecipeForShoppingList,
             }}
         >
             {children}

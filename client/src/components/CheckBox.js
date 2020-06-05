@@ -16,7 +16,7 @@ const Div = styled.div`
     transform: translate(0%, 150%);
 `;
 
-export const CheckBoxa = (props) => {
+export const CheckBox = (props) => {
     return (
         <Div className="form-check">
             <input type="checkbox" className="form-check-input" id="materialUnchecked" />

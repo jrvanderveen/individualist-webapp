@@ -16,8 +16,8 @@ export const RecipeList = () => {
         <>
             <H3>Recipes</H3>
             <Ul>
-                {recipes.map((recipe) => (
-                    <Recipe key={recipe._id} recipe={recipe} />
+                {Object.entries(recipes).map(([_id, recipe]) => (
+                    <Recipe key={_id} recipe={recipe} />
                 ))}
             </Ul>
         </>
