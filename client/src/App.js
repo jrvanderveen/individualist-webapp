@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "./components/Header";
 import { RecipeList } from "./components/RecipeList";
 import { AddRecipe } from "./components/AddRecipe";
+import { Options } from "./components/Options";
 
 import { GlobalProvider } from "./context/GlobalState";
 import "./App.css";
@@ -42,6 +43,7 @@ function App() {
         <GlobalProvider>
             <GlobalStyle />
             <Header />
+            <Options />
             <Container>
                 <RecipeList />
                 <AddRecipe />

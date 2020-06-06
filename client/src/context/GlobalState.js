@@ -6,7 +6,8 @@ import axios from "axios";
 const initialState = {
     recipes: {},
     // recipesForShoppingList: [],
-    creatingShoppingList: true,
+    creatingShoppingList: false,
+    editing: false,
     error: null,
 };
 
@@ -106,6 +107,20 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    function setCreateShoppingListBool() {
+        try {
+            dispatch({
+                type: "SET_CREATE_SHOPPING_LIST_BOOL",
+                payload: "",
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
+    }
+
     function setRecipeForShoppingList(recipeId) {
         try {
             dispatch({
@@ -120,18 +135,35 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    function setEditBool() {
+        try {
+            dispatch({
+                type: "SET_EDIT_BOOL",
+                payload: "",
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error.response.data.error,
+            });
+        }
+    }
+
     return (
         <GlobalContext.Provider
             value={{
                 recipes: state.recipes,
-                error: state.error,
                 creatingShoppingList: state.creatingShoppingList,
+                editing: state.editing,
+                error: state.error,
                 getRecipes,
                 deleteRecipe,
                 addRecipe,
                 deleteRecipeIngredient,
                 addRecipeIngredient,
+                setCreateShoppingListBool,
                 setRecipeForShoppingList,
+                setEditBool,
             }}
         >
             {children}

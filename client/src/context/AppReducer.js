@@ -43,11 +43,24 @@ export default (state, action) => {
                 ...state,
                 recipes: state.recipes,
             };
+
+        case "SET_CREATE_SHOPPING_LIST_BOOL":
+            state.creatingShoppingList = !state.creatingShoppingList;
+            return {
+                ...state,
+                creatingShoppingList: state.creatingShoppingList,
+            };
         case "SET_RECIPE_FOR_SHOPPING_LIST":
             state.recipes[action.payload].forShoppingList = !state.recipes[action.payload].forShoppingList;
             return {
                 ...state,
                 recipes: state.recipes,
+            };
+        case "SET_EDIT_BOOL":
+            state.editing = !state.editing;
+            return {
+                ...state,
+                editing: state.editing,
             };
         case "RECIPE_ERROR":
             return {
