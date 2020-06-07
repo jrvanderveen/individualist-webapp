@@ -20,11 +20,11 @@ const Button = styled.button`
 
 const Div = styled.div`
     position: fixed;
-    right: 0px;
+    left: 0px;
     top: 0px;
 `;
 
-export const Options = () => {
+export const Options = ({ togglePopUpFunc }) => {
     const { setCreateShoppingListBool, creatingShoppingList, setEditBool, editing } = useContext(GlobalContext);
     return (
         <Div>
@@ -34,7 +34,7 @@ export const Options = () => {
             <Button middle clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool()}>
                 Create Shopping List
             </Button>
-            <Button bottom available={creatingShoppingList}>
+            <Button bottom available={creatingShoppingList} onClick={togglePopUpFunc}>
                 Finalize List
             </Button>
         </Div>

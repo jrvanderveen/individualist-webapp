@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "./components/Header";
 import { RecipeList } from "./components/RecipeList";
 import { AddRecipe } from "./components/AddRecipe";
 import { Options } from "./components/Options";
+import { ShoppingListPopUp } from "./components/ShoppingListPopUp";
 
 import { GlobalProvider } from "./context/GlobalState";
 import "./App.css";
@@ -16,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    min-width: 1250px;
     margin: 0;
     font-family: "Lato", sans-serif;
   }
@@ -39,15 +41,22 @@ const Container = styled.section`
 `;
 
 function App() {
+    const [showPopUp, setShowPopUp] = useState(false);
+    const togglePopUp = () => {
+        setShowPopUp(!showPopUp);
+        console.log("function called from app.js", showPopUp);
+    };
+    console.log("show pop up", showPopUp);
     return (
         <GlobalProvider>
             <GlobalStyle />
             <Header />
-            <Options />
             <Container>
+                <Options togglePopUpFunc={togglePopUp} />
                 <RecipeList />
                 <AddRecipe />
             </Container>
+            {showPopUp === true ? <ShoppingListPopUp togglePopUpFunc={togglePopUp} /> : null}
         </GlobalProvider>
     );
 }

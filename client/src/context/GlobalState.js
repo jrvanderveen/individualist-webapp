@@ -149,6 +149,22 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    function returnSelectedRecipes() {
+        let recipeIngredientsBySection = {};
+        const grocerySectionList = ["Produce", "Meat/Seafood", "Deli/Prepared", "Other"];
+        grocerySectionList.forEach((section) => {
+            recipeIngredientsBySection[section] = [];
+        });
+
+        Object.entries(state.recipes).forEach(([_id, recipe]) => {
+            if (recipe.forShoppingList === true) {
+                Object.entries(recipe.ingredients).forEach(([_ing_id, ingredient]) => {
+                    recipeIngredientsBySection[ingredient.grocerySection].push(ingredient.name);
+                });
+            }
+        });
+        return recipeIngredientsBySection;
+    }
     return (
         <GlobalContext.Provider
             value={{
@@ -164,6 +180,7 @@ export const GlobalProvider = ({ children }) => {
                 setCreateShoppingListBool,
                 setRecipeForShoppingList,
                 setEditBool,
+                returnSelectedRecipes,
             }}
         >
             {children}
