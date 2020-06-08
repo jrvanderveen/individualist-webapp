@@ -44,9 +44,7 @@ function App() {
     const [showPopUp, setShowPopUp] = useState(false);
     const togglePopUp = () => {
         setShowPopUp(!showPopUp);
-        console.log("function called from app.js", showPopUp);
     };
-    console.log("show pop up", showPopUp);
     return (
         <GlobalProvider>
             <GlobalStyle />

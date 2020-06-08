@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Wrapper } from "./index";
 
 export default styled.button`
     opacity: ${(props) => (props.available === true ? 1 : 0)};

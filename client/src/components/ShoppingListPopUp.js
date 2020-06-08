@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import styled from "styled-components";
+import { Wrapper } from "../elements/index";
+import { ShoppingListIngredient } from "./ShoppingListIngredient";
 
 const ShoppingListDiv = styled.div`
     position: fixed;
@@ -15,13 +17,33 @@ const ShoppingListDiv = styled.div`
 const ShoppingListContent = styled.div`
     background-color: white;
     position: absolute;
-    top: 20%;
+    top: 10%;
     left: 30%;
     width: 40%;
+    max-height: 80%;
     padding: 20px;
     border-radius: 5px;
     border: 2px solid black;
+    overflow-y: scroll;
 `;
+
+const Button = styled.button`
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+    background-color: Transparent;
+    border: none;
+    outline: none;
+`;
+
+const H6 = styled.h6`
+    margin: 10px;
+`;
+
 export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     // Reducers
     const { returnSelectedRecipes } = useContext(GlobalContext);
@@ -38,17 +60,17 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
         grocerySectionList.forEach((section) => {
             var sectionIngredients = [];
             recipeList[section].forEach((ingredient) => {
-                sectionIngredients.push(<li key={ingredient}>{ingredient}</li>);
+                sectionIngredients.push(<ShoppingListIngredient key={ingredient} ingredient={ingredient} />);
             });
             if (sectionIngredients.length > 0) {
                 sectionList.push(
-                    <li key={section}>
-                        {section}
+                    <Wrapper key={section}>
+                        <H6>{section}</H6>
                         <ul>{sectionIngredients}</ul>
-                    </li>
+                    </Wrapper>
                 );
             } else {
-                sectionList.push(<li key={section}>{section}</li>);
+                sectionList.push(<H6 key={section}>{section}</H6>);
             }
         });
         return sectionList;
@@ -57,10 +79,21 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
-                <span className="close" onClick={handleClick}>
-                    &times;
-                </span>
-                <ul>{grocerSections()}</ul>
+                <Button onClick={handleClick}>&times;</Button>
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h3>Shopping List</h3>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <ul className="list-group">{grocerSections()}</ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ShoppingListContent>
         </ShoppingListDiv>
     );

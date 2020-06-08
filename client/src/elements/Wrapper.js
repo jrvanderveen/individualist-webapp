@@ -7,7 +7,5 @@ export default styled.div`
         `
         display: block;
         float: right;
-        position: relative;
-        z-index: 100;    
     `}
 `;
