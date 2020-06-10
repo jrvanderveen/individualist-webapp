@@ -158,13 +158,15 @@ export const GlobalProvider = ({ children }) => {
 
         Object.entries(state.recipes).forEach(([_id, recipe]) => {
             if (recipe.forShoppingList === true) {
-                Object.entries(recipe.ingredients).forEach(([_ing_id, ingredient]) => {
-                    recipeIngredientsBySection[ingredient.grocerySection].push(ingredient.name);
+                Object.entries(recipe.ingredients).forEach(([index, ingredient]) => {
+                    recipeIngredientsBySection[ingredient.grocerySection].push({ _id: ingredient._id, name: ingredient.name });
                 });
             }
         });
+        console.log(recipeIngredientsBySection);
         return recipeIngredientsBySection;
     }
+
     return (
         <GlobalContext.Provider
             value={{

@@ -7,8 +7,9 @@ export default styled.button`
     color: #fff;
     border: 0;
     display: block;
-    font-size: 16px;
-    margin: ${(props) => (props.ingredient ? "10px 0 0px" : "10px 0 30px")};
-    padding: 10px;
-    width: 100%;
+    font-size: ${(props) => (props.isShoppingListOption ? "12px" : "16px")};
+    margin: ${(props) => (props.ingredient ? "10px 0 0px" : props.isShoppingListOption ? "2.5px" : "10px 0 30px")};
+    padding: ${(props) => (props.isShoppingListOption ? "2.5px 5px 2.5px 5px" : "10px")};
+    width: ${(props) => (props.isShoppingListOption ? "" : "100%")};
+    float: ${(props) => (props.isShoppingListOption ? "right" : "")};
 `;

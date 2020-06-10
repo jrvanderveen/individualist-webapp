@@ -3,6 +3,8 @@ import { GlobalContext } from "../context/GlobalState";
 import styled from "styled-components";
 import { Wrapper } from "../elements/index";
 import { ShoppingListIngredient } from "./ShoppingListIngredient";
+import { ShoppingListOptions } from "./ShoppingListOptions";
+import axios from "axios";
 
 const ShoppingListDiv = styled.div`
     position: fixed;
@@ -20,6 +22,7 @@ const ShoppingListContent = styled.div`
     top: 10%;
     left: 30%;
     width: 40%;
+    min-width: 450px;
     max-height: 80%;
     padding: 20px;
     border-radius: 5px;
@@ -27,21 +30,9 @@ const ShoppingListContent = styled.div`
     overflow-y: scroll;
 `;
 
-const Button = styled.button`
-    float: right;
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: 0.5;
-    background-color: Transparent;
-    border: none;
-    outline: none;
-`;
-
 const H6 = styled.h6`
     margin: 10px;
+    text-decoration: underline;
 `;
 
 export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
@@ -51,16 +42,40 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
 
     const recipeList = returnSelectedRecipes();
 
-    const handleClick = () => {
-        togglePopUpFunc();
-    };
+    async function downloadShoppingList() {
+        console.log("request shopping list file");
+        const errors = [];
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            responseType: "blob",
+            params: {
+                recipeList: recipeList,
+            },
+        };
+
+        try {
+            await axios.get("/api/v1/shoppingList", config).then((response) => {
+                console.log(response);
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", "ShoppingList.txt");
+                document.body.appendChild(link);
+                link.click();
+            });
+        } catch (error) {
+            errors.push(error);
+        }
+    }
 
     const grocerSections = () => {
         var sectionList = [];
         grocerySectionList.forEach((section) => {
             var sectionIngredients = [];
             recipeList[section].forEach((ingredient) => {
-                sectionIngredients.push(<ShoppingListIngredient key={ingredient} ingredient={ingredient} />);
+                sectionIngredients.push(<ShoppingListIngredient key={ingredient._id} ingredient={ingredient.name} />);
             });
             if (sectionIngredients.length > 0) {
                 sectionList.push(
@@ -79,7 +94,8 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
-                <Button onClick={handleClick}>&times;</Button>
+                {/* <Button onClick={handleClick}>&times;</Button> */}
+                <ShoppingListOptions togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} />
                 <div className="row">
                     <div className="col-md-12">
                         <div className="row">
