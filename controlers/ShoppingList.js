@@ -14,7 +14,7 @@ exports.createShoppingListFile = (req, res, next) => {
         Object.entries(shoppingList).forEach(([section, ingredients]) => {
             contentString = contentString + section + os.EOL;
             ingredients.forEach((ingredient) => {
-                contentString = contentString + "\t" + ingredient + os.EOL;
+                contentString = contentString + "\t" + ingredient.name + os.EOL;
             });
         });
         res.set({ "Content-Disposition": 'attachment; filename=""' }); //name set client side

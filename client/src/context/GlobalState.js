@@ -163,7 +163,6 @@ export const GlobalProvider = ({ children }) => {
                 });
             }
         });
-        console.log(recipeIngredientsBySection);
         return recipeIngredientsBySection;
     }
 
