@@ -10,5 +10,6 @@ import Wrapper from "./Wrapper";
 import DeleteButton from "./DeleteButton";
 import Link from "./Link";
 import CheckMarkButton from "./CheckMarkButton";
+import AccordionContent from "./AccordionContent";
 
-export { H1, H3, H4, Input, Label, Button, List, AccordionButton, Wrapper, DeleteButton, Link, CheckMarkButton };
+export { H1, H3, H4, Input, Label, Button, List, AccordionButton, Wrapper, DeleteButton, Link, CheckMarkButton, AccordionContent };

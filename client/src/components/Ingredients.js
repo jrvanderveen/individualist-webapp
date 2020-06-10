@@ -21,7 +21,7 @@ const TD = styled.td`
     padding-left: ${(props) => (props.isRight ? "10px" : "5px")};
 `;
 
-export const Ingredients = ({ recipe, setHeightState, currContent }) => {
+export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredient }) => {
     // State
     const [grocerySection, setGrocerySection] = useState("Other");
     const [ingredient, setIngredient] = useState("");
@@ -37,13 +37,15 @@ export const Ingredients = ({ recipe, setHeightState, currContent }) => {
         };
         addRecipeIngredient(recipe._id, newIgredient);
         setIngredient("");
-        setHeightState(`${currContent.scrollHeight + currContent.scrollHeight / (recipe.ingredients.length + 1)}px`);
+        handleAddIngredient();
     };
 
     return (
         <ul>
             {recipe.ingredients.map((ingredient, index) => {
-                return <Ingredient key={index} recipeId={recipe._id} ingredient={ingredient} index={index + 1} />;
+                return (
+                    <Ingredient key={index} recipeId={recipe._id} ingredient={ingredient} index={index + 1} handleDeleteIngredient={handleDeleteIngredient} />
+                );
             })}
             <List isIngredient className="New Ingredient List">
                 <Form onSubmit={onSubmit}>

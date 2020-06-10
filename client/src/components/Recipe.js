@@ -1,8 +1,8 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import { Ingredients } from "./Ingredients";
 import Chevron from "./chevron";
-import { List, AccordionButton, Wrapper, DeleteButton, Link } from "../elements/index";
+import { List, AccordionButton, Wrapper, DeleteButton, Link, AccordionContent } from "../elements/index";
 import styled from "styled-components";
 import { SelectRecipeButton } from "./SelectRecipeButton";
 
@@ -14,12 +14,6 @@ const Ul = styled.ul`
 const Li = styled.li`
     float: left;
     width: 33%;
-`;
-
-const AccordionContent = styled.div`
-    overflow: ${(props) => (props.maxHeight === "0px" ? "hidden" : "")};
-    transition: max-height 0.3s ease;
-    height: ${(props) => props.maxHeight};
 `;
 
 const StyledLink = styled(Link)`
@@ -39,20 +33,30 @@ export const Recipe = ({ recipe }) => {
     const name = recipe.name.length > 20 ? `${recipe.name.substring(0, 20)}...` : recipe.name;
 
     const toggleAccordion = (props) => {
+        console.log("togle accordion");
         setActiveState(setActive === "" ? "active" : "");
         setHeightState(setActive === "active" ? "0px" : `${content.current.scrollHeight}px`);
         setRotateState(setActive === "active" ? "" : "rotate");
     };
 
+    const handleDeleteIngredient = () => {
+        console.log("delete ingredient");
+        setHeightState(`${content.current.scrollHeight - 70.833333}px`);
+    };
+    const handleAddIngredient = () => {
+        console.log("add ingredient");
+        setHeightState(`${content.current.scrollHeight + 70.833333}px`);
+    };
+
     return (
         <>
-            <Wrapper className="Accordion Wrapper">
+            <Wrapper>
                 <SelectRecipeButton active={recipe.forShoppingList} recipe_id={recipe._id} />
                 <DeleteButton isRecipe onClick={() => deleteRecipe(recipe._id)}>
                     x
                 </DeleteButton>
                 <StyledLink text="Website" href={recipe.URL} />
-                <AccordionButton className="Accordion Button" active={setActive} onClick={toggleAccordion}>
+                <AccordionButton active={setActive} onClick={toggleAccordion}>
                     <List ingredientCount={recipe.ingredients.length} isRecipe>
                         <Ul>
                             <Li key="name">{name}</Li>
@@ -66,8 +70,8 @@ export const Recipe = ({ recipe }) => {
                 </AccordionButton>
             </Wrapper>
             {/* Accordion Content contains list of ingredients */}
-            <AccordionContent ref={content} maxHeight={setHeight} className="Accordion Content">
-                <Ingredients recipe={recipe} setHeightState={setHeightState} currContent={content.current} />
+            <AccordionContent ref={content} maxHeight={setHeight}>
+                <Ingredients recipe={recipe} handleDeleteIngredient={handleDeleteIngredient} handleAddIngredient={handleAddIngredient} />
             </AccordionContent>
         </>
     );
