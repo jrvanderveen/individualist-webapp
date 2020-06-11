@@ -33,26 +33,26 @@ const Div = styled.div`
     left: 0px;
     top: 40%;
     max-width: 300px;
+    min-width: 250px;
 `;
 
 const Span = styled.span``;
 
-export const Options = ({ togglePopUpFunc }) => {
-    const { setCreateShoppingListBool, creatingShoppingList, setEditBool, editing } = useContext(GlobalContext);
+export const Options = ({ settingLabels, selectSettingPage }) => {
+    console.log(settingLabels);
     return (
         <Div>
             <Link to="/">
-                <Button top isLink clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool()}>
+                <Button top isLink>
                     <HomeIcon />
                     Home
                 </Button>
             </Link>
-            <Button middle clicked={editing} onClick={() => setEditBool()}>
-                Grocery Store Sections
-            </Button>
-            <Button bottom clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool()}>
-                More To Come
-            </Button>
+            {settingLabels.map((label) => (
+                <Button bottom onClick={() => selectSettingPage(label)}>
+                    {label}
+                </Button>
+            ))}
         </Div>
     );
 };
