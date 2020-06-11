@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { GlobalContext } from "../context/GlobalState";
+import { GlobalContext } from "../../context/GlobalState";
 
 const Button = styled.button`
     cursor: pointer;
@@ -21,7 +21,8 @@ const Button = styled.button`
 const Div = styled.div`
     position: fixed;
     left: 0px;
-    top: 0px;
+    top: 40%;
+    max-width: 300px;
 `;
 
 export const Options = ({ togglePopUpFunc }) => {

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "../context/GlobalState";
+import { GlobalContext } from "../../context/GlobalState";
 
 import { DropDownButton } from "./DropDownButton";
-import { DeleteButton, List, Wrapper } from "../elements/index";
+import { DeleteButton, List, Wrapper } from "../../elements/index";
 
 export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient }) => {
     // Reducers

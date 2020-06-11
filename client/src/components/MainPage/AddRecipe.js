@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { GlobalContext } from "../context/GlobalState";
-import { H3, Input, Label, Button } from "../elements/index";
+import { GlobalContext } from "../../context/GlobalState";
+import { H3, Input, Label, Button } from "../../elements/index";
 
 export const AddRecipe = () => {
     const [name, setRecipeName] = useState("");

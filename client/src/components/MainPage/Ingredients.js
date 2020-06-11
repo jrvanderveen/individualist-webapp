@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { GlobalContext } from "../context/GlobalState";
-import { List, Input, Button, Wrapper } from "../elements/index";
+import { GlobalContext } from "../../context/GlobalState";
+import { List, Input, Button, Wrapper } from "../../elements/index";
 import { Ingredient } from "./Ingredient";
 import { DropDownButton } from "./DropDownButton";
 import styled from "styled-components";

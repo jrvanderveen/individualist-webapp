@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { Header } from "./components/Header";
-import { RecipeList } from "./components/RecipeList";
-import { AddRecipe } from "./components/AddRecipe";
-import { Options } from "./components/Options";
-import { ShoppingListPopUp } from "./components/ShoppingListPopUp";
-
+import React from "react";
 import { GlobalProvider } from "./context/GlobalState";
+import { createGlobalStyle } from "styled-components";
 import "./App.css";
-import styled, { createGlobalStyle } from "styled-components";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { MainPage } from "./pages/MainPage";
+import { NotFound } from "./pages/404";
+import { Settings } from "./pages/Settings";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -35,26 +33,18 @@ const GlobalStyle = createGlobalStyle`
 
 `;
 
-const Container = styled.section`
-    margin: 30px auto;
-    width: 600px;
-`;
-
 function App() {
-    const [showPopUp, setShowPopUp] = useState(false);
-    const togglePopUp = () => {
-        setShowPopUp(!showPopUp);
-    };
     return (
         <GlobalProvider>
             <GlobalStyle />
-            <Header />
-            <Container>
-                <Options togglePopUpFunc={togglePopUp} />
-                <RecipeList />
-                <AddRecipe />
-            </Container>
-            {showPopUp === true ? <ShoppingListPopUp togglePopUpFunc={togglePopUp} /> : null}
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={MainPage} />
+                    <Route exact path="/settings" component={Settings} />
+                    <Route exact path="/404" component={NotFound} />
+                    <Redirect to="/404" />
+                </Switch>
+            </Router>
         </GlobalProvider>
     );
 }

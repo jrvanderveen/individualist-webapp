@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Wrapper } from "../elements/index";
+import { Wrapper } from "../../elements/index";
 
 const Div = styled.div`
     opacity: 0;

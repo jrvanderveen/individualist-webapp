@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { CheckMarkButton } from "../elements/index";
-import { GlobalContext } from "../context/GlobalState";
+import { CheckMarkButton } from "../../elements/index";
+import { GlobalContext } from "../../context/GlobalState";
 
 const CheckMarkStyle = styled.svg`
     width: 24px;

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "../context/GlobalState";
+import { GlobalContext } from "../../context/GlobalState";
 import styled from "styled-components";
-import { Wrapper } from "../elements/index";
+import { Wrapper } from "../../elements/index";
 import { ShoppingListIngredient } from "./ShoppingListIngredient";
 import { ShoppingListOptions } from "./ShoppingListOptions";
 import axios from "axios";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper, Button } from "../elements/index";
+import { Wrapper, Button } from "../../elements/index";
 import styled from "styled-components";
 
 const ExitButton = styled.button`

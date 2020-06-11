@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { List, Wrapper } from "../elements/index";
+import { List, Wrapper } from "../../elements/index";
 
 const Span = styled.span`
     ${(props) =>

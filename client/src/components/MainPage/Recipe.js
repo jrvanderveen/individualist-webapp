@@ -1,8 +1,8 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
-import { GlobalContext } from "../context/GlobalState";
+import React, { useContext, useState, useRef } from "react";
+import { GlobalContext } from "../../context/GlobalState";
 import { Ingredients } from "./Ingredients";
 import Chevron from "./chevron";
-import { List, AccordionButton, Wrapper, DeleteButton, Link, AccordionContent } from "../elements/index";
+import { List, AccordionButton, Wrapper, DeleteButton, Link, AccordionContent } from "../../elements/index";
 import styled from "styled-components";
 import { SelectRecipeButton } from "./SelectRecipeButton";
 
