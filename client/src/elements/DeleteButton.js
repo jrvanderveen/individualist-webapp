@@ -19,7 +19,7 @@ export default styled.button`
 
     top: 0px;
     right: 0px;
-    transform: ${(props) => (props.isIngredient ? "translate(100%, 50%)" : "translate(100%, 170%)")};
+    transform: ${(props) => (props.isIngredient || props.isGrocerySection ? "translate(100%, 50%)" : "translate(100%, 170%)")};
 `;
 /* 
     position: ${(props) => (props.isIngredient ? "absolute" : "relative")};  else recpe *

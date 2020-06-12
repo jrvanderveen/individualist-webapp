@@ -30,6 +30,15 @@ const ShoppingListContent = styled.div`
     overflow-y: scroll;
 `;
 
+const DivRow = styled.div`
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    width: 100%;
+`;
+
 const H6 = styled.h6`
     margin: 10px;
     text-decoration: underline;
@@ -37,13 +46,12 @@ const H6 = styled.h6`
 
 export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     // Reducers
-    const { returnSelectedRecipes } = useContext(GlobalContext);
+    const { returnSelectedRecipesIngredientMap } = useContext(GlobalContext);
     const grocerySectionList = ["Produce", "Meat/Seafood", "Deli/Prepared", "Other"];
 
-    const recipeList = returnSelectedRecipes();
+    const recipeList = returnSelectedRecipesIngredientMap();
 
     async function downloadShoppingList() {
-        console.log("request shopping list file");
         const errors = [];
         const config = {
             headers: {
@@ -57,7 +65,6 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
 
         try {
             await axios.get("/api/v1/shoppingList", config).then((response) => {
-                console.log(response);
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement("a");
                 link.href = url;
@@ -94,9 +101,8 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
-                {/* <Button onClick={handleClick}>&times;</Button> */}
                 <ShoppingListOptions togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} />
-                <div className="row">
+                <DivRow>
                     <div className="col-md-12">
                         <div className="row">
                             <div className="col-md-12">
@@ -109,7 +115,7 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </DivRow>
             </ShoppingListContent>
         </ShoppingListDiv>
     );

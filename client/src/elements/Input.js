@@ -7,5 +7,5 @@ export default styled.input`
     font-size: 16px;
     padding: 10px;
     width: 100%;
-    margin-right: 0px;
+    margin-right: ${(props) => (props.isGrocerySection ? "10px" : "0px")};
 `;

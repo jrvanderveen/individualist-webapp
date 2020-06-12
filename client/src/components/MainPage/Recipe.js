@@ -33,18 +33,15 @@ export const Recipe = ({ recipe }) => {
     const name = recipe.name.length > 20 ? `${recipe.name.substring(0, 20)}...` : recipe.name;
 
     const toggleAccordion = (props) => {
-        console.log("togle accordion");
         setActiveState(setActive === "" ? "active" : "");
         setHeightState(setActive === "active" ? "0px" : `${content.current.scrollHeight}px`);
         setRotateState(setActive === "active" ? "" : "rotate");
     };
 
     const handleDeleteIngredient = () => {
-        console.log("delete ingredient");
         setHeightState(`${content.current.scrollHeight - 70.833333}px`);
     };
     const handleAddIngredient = () => {
-        console.log("add ingredient");
         setHeightState(`${content.current.scrollHeight + 70.833333}px`);
     };
 

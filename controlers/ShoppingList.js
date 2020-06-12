@@ -1,9 +1,8 @@
-const Recipe = require("../models/recipe");
 const ObjectID = require("mongoose").Types.ObjectId;
 const os = require("os");
 
-// @desc Get all recipes
-// @route GET /api/v1/recipes
+// @desc Return shopping list as attachment
+// @route GET /api/v1/shoppingList
 // @access Public
 
 exports.createShoppingListFile = (req, res, next) => {

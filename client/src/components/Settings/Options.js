@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { GlobalContext } from "../../context/GlobalState";
 import { HomeSvg as HomeIcon } from "./HomeSvg";
 import { Link } from "react-router-dom";
 
@@ -36,10 +35,7 @@ const Div = styled.div`
     min-width: 250px;
 `;
 
-const Span = styled.span``;
-
 export const Options = ({ settingLabels, selectSettingPage }) => {
-    console.log(settingLabels);
     return (
         <Div>
             <Link to="/">
@@ -49,7 +45,7 @@ export const Options = ({ settingLabels, selectSettingPage }) => {
                 </Button>
             </Link>
             {settingLabels.map((label) => (
-                <Button bottom onClick={() => selectSettingPage(label)}>
+                <Button key={label} bottom onClick={() => selectSettingPage(label)}>
                     {label}
                 </Button>
             ))}

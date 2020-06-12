@@ -80,7 +80,6 @@ exports.deleteRecipe = async (req, res, next) => {
 // @route DELETE /api/v1/recipes:recipe_id/:ingredient
 // @access Public
 exports.deleteRecipeIngredient = async (req, res, next) => {
-    console.log(req.params.ingredient_id);
     try {
         await Recipe.updateOne({ _id: req.params.recipe_id }, { $pull: { ingredients: { _id: ObjectID(req.params.ingredient_id) } } });
 

@@ -4,8 +4,8 @@ import axios from "axios";
 
 // Initial state
 const initialState = {
+    grocerySections: { sections: [] },
     recipes: {},
-    // recipesForShoppingList: [],
     creatingShoppingList: false,
     editing: false,
     error: null,
@@ -18,7 +18,7 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
-    //
+    //Get all recipes
     async function getRecipes() {
         try {
             const res = await axios.get("/api/v1/recipes");
@@ -29,12 +29,13 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
-                payload: error.response.data.error,
+                payload: error,
             });
         }
     }
 
     // Recipe Actions
+    // Delete specific recipe
     async function deleteRecipe(id) {
         try {
             await axios.delete(`/api/v1/recipes/${id}`);
@@ -45,11 +46,12 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
-                payload: error.response.data.error,
+                payload: error,
             });
         }
     }
 
+    // Add recipe with current content (no ingredients yet)
     async function addRecipe(recipe) {
         const config = {
             headers: {
@@ -65,12 +67,13 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
-                payload: error.response.data.error,
+                payload: error,
             });
         }
     }
 
     // Ingredient Actions
+    // Delete ingredient from specific recipe
     async function deleteRecipeIngredient(recipeId, ingredient) {
         try {
             await axios.delete(`/api/v1/recipes/${recipeId}/${ingredient._id}`);
@@ -81,11 +84,12 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
-                payload: error.response.data.error,
+                payload: error,
             });
         }
     }
 
+    // Append ingredient to end of specific recipe
     async function addRecipeIngredient(recipeId, ingredient) {
         const config = {
             headers: {
@@ -102,11 +106,13 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
-                payload: error.response.data.error,
+                payload: error,
             });
         }
     }
 
+    // Setting actions
+    // This setting controls visibility of select recipe buttons
     function setCreateShoppingListBool() {
         try {
             dispatch({
@@ -116,11 +122,12 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
-                payload: error.response.data.error,
+                payload: error,
             });
         }
     }
 
+    // Set or Unset recipe attribute indicating if it should be part of the shopping list
     function setRecipeForShoppingList(recipeId) {
         try {
             dispatch({
@@ -130,26 +137,29 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
-                payload: error.response.data.error,
+                payload: error,
             });
         }
     }
 
-    function setEditBool() {
-        try {
-            dispatch({
-                type: "SET_EDIT_BOOL",
-                payload: "",
-            });
-        } catch (error) {
-            dispatch({
-                type: "RECIPE_ERROR",
-                payload: error.response.data.error,
-            });
-        }
-    }
+    // Set or unset
+    // function setEditBool() {
+    //     try {
+    //         dispatch({
+    //             type: "SET_EDIT_BOOL",
+    //             payload: "",
+    //         });
+    //     } catch (error) {
+    //         dispatch({
+    //             type: "RECIPE_ERROR",
+    //             payload: error,
+    //         });
+    //     }
+    // }
 
-    function returnSelectedRecipes() {
+    // Shopping List Actions
+    // Return object containing ingredients brokent down by grocery section for all selected recipes
+    function returnSelectedRecipesIngredientMap() {
         let recipeIngredientsBySection = {};
         const grocerySectionList = ["Produce", "Meat/Seafood", "Deli/Prepared", "Other"];
         grocerySectionList.forEach((section) => {
@@ -166,12 +176,63 @@ export const GlobalProvider = ({ children }) => {
         return recipeIngredientsBySection;
     }
 
+    // Grocery Section Actions
+    // Get list of all current sections
+    async function getGrocerySections() {
+        try {
+            const res = await axios.get("/api/v1/settings/grocerySections");
+            dispatch({
+                type: "GET_GROCERY_SECTIONS",
+                payload: res.data.data[0],
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+    // Add new grocery section
+    async function addGrocerySection(_id, sectionName) {
+        console.log("adding section");
+        try {
+            await axios.post(`/api/v1/settings/grocerySections/${_id}/${sectionName}`);
+            dispatch({
+                type: "ADD_GROCERY_SECTION",
+                payload: sectionName,
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // Delete grocery section
+    async function deleteGrocerySection(_id, sectionName) {
+        console.log("deleteing");
+        try {
+            await axios.delete(`/api/v1/settings/grocerySections/${_id}/${sectionName}`);
+            dispatch({
+                type: "DELETE_GROCERY_SECTION",
+                payload: sectionName,
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+
     return (
         <GlobalContext.Provider
             value={{
                 recipes: state.recipes,
                 creatingShoppingList: state.creatingShoppingList,
                 editing: state.editing,
+                grocerySections: state.grocerySections,
                 error: state.error,
                 getRecipes,
                 deleteRecipe,
@@ -180,8 +241,11 @@ export const GlobalProvider = ({ children }) => {
                 addRecipeIngredient,
                 setCreateShoppingListBool,
                 setRecipeForShoppingList,
-                setEditBool,
-                returnSelectedRecipes,
+                // setEditBool,
+                returnSelectedRecipesIngredientMap,
+                getGrocerySections,
+                addGrocerySection,
+                deleteGrocerySection,
             }}
         >
             {children}

@@ -1,64 +1,58 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
-import { H3, Input, Label, Button } from "../../elements/index";
+import { H3, List, Input } from "../../elements/index";
+import { GrocerySection } from "../../components/Settings/GrocerySection";
+import styled from "styled-components";
+
+const Ul = styled.ul`
+    padding-left: 3%;
+`;
+
+const Wrapper = styled.div`
+    margin: auto;
+`;
 
 export const SetGrocerySections = () => {
-    const [name, setRecipeName] = useState("");
-    const [servings, setServings] = useState(1);
-    const [URL, setRecipeURL] = useState("");
-    const [errors, setErrors] = useState([]);
+    const { grocerySections, getGrocerySections, addGrocerySection } = useContext(GlobalContext);
+    const [grocerySection, setGrocerySection] = useState("");
+    const [placeHolderText, setPlaceHolderText] = useState("Enter Grocery Section...");
 
-    const { addRecipe } = useContext(GlobalContext);
-    const { recipes } = useContext(GlobalContext);
+    useEffect(() => {
+        getGrocerySections();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        setErrors([]);
-        const errors = [];
-        Object.entries(recipes).forEach(([_id, recipe]) => {
-            if (recipe.name === name) {
-                errors.push("Recipe name must be unique");
-                return;
-            }
-        });
-        if (errors.length > 0) {
-            setErrors(errors);
+    const handleOnClick = () => {
+        if (grocerySection.length === 0) {
+            setPlaceHolderText("Enter Grocery Section...");
             return;
         }
+        grocerySections.sections.forEach((section) => {
+            if (section.toLowerCase() === grocerySection.toLowerCase()) {
+                setGrocerySection("");
+                setPlaceHolderText("Section Names Must Be Unique");
+            }
+        });
 
-        const newRecipe = {
-            id: Math.floor(Math.random() * 100000000),
-            name,
-            servings,
-            URL,
-            ingredients: [],
-        };
-        addRecipe(newRecipe);
+        addGrocerySection(grocerySections._id, grocerySection);
     };
 
     return (
         <>
             <H3>Grocery Sections</H3>
-            <form onSubmit={onSubmit}>
-                {errors.map((error) => (
-                    <p className="error" key={error}>
-                        Error: {error}
-                    </p>
+            <Ul>
+                {grocerySections.sections.map((section) => (
+                    <GrocerySection key={section} sectionLabel={section} _id={grocerySections._id} />
                 ))}
-                <div className="form-group">
-                    <Label htmlFor="name">Name</Label>
-                    <Input type="text" value={name} onChange={(e) => setRecipeName(e.target.value)} placeholder="Enter Name..." required="required" />
-                </div>
-                <div className="form-group">
-                    <Label htmlFor="amount">Servings</Label>
-                    <Input type="number" min="1" value={servings} onChange={(e) => setServings(e.target.value)} placeholder="Enter Servings..." />
-                </div>
-                <div className="form-group">
-                    <Label htmlFor="servings">URL</Label>
-                    <Input type="text" value={URL} onChange={(e) => setRecipeURL(e.target.value)} placeholder="Enter URL..." />
-                </div>
-                <Button isAddRecipeButton>Add Recipe</Button>
-            </form>
+                <List>
+                    <Input isGrocerySection value={grocerySection} onChange={(e) => setGrocerySection(e.target.value)} placeholder={placeHolderText} />
+                    <Wrapper>
+                        <button className="float-right btn btn-success btn-sm" onClick={handleOnClick}>
+                            +
+                        </button>
+                    </Wrapper>
+                </List>
+            </Ul>
         </>
     );
 };

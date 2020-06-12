@@ -13,6 +13,7 @@ connectDB(process.env.MONGO_URI);
 // Routes
 const recipes = require("./routes/recipes");
 const shoppingList = require("./routes/ShoppingList");
+const settings = require("./routes/Settings");
 
 // APP
 const app = express();
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === "development") {
 // Direct Routes
 app.use("/api/v1/recipes", recipes);
 app.use("/api/v1/shoppingList", shoppingList);
+app.use("/api/v1/settings", settings);
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
