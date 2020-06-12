@@ -46,8 +46,8 @@ const H6 = styled.h6`
 
 export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     // Reducers
-    const { returnSelectedRecipesIngredientMap } = useContext(GlobalContext);
-    const grocerySectionList = ["Produce", "Meat/Seafood", "Deli/Prepared", "Other"];
+    const { returnSelectedRecipesIngredientMap, grocerySections } = useContext(GlobalContext);
+    const grocerySectionList = grocerySections.sections;
 
     const recipeList = returnSelectedRecipesIngredientMap();
 

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { HomeSvg as HomeIcon } from "./HomeSvg";
+import { HomeSvg } from "../SVG/HomeSvg";
 import { Link } from "react-router-dom";
 
 const Button = styled.button`
@@ -40,7 +40,7 @@ export const Options = ({ settingLabels, selectSettingPage }) => {
         <Div>
             <Link to="/">
                 <Button top isLink>
-                    <HomeIcon />
+                    <HomeSvg />
                     Home
                 </Button>
             </Link>

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { Ingredients } from "./Ingredients";
-import Chevron from "./chevron";
+import { CheveronSvg } from "../SVG/CheveronSvg";
 import { List, AccordionButton, Wrapper, DeleteButton, Link, AccordionContent } from "../../elements/index";
 import styled from "styled-components";
 import { SelectRecipeButton } from "./SelectRecipeButton";
@@ -39,15 +39,15 @@ export const Recipe = ({ recipe }) => {
     };
 
     const handleDeleteIngredient = () => {
-        setHeightState(`${content.current.scrollHeight - 70.833333}px`);
+        setHeightState(`${content.current.scrollHeight - 50.833333}px`);
     };
     const handleAddIngredient = () => {
-        setHeightState(`${content.current.scrollHeight + 70.833333}px`);
+        setHeightState(`${content.current.scrollHeight + 50.833333}px`);
     };
 
     return (
         <>
-            <Wrapper>
+            <Wrapper isRecipe>
                 <SelectRecipeButton active={recipe.forShoppingList} recipe_id={recipe._id} />
                 <DeleteButton isRecipe onClick={() => deleteRecipe(recipe._id)}>
                     x
@@ -60,7 +60,7 @@ export const Recipe = ({ recipe }) => {
                             <Li key="servings">Servings: {recipe.servings}</Li>
                             <Li key="ingredientCount">
                                 Ingredients: {recipe.ingredients.length} &nbsp;&nbsp;
-                                <Chevron rotate={setRotate} />
+                                <CheveronSvg rotate={setRotate} />
                             </Li>
                         </Ul>
                     </List>

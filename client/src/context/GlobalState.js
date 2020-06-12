@@ -4,7 +4,7 @@ import axios from "axios";
 
 // Initial state
 const initialState = {
-    grocerySections: { sections: [] },
+    grocerySections: { default: "", sections: [] },
     recipes: {},
     creatingShoppingList: false,
     editing: false,
@@ -17,6 +17,35 @@ export const GlobalContext = createContext(initialState);
 // Provider component
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
+
+    //On start up get recipes and grocery sections
+    //Get recipes grocery sections then recipes to avoid incomplete data
+    async function onStartUp() {
+        try {
+            const res = await axios.get("/api/v1/settings/grocerySections");
+            dispatch({
+                type: "GET_GROCERY_SECTIONS",
+                payload: res.data.data[0],
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+        try {
+            const res = await axios.get("/api/v1/recipes");
+            dispatch({
+                type: "GET_RECIPES",
+                payload: res.data.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
 
     //Get all recipes
     async function getRecipes() {
@@ -142,27 +171,12 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Set or unset
-    // function setEditBool() {
-    //     try {
-    //         dispatch({
-    //             type: "SET_EDIT_BOOL",
-    //             payload: "",
-    //         });
-    //     } catch (error) {
-    //         dispatch({
-    //             type: "RECIPE_ERROR",
-    //             payload: error,
-    //         });
-    //     }
-    // }
-
     // Shopping List Actions
     // Return object containing ingredients brokent down by grocery section for all selected recipes
     function returnSelectedRecipesIngredientMap() {
         let recipeIngredientsBySection = {};
-        const grocerySectionList = ["Produce", "Meat/Seafood", "Deli/Prepared", "Other"];
-        grocerySectionList.forEach((section) => {
+
+        state.grocerySections.sections.forEach((section) => {
             recipeIngredientsBySection[section] = [];
         });
 
@@ -173,6 +187,7 @@ export const GlobalProvider = ({ children }) => {
                 });
             }
         });
+        console.log(recipeIngredientsBySection);
         return recipeIngredientsBySection;
     }
 
@@ -194,7 +209,6 @@ export const GlobalProvider = ({ children }) => {
     }
     // Add new grocery section
     async function addGrocerySection(_id, sectionName) {
-        console.log("adding section");
         try {
             await axios.post(`/api/v1/settings/grocerySections/${_id}/${sectionName}`);
             dispatch({
@@ -210,12 +224,26 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Delete grocery section
-    async function deleteGrocerySection(_id, sectionName) {
-        console.log("deleteing");
+    async function deleteGrocerySection(_id, sectionName, defaultSection) {
         try {
-            await axios.delete(`/api/v1/settings/grocerySections/${_id}/${sectionName}`);
+            await axios.delete(`/api/v1/settings/grocerySections/${_id}/${sectionName}/${defaultSection}`);
             dispatch({
                 type: "DELETE_GROCERY_SECTION",
+                payload: sectionName,
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    async function setDefaultGrocerySection(_id, sectionName) {
+        try {
+            await axios.post(`/api/v1/settings/grocerySections/default/${_id}/${sectionName}`);
+            dispatch({
+                type: "SET_GROCERY_SECTION_DEFAULT",
                 payload: sectionName,
             });
         } catch (error) {
@@ -234,6 +262,7 @@ export const GlobalProvider = ({ children }) => {
                 editing: state.editing,
                 grocerySections: state.grocerySections,
                 error: state.error,
+                onStartUp,
                 getRecipes,
                 deleteRecipe,
                 addRecipe,
@@ -241,11 +270,11 @@ export const GlobalProvider = ({ children }) => {
                 addRecipeIngredient,
                 setCreateShoppingListBool,
                 setRecipeForShoppingList,
-                // setEditBool,
                 returnSelectedRecipesIngredientMap,
                 getGrocerySections,
                 addGrocerySection,
                 deleteGrocerySection,
+                setDefaultGrocerySection,
             }}
         >
             {children}

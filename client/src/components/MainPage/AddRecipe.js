@@ -34,6 +34,9 @@ export const AddRecipe = () => {
             ingredients: [],
         };
         addRecipe(newRecipe);
+        setRecipeName("");
+        setServings(1);
+        setRecipeURL("");
     };
 
     return (
@@ -42,7 +45,7 @@ export const AddRecipe = () => {
             <form onSubmit={onSubmit}>
                 {errors.map((error) => (
                     <p className="error" key={error}>
-                        Error: {error}
+                        {error}
                     </p>
                 ))}
                 <div className="form-group">

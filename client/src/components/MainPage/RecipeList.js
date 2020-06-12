@@ -3,7 +3,7 @@ import { Recipe } from "./Recipe";
 import { H3 } from "../../elements/index";
 import { GlobalContext } from "../../context/GlobalState";
 import styled from "styled-components";
-import { SettingsSvg } from "./SettingSvg";
+import { SettingsSvg } from "../SVG/SettingSvg";
 import { Link } from "react-router-dom";
 
 const Ul = styled.ul`
@@ -11,9 +11,12 @@ const Ul = styled.ul`
 `;
 
 export const RecipeList = () => {
-    const { recipes, getRecipes } = useContext(GlobalContext);
+    const { recipes, onStartUp } = useContext(GlobalContext);
     useEffect(() => {
-        getRecipes();
+        if (Object.entries(recipes).length === 0) {
+            onStartUp();
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (

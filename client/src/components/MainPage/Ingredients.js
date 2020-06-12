@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { List, Input, Button, Wrapper } from "../../elements/index";
 import { Ingredient } from "./Ingredient";
-import { DropDownButton } from "./DropDownButton";
+import { DropDownButton } from "../util/DropDownButton";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -22,21 +22,22 @@ const TD = styled.td`
 `;
 
 export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredient }) => {
-    // State
-    const [grocerySection, setGrocerySection] = useState("Other");
-    const [ingredient, setIngredient] = useState("");
     // Reducers
-    const { addRecipeIngredient } = useContext(GlobalContext);
-    // functions
+    const { addRecipeIngredient, grocerySections } = useContext(GlobalContext);
+    // State
+    const [newIngredientGrocerySection, setNewIngredientGrocerySection] = useState(grocerySections.default);
+    const [newIngredient, setNewIngredient] = useState("");
 
+    // functions
     const onSubmit = (e) => {
         e.preventDefault();
+
         var newIgredient = {
-            name: ingredient,
-            grocerySection: grocerySection,
+            name: newIngredient,
+            grocerySection: newIngredientGrocerySection,
         };
         addRecipeIngredient(recipe._id, newIgredient);
-        setIngredient("");
+        setNewIngredient("");
         handleAddIngredient();
     };
 
@@ -47,7 +48,7 @@ export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredien
                     <Ingredient key={index} recipeId={recipe._id} ingredient={ingredient} index={index + 1} handleDeleteIngredient={handleDeleteIngredient} />
                 );
             })}
-            <List isIngredient className="New Ingredient List">
+            <List isIngredient isForm>
                 <Form onSubmit={onSubmit}>
                     <Table>
                         <TableBody>
@@ -55,15 +56,19 @@ export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredien
                                 <TD>
                                     <Input
                                         isIngredient
-                                        value={ingredient}
-                                        onChange={(e) => setIngredient(e.target.value)}
+                                        value={newIngredient}
+                                        onChange={(e) => setNewIngredient(e.target.value)}
                                         placeholder="Enter Ingredient..."
                                         required="required"
                                     />
                                 </TD>
                                 <TD isRight>
-                                    <Wrapper grocerySection className="Grocery Section DropDown Wrapper">
-                                        <DropDownButton default="Other" handleChange={setGrocerySection} />
+                                    <Wrapper isGrocerySection>
+                                        <DropDownButton
+                                            default={grocerySections.default}
+                                            handleChange={setNewIngredientGrocerySection}
+                                            sections={grocerySections.sections}
+                                        />
                                     </Wrapper>
                                 </TD>
                             </TR>

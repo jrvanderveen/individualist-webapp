@@ -1,18 +1,17 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 
-import { DropDownButton } from "./DropDownButton";
+import { DropDownButton } from "../util/DropDownButton";
 import { DeleteButton, List, Wrapper } from "../../elements/index";
 
 export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient }) => {
     // Reducers
-    const { deleteRecipeIngredient } = useContext(GlobalContext);
+    const { deleteRecipeIngredient, grocerySections } = useContext(GlobalContext);
     // functions
     const handleOnClick = () => {
         deleteRecipeIngredient(recipeId, ingredient);
         handleDeleteIngredient();
     };
-
     return (
         <Wrapper>
             <List isIngredient>
@@ -20,7 +19,7 @@ export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient
                     x
                 </DeleteButton>
                 {index} : {ingredient.name}
-                <DropDownButton default={ingredient.grocerySection} />
+                <DropDownButton default={ingredient.grocerySection} sections={grocerySections.sections} />
             </List>
         </Wrapper>
     );

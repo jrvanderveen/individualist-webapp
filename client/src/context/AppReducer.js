@@ -64,13 +64,6 @@ export default (state, action) => {
                 recipes: state.recipes,
             };
 
-        // case "SET_EDIT_BOOL":
-        //     state.editing = !state.editing;
-        //     return {
-        //         ...state,
-        //         editing: state.editing,
-        //     };
-
         // Get grocery sections
         case "GET_GROCERY_SECTIONS":
             return {
@@ -88,13 +81,28 @@ export default (state, action) => {
 
         // delete grocery section
         case "DELETE_GROCERY_SECTION":
-            var index = state.grocerySections.sections.indexOf(action.payload);
-            if (index !== -1) state.grocerySections.sections.splice(index, 1);
+            var sectionIndex = state.grocerySections.sections.indexOf(action.payload);
+            if (sectionIndex !== -1) state.grocerySections.sections.splice(sectionIndex, 1);
+            Object.entries(state.recipes).forEach(([_id, recipe]) => {
+                recipe.ingredients.forEach((ingredient) => {
+                    if (ingredient.grocerySection === action.payload) {
+                        ingredient.grocerySection = state.grocerySections.default;
+                    }
+                });
+            });
+            return {
+                ...state,
+                recipes: state.recipes,
+                grocerySections: state.grocerySections,
+            };
+        case "SET_GROCERY_SECTION_DEFAULT":
+            state.grocerySections.default = action.payload;
             return {
                 ...state,
                 grocerySections: state.grocerySections,
             };
 
+        //ERRORS
         case "RECIPE_ERROR":
             console.log(action.payload);
             return {
