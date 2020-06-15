@@ -2,7 +2,7 @@ export default (state, action) => {
     switch (action.type) {
         // Build recipe map for saved recipes
         case "GET_RECIPES":
-            var recipeMap = {};
+            let recipeMap = {};
             action.payload.forEach((recipe) => {
                 recipe.forShoppingList = false;
                 recipeMap[recipe._id] = recipe;
@@ -32,7 +32,7 @@ export default (state, action) => {
         //Delete ingredient from recipe._id == action.payload[0]
         //ingredient == action.payload[1]
         case "DELETE_RECIPE_INGREDIENT":
-            var index = state.recipes[action.payload[0]].ingredients.indexOf(action.payload[1]);
+            let index = state.recipes[action.payload[0]].ingredients.indexOf(action.payload[1]);
             if (index !== -1) state.recipes[action.payload[0]].ingredients.splice(index, 1);
             return {
                 ...state,
@@ -81,7 +81,7 @@ export default (state, action) => {
 
         // delete grocery section
         case "DELETE_GROCERY_SECTION":
-            var sectionIndex = state.grocerySections.sections.indexOf(action.payload);
+            let sectionIndex = state.grocerySections.sections.indexOf(action.payload);
             if (sectionIndex !== -1) state.grocerySections.sections.splice(sectionIndex, 1);
             Object.entries(state.recipes).forEach(([_id, recipe]) => {
                 recipe.ingredients.forEach((ingredient) => {

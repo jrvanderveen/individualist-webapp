@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
+import DefaultDict from "../utils/DefaultDict";
 
 // Initial state
 const initialState = {
@@ -174,7 +175,9 @@ export const GlobalProvider = ({ children }) => {
     // Shopping List Actions
     // Return object containing ingredients brokent down by grocery section for all selected recipes
     function returnSelectedRecipesIngredientMap() {
-        let recipeIngredientsBySection = {};
+        // using a default dict here to avoid key errors
+        // A key error could happen if a user has multiple tabs open and deletes a grocery section in the settings page
+        const recipeIngredientsBySection = new DefaultDict(Array);
 
         state.grocerySections.sections.forEach((section) => {
             recipeIngredientsBySection[section] = [];
@@ -187,7 +190,6 @@ export const GlobalProvider = ({ children }) => {
                 });
             }
         });
-        console.log(recipeIngredientsBySection);
         return recipeIngredientsBySection;
     }
 

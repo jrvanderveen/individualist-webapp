@@ -78,9 +78,9 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     }
 
     const grocerSections = () => {
-        var sectionList = [];
+        let sectionList = [];
         grocerySectionList.forEach((section) => {
-            var sectionIngredients = [];
+            let sectionIngredients = [];
             recipeList[section].forEach((ingredient) => {
                 sectionIngredients.push(<ShoppingListIngredient key={ingredient._id} ingredient={ingredient.name} />);
             });

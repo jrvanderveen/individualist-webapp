@@ -32,7 +32,7 @@ export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredien
     const onSubmit = (e) => {
         e.preventDefault();
 
-        var newIgredient = {
+        let newIgredient = {
             name: newIngredient,
             grocerySection: newIngredientGrocerySection,
         };
