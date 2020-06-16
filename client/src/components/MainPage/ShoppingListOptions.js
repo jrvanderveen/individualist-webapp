@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Wrapper, Button } from "../../elements/index";
 import styled from "styled-components";
+import { GlobalContext } from "../../context/GlobalState";
 
 const ExitButton = styled.button`
     float: right;
@@ -15,22 +16,29 @@ const ExitButton = styled.button`
     outline: none;
 `;
 
-export const ShoppingListOptions = ({ togglePopUpFunc, downloadShoppingListFunc }) => {
+export const ShoppingListOptions = ({ togglePopUpFunc, downloadShoppingListFunc, setDidClearFunc }) => {
+    const { clearShoppingList } = useContext(GlobalContext);
+
     const handleClick = (call) => {
         if (call === "exit") {
             togglePopUpFunc();
         } else if (call === "download") {
             downloadShoppingListFunc();
+        } else if (call === "clear") {
+            setDidClearFunc(true);
+            clearShoppingList();
         }
     };
-
     return (
         <Wrapper>
             <ExitButton onClick={() => handleClick("exit")}>&times;</ExitButton>
             <Button isShoppingListOption onClick={() => handleClick("download")}>
                 Download
             </Button>
-            <Button isShoppingListOption>Save</Button>
+            {/* <Button isShoppingListOption>Save</Button> */}
+            <Button isShoppingListOption onClick={() => handleClick("clear")}>
+                Clear
+            </Button>
         </Wrapper>
     );
 };

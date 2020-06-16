@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import styled from "styled-components";
 import { ShoppingListOptions } from "./ShoppingListOptions";
@@ -36,6 +36,7 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     // Reducers
     const { shoppingList } = useContext(GlobalContext);
     const grocerySectionIngredientsMap = shoppingList.grocerySectionIngredientsMap;
+    const [didClear, setDidClear] = useState(false);
 
     async function downloadShoppingList() {
         const errors = [];
@@ -51,7 +52,7 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
         };
 
         try {
-            await axios.get("/api/v1/shoppingList", config).then((response) => {
+            await axios.get("/api/v1/shoppingList/download", config).then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement("a");
                 link.href = url;
@@ -67,13 +68,15 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
-                <ShoppingListOptions togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} />
+                <ShoppingListOptions togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} setDidClearFunc={setDidClear} />
 
                 <h3>Shopping List</h3>
                 <Ul>
-                    {Object.entries(grocerySectionIngredientsMap).map(([name, section], index) => (
-                        <ShoppingListGrocerySection key={index} name={name} section={section} />
-                    ))}
+                    {Object.entries(grocerySectionIngredientsMap).map(([name, section], index) =>
+                        name === "toJSON" ? null : (
+                            <ShoppingListGrocerySection key={index} sectionName={name} section={section} didClear={didClear} setDidClearFunc={setDidClear} />
+                        )
+                    )}
                 </Ul>
             </ShoppingListContent>
         </ShoppingListDiv>

@@ -5,7 +5,7 @@ export default styled.input`
     border-radius: 2px;
     display: block;
     font-size: 16px;
-    padding: 10px;
+    padding: ${(props) => (props.isShoppingListIngredient ? "5px" : "10px")};
     width: 100%;
-    margin-right: ${(props) => (props.isGrocerySection ? "10px" : "0px")};
+    margin-right: ${(props) => (props.isGrocerySection || props.isShoppingListIngredient ? "10px" : "0px")};
 `;

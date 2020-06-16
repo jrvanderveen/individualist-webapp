@@ -33,8 +33,10 @@ const initialState = {
     },
     shoppingList: {
         /* PERSISTS
-            grocerySectionIngredientMap, {sectionsName: [ingredients]}
+            _id, objectID
+            grocerySectionIngredientMap, {sectionsName: [ingredients] ...}
         */
+        _id: -1,
         grocerySectionIngredientsMap: new DefaultDict(Array), //dont want key errors
     },
     creatingShoppingList: false,
@@ -54,7 +56,7 @@ export const GlobalProvider = ({ children }) => {
     async function onStartUp() {
         await getGrocerySections();
         await getRecipes();
-        saveAddedRecipes();
+        await getShoppingList();
     }
 
     //Get all recipes
@@ -150,13 +152,13 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Setting actions
-    // This setting controls visibility of select recipe buttons
-    function setCreateShoppingListBool(cancelOrClose) {
+    // Shopping List actions
+    async function getShoppingList() {
+        const res = await axios.get("/api/v1/shoppingList");
         try {
             dispatch({
-                type: "SET_CREATE_SHOPPING_LIST_BOOL",
-                payload: cancelOrClose,
+                type: "GET_SHOPPING_LIST",
+                payload: res.data.data,
             });
         } catch (error) {
             dispatch({
@@ -182,7 +184,8 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Add recipe ingredients to shopping list
-    function saveAddedRecipes() {
+    async function saveAddedRecipes() {
+        //dispatch to update state then post new ShoppingList
         try {
             dispatch({
                 type: "SAVE_RECIPES_ADDED_TO_SHOPPING_LIST",
@@ -193,28 +196,66 @@ export const GlobalProvider = ({ children }) => {
                 payload: error,
             });
         }
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const res = await axios.post("/api/v1/shoppingList", state.shoppingList, config);
     }
 
-    // // Return object containing ingredients brokent down by grocery section for all selected recipes
-    // function returnSelectedRecipesIngredientMap() {
-    //     // using a default dict here to avoid key errors
-    //     // A key error could happen if a user has multiple tabs open and deletes a grocery section in the settings page
-    //     const recipeIngredientsBySection = new DefaultDict(Array);
+    async function addIngredientToShoppingListSection(sectionName, ingredient) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        let _id = state.shoppingList._id;
+        const res = await axios.post("/api/v1/shoppingList/update", { _id, sectionName, ingredient }, config);
+        const ingredientObj = res.data.data.ingredient;
+        try {
+            dispatch({
+                type: "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION",
+                payload: [sectionName, ingredientObj],
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
 
-    //     state.grocerySections.sections.forEach((section) => {
-    //         recipeIngredientsBySection[section] = [];
-    //     });
+    async function clearShoppingList() {
+        let _id = state.shoppingList._id;
+        await axios.delete(`/api/v1/shoppingList/${_id}`);
+        try {
+            dispatch({
+                type: "CLEAR_SHOPPING_LIST",
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
 
-    //     Object.entries(state.recipes).forEach(([_id, recipe]) => {
-    //         if (recipe.addToShoppingList === true) {
-    //             Object.entries(recipe.ingredients).forEach(([index, ingredient]) => {
-    //                 recipeIngredientsBySection[ingredient.grocerySection].push({ _id: ingredient._id, name: ingredient.name });
-    //             });
-    //         }
-    //     });
-    //     return recipeIngredientsBySection;
-    // }
-
+    // Setting actions
+    // This setting controls visibility of select recipe buttons
+    function setCreateShoppingListBool(cancelOrClose) {
+        try {
+            dispatch({
+                type: "SET_CREATE_SHOPPING_LIST_BOOL",
+                payload: cancelOrClose,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
     // Grocery Section Actions
     // Get list of all current sections
     async function getGrocerySections() {
@@ -294,9 +335,12 @@ export const GlobalProvider = ({ children }) => {
                 addRecipe,
                 deleteRecipeIngredient,
                 addRecipeIngredient,
+                getShoppingList,
                 setCreateShoppingListBool,
                 addRecipeToShoppingList,
                 saveAddedRecipes,
+                addIngredientToShoppingListSection,
+                clearShoppingList,
                 getGrocerySections,
                 addGrocerySection,
                 deleteGrocerySection,

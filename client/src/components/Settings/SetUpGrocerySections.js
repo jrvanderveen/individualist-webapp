@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { H3, List, Input } from "../../elements/index";
-import { GrocerySection } from "../../components/Settings/GrocerySection";
+import { GrocerySection } from "./GrocerySection";
 import styled from "styled-components";
 
 const Ul = styled.ul`
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     margin: auto;
 `;
 
-export const SetGrocerySections = () => {
+export const SetUpGrocerySections = () => {
     const { grocerySections, getGrocerySections, addGrocerySection } = useContext(GlobalContext);
     const [grocerySection, setGrocerySection] = useState("");
     const [placeHolderText, setPlaceHolderText] = useState("Enter Grocery Section...");

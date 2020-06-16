@@ -66,6 +66,21 @@ export default (state, action) => {
                     creatingShoppingList: state.creatingShoppingList,
                 };
             }
+        //Get the currently saved shoppinglist and add to state
+        case "GET_SHOPPING_LIST":
+            state.grocerySections.sections.forEach((section) => {
+                state.shoppingList.grocerySectionIngredientsMap[section] = [];
+            });
+            if (action.payload.grocerySectionIngredientsMap) {
+                Object.keys(action.payload.grocerySectionIngredientsMap).forEach((key) => {
+                    state.shoppingList.grocerySectionIngredientsMap[key] = action.payload.grocerySectionIngredientsMap[key];
+                });
+            }
+            state.shoppingList._id = action.payload._id;
+            return {
+                ...state,
+                shoppingList: state.shoppingList,
+            };
 
         // Set or unset recipe addToShoppingList bool
         case "SET_RECIPE_FOR_SHOPPING_LIST":
@@ -87,9 +102,28 @@ export default (state, action) => {
                     recipe.addToShoppingList = false;
                 }
             });
+
             return {
                 ...state,
                 recipes: state.recipes,
+                grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
+            };
+
+        // Add manually enteres ingredient to section
+        // payload = [sectionName, ingredient]
+        case "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION":
+            state.shoppingList.grocerySectionIngredientsMap[action.payload[0]].push(action.payload[1]);
+            return {
+                ...state,
+                grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
+            };
+
+        case "CLEAR_SHOPPING_LIST":
+            Object.keys(state.shoppingList.grocerySectionIngredientsMap).forEach((sectionName) => {
+                state.shoppingList.grocerySectionIngredientsMap[sectionName] = [];
+            });
+            return {
+                ...state,
                 grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
             };
         // Get grocery sections

@@ -10,8 +10,7 @@ const CheckMarkStyle = styled.svg`
 `;
 
 export const SelectRecipeButton = ({ active, recipe_id }) => {
-    const { creatingShoppingList } = useContext(GlobalContext);
-    const { addRecipeToShoppingList } = useContext(GlobalContext);
+    const { creatingShoppingList, addRecipeToShoppingList } = useContext(GlobalContext);
     return (
         <CheckMarkButton available={creatingShoppingList} onClick={() => addRecipeToShoppingList(recipe_id)}>
             <CheckMarkStyle xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" active={active}>

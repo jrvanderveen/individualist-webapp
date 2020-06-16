@@ -24,7 +24,6 @@ exports.getRecipes = async (req, res, next) => {
 // @route POST /api/v1/recipes
 // @access Public
 exports.addRecipe = async (req, res, next) => {
-    const { name, servings, URL } = req.body;
     try {
         const recipe = await Recipe.create(req.body);
 
