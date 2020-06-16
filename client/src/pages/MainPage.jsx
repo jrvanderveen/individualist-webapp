@@ -9,11 +9,11 @@ import styled from "styled-components";
 
 const Container = styled.section`
     margin: 30px auto;
-    width: 600px;
+    width: 800px;
 `;
 
 export const MainPage = () => {
-    const [showPopUp, setShowPopUp] = useState(false);
+    const [showPopUp, setShowPopUp] = useState(true);
     const togglePopUp = () => {
         setShowPopUp(!showPopUp);
     };

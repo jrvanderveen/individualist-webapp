@@ -48,13 +48,13 @@ export const Recipe = ({ recipe }) => {
     return (
         <>
             <Wrapper isRecipe>
-                <SelectRecipeButton active={recipe.forShoppingList} recipe_id={recipe._id} />
+                <SelectRecipeButton active={recipe.addToShoppingList} recipe_id={recipe._id} />
                 <DeleteButton isRecipe onClick={() => deleteRecipe(recipe._id)}>
                     x
                 </DeleteButton>
                 <StyledLink text="Website" href={recipe.URL} />
                 <AccordionButton active={setActive} onClick={toggleAccordion}>
-                    <List ingredientCount={recipe.ingredients.length} isRecipe>
+                    <List active={setActive} ingredientCount={recipe.ingredients.length} isRecipe>
                         <Ul>
                             <Li key="name">{name}</Li>
                             <Li key="servings">Servings: {recipe.servings}</Li>

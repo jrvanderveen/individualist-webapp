@@ -7,15 +7,16 @@ const os = require("os");
 
 exports.createShoppingListFile = (req, res, next) => {
     try {
-        const shoppingList = JSON.parse(req.query.recipeList);
+        const shoppingList = JSON.parse(req.query.grocerySectionIngredientsMap);
         let contentString = "";
-
+        console.log("string", contentString);
         Object.entries(shoppingList).forEach(([section, ingredients]) => {
             contentString = contentString + section + os.EOL;
             ingredients.forEach((ingredient) => {
                 contentString = contentString + "\t" + ingredient.name + os.EOL;
             });
         });
+        contentString = contentString.substring(0, contentString.length - 8);
         res.set({ "Content-Disposition": 'attachment; filename=""' }); //name set client side
         return res.send(contentString);
     } catch (err) {

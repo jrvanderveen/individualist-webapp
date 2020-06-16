@@ -16,6 +16,7 @@ const Button = styled.button`
     &:hover {
         background-color: #8171d1;
     }
+    pointer-events: ${(props) => (props.available === false ? "none" : "")};
 `;
 
 const Div = styled.div`
@@ -25,19 +26,37 @@ const Div = styled.div`
     max-width: 300px;
 `;
 
+const Ul = styled.ul`
+    list-style-type: none;
+    display: flex;
+    padding: 0px;
+`;
+
+const Li = styled.li`
+    width: 47.5%;
+`;
 export const Options = ({ togglePopUpFunc }) => {
-    const { setCreateShoppingListBool, creatingShoppingList, setEditBool, editing } = useContext(GlobalContext);
+    const { setCreateShoppingListBool, creatingShoppingList, saveAddedRecipes } = useContext(GlobalContext);
     return (
         <Div>
-            <Button top clicked={editing} onClick={() => setEditBool()}>
-                Edit Recipe's
+            <Button middle clicked={creatingShoppingList} onClick={togglePopUpFunc}>
+                View Shopping List
             </Button>
-            <Button middle clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool()}>
-                Create Shopping List
+            <Button middle clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool("close")}>
+                Add To Shopping List
             </Button>
-            <Button bottom available={creatingShoppingList} onClick={togglePopUpFunc}>
-                Finalize List
-            </Button>
+            <Ul>
+                <Li>
+                    <Button bottom available={creatingShoppingList} onClick={saveAddedRecipes}>
+                        Save
+                    </Button>
+                </Li>
+                <Li>
+                    <Button bottom available={creatingShoppingList} onClick={() => setCreateShoppingListBool("cancel")}>
+                        Cancel
+                    </Button>
+                </Li>
+            </Ul>
         </Div>
     );
 };

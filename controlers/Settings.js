@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 // @route GET /api/v1/settings/grocerySections
 // @access Public
 exports.getGrocerySections = async (req, res, next) => {
-    console.log("getGrocerySections");
     try {
         var grocerySections = await GrocerySections.find();
         if (grocerySections.length === 0) {

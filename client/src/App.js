@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    min-width: 1250px;
+    min-width: 1400px;
     margin: 0;
     font-family: "Lato", sans-serif;
   }

@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import styled from "styled-components";
-import { Wrapper } from "../../elements/index";
-import { ShoppingListIngredient } from "./ShoppingListIngredient";
 import { ShoppingListOptions } from "./ShoppingListOptions";
+import { ShoppingListGrocerySection } from "./ShoppingListGrocerySection";
 import axios from "axios";
 
 const ShoppingListDiv = styled.div`
@@ -29,37 +28,25 @@ const ShoppingListContent = styled.div`
     border: 2px solid black;
     overflow-y: scroll;
 `;
-
-const DivRow = styled.div`
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-    width: 100%;
-`;
-
-const H6 = styled.h6`
-    margin: 10px;
-    text-decoration: underline;
+const Ul = styled.ul`
+    margin-bottom: 5px;
 `;
 
 export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     // Reducers
-    const { returnSelectedRecipesIngredientMap, grocerySections } = useContext(GlobalContext);
-    const grocerySectionList = grocerySections.sections;
-
-    const recipeList = returnSelectedRecipesIngredientMap();
+    const { shoppingList } = useContext(GlobalContext);
+    const grocerySectionIngredientsMap = shoppingList.grocerySectionIngredientsMap;
 
     async function downloadShoppingList() {
         const errors = [];
+
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
             responseType: "blob",
             params: {
-                recipeList: recipeList,
+                grocerySectionIngredientsMap: grocerySectionIngredientsMap,
             },
         };
 
@@ -77,45 +64,17 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
         }
     }
 
-    const grocerSections = () => {
-        let sectionList = [];
-        grocerySectionList.forEach((section) => {
-            let sectionIngredients = [];
-            recipeList[section].forEach((ingredient) => {
-                sectionIngredients.push(<ShoppingListIngredient key={ingredient._id} ingredient={ingredient.name} />);
-            });
-            if (sectionIngredients.length > 0) {
-                sectionList.push(
-                    <Wrapper key={section}>
-                        <H6>{section}</H6>
-                        <ul>{sectionIngredients}</ul>
-                    </Wrapper>
-                );
-            } else {
-                sectionList.push(<H6 key={section}>{section}</H6>);
-            }
-        });
-        return sectionList;
-    };
-
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
                 <ShoppingListOptions togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} />
-                <DivRow>
-                    <div className="col-md-12">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h3>Shopping List</h3>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <ul className="list-group">{grocerSections()}</ul>
-                            </div>
-                        </div>
-                    </div>
-                </DivRow>
+
+                <h3>Shopping List</h3>
+                <Ul>
+                    {Object.entries(grocerySectionIngredientsMap).map(([name, section], index) => (
+                        <ShoppingListGrocerySection key={index} name={name} section={section} />
+                    ))}
+                </Ul>
             </ShoppingListContent>
         </ShoppingListDiv>
     );

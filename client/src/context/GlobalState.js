@@ -5,8 +5,38 @@ import DefaultDict from "../utils/DefaultDict";
 
 // Initial state
 const initialState = {
-    grocerySections: { default: "", sections: [] },
-    recipes: {},
+    grocerySections: {
+        /* PERSISTS
+            default, string
+            sections, array of strings
+        */
+        default: "",
+        sections: [],
+    },
+
+    recipes: {
+        /*PERSISTS
+            RecipeObjectId: {recipe}
+                reipe:
+                    __v, int
+                    _id, string
+                    name, string
+                    servings, int
+                    URL, string
+                    createdAt, string
+                    addToShoppingList, bool
+                    ingredients: [{ingredient}] array of ingredients 
+                        name,
+                        grocerySection,
+                        _id
+        */
+    },
+    shoppingList: {
+        /* PERSISTS
+            grocerySectionIngredientMap, {sectionsName: [ingredients]}
+        */
+        grocerySectionIngredientsMap: new DefaultDict(Array), //dont want key errors
+    },
     creatingShoppingList: false,
     editing: false,
     error: null,
@@ -22,30 +52,9 @@ export const GlobalProvider = ({ children }) => {
     //On start up get recipes and grocery sections
     //Get recipes grocery sections then recipes to avoid incomplete data
     async function onStartUp() {
-        try {
-            const res = await axios.get("/api/v1/settings/grocerySections");
-            dispatch({
-                type: "GET_GROCERY_SECTIONS",
-                payload: res.data.data[0],
-            });
-        } catch (error) {
-            dispatch({
-                type: "SETTINGS_ERROR",
-                payload: error,
-            });
-        }
-        try {
-            const res = await axios.get("/api/v1/recipes");
-            dispatch({
-                type: "GET_RECIPES",
-                payload: res.data.data,
-            });
-        } catch (error) {
-            dispatch({
-                type: "RECIPE_ERROR",
-                payload: error,
-            });
-        }
+        await getGrocerySections();
+        await getRecipes();
+        saveAddedRecipes();
     }
 
     //Get all recipes
@@ -143,11 +152,11 @@ export const GlobalProvider = ({ children }) => {
 
     // Setting actions
     // This setting controls visibility of select recipe buttons
-    function setCreateShoppingListBool() {
+    function setCreateShoppingListBool(cancelOrClose) {
         try {
             dispatch({
                 type: "SET_CREATE_SHOPPING_LIST_BOOL",
-                payload: "",
+                payload: cancelOrClose,
             });
         } catch (error) {
             dispatch({
@@ -157,8 +166,8 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Set or Unset recipe attribute indicating if it should be part of the shopping list
-    function setRecipeForShoppingList(recipeId) {
+    // Add recipe ingredients to shopping list
+    function addRecipeToShoppingList(recipeId) {
         try {
             dispatch({
                 type: "SET_RECIPE_FOR_SHOPPING_LIST",
@@ -172,26 +181,39 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Shopping List Actions
-    // Return object containing ingredients brokent down by grocery section for all selected recipes
-    function returnSelectedRecipesIngredientMap() {
-        // using a default dict here to avoid key errors
-        // A key error could happen if a user has multiple tabs open and deletes a grocery section in the settings page
-        const recipeIngredientsBySection = new DefaultDict(Array);
-
-        state.grocerySections.sections.forEach((section) => {
-            recipeIngredientsBySection[section] = [];
-        });
-
-        Object.entries(state.recipes).forEach(([_id, recipe]) => {
-            if (recipe.forShoppingList === true) {
-                Object.entries(recipe.ingredients).forEach(([index, ingredient]) => {
-                    recipeIngredientsBySection[ingredient.grocerySection].push({ _id: ingredient._id, name: ingredient.name });
-                });
-            }
-        });
-        return recipeIngredientsBySection;
+    // Add recipe ingredients to shopping list
+    function saveAddedRecipes() {
+        try {
+            dispatch({
+                type: "SAVE_RECIPES_ADDED_TO_SHOPPING_LIST",
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
     }
+
+    // // Return object containing ingredients brokent down by grocery section for all selected recipes
+    // function returnSelectedRecipesIngredientMap() {
+    //     // using a default dict here to avoid key errors
+    //     // A key error could happen if a user has multiple tabs open and deletes a grocery section in the settings page
+    //     const recipeIngredientsBySection = new DefaultDict(Array);
+
+    //     state.grocerySections.sections.forEach((section) => {
+    //         recipeIngredientsBySection[section] = [];
+    //     });
+
+    //     Object.entries(state.recipes).forEach(([_id, recipe]) => {
+    //         if (recipe.addToShoppingList === true) {
+    //             Object.entries(recipe.ingredients).forEach(([index, ingredient]) => {
+    //                 recipeIngredientsBySection[ingredient.grocerySection].push({ _id: ingredient._id, name: ingredient.name });
+    //             });
+    //         }
+    //     });
+    //     return recipeIngredientsBySection;
+    // }
 
     // Grocery Section Actions
     // Get list of all current sections
@@ -241,6 +263,7 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    // Set the default section
     async function setDefaultGrocerySection(_id, sectionName) {
         try {
             await axios.post(`/api/v1/settings/grocerySections/default/${_id}/${sectionName}`);
@@ -260,6 +283,7 @@ export const GlobalProvider = ({ children }) => {
         <GlobalContext.Provider
             value={{
                 recipes: state.recipes,
+                shoppingList: state.shoppingList,
                 creatingShoppingList: state.creatingShoppingList,
                 editing: state.editing,
                 grocerySections: state.grocerySections,
@@ -271,8 +295,8 @@ export const GlobalProvider = ({ children }) => {
                 deleteRecipeIngredient,
                 addRecipeIngredient,
                 setCreateShoppingListBool,
-                setRecipeForShoppingList,
-                returnSelectedRecipesIngredientMap,
+                addRecipeToShoppingList,
+                saveAddedRecipes,
                 getGrocerySections,
                 addGrocerySection,
                 deleteGrocerySection,

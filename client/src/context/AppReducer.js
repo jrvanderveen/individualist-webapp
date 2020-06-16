@@ -4,7 +4,7 @@ export default (state, action) => {
         case "GET_RECIPES":
             let recipeMap = {};
             action.payload.forEach((recipe) => {
-                recipe.forShoppingList = false;
+                recipe.addToShoppingList = true;
                 recipeMap[recipe._id] = recipe;
             });
             return {
@@ -22,7 +22,7 @@ export default (state, action) => {
 
         //Add recipe contained in action.payload
         case "ADD_RECIPE":
-            action.payload.forShoppingList = false;
+            action.payload.addToShoppingList = false;
             state.recipes[action.payload._id] = action.payload;
             return {
                 ...state,
@@ -51,19 +51,47 @@ export default (state, action) => {
         // Set or unset shooping list bool
         case "SET_CREATE_SHOPPING_LIST_BOOL":
             state.creatingShoppingList = !state.creatingShoppingList;
-            return {
-                ...state,
-                creatingShoppingList: state.creatingShoppingList,
-            };
+            if (action.payload === "cancel") {
+                Object.keys(state.recipes).forEach((_id) => {
+                    state.recipes[_id].addToShoppingList = false;
+                });
+                return {
+                    ...state,
+                    recipes: state.recipes,
+                    creatingShoppingList: state.creatingShoppingList,
+                };
+            } else {
+                return {
+                    ...state,
+                    creatingShoppingList: state.creatingShoppingList,
+                };
+            }
 
-        // Set or unset recipe forShoppingList bool
+        // Set or unset recipe addToShoppingList bool
         case "SET_RECIPE_FOR_SHOPPING_LIST":
-            state.recipes[action.payload].forShoppingList = !state.recipes[action.payload].forShoppingList;
+            state.recipes[action.payload].addToShoppingList = !state.recipes[action.payload].addToShoppingList;
             return {
                 ...state,
                 recipes: state.recipes,
             };
 
+        // Save all selected recipe ingredients to shopping list
+        // Search for all recipes with addToShoppingList === true
+        case "SAVE_RECIPES_ADDED_TO_SHOPPING_LIST":
+            Object.entries(state.recipes).forEach(([_id, recipe]) => {
+                if (recipe.addToShoppingList === true) {
+                    Object.entries(recipe.ingredients).forEach(([index, ingredient]) => {
+                        state.shoppingList.grocerySectionIngredientsMap[ingredient.grocerySection].push({ _id: ingredient._id, name: ingredient.name });
+                    });
+                    // Unset to make clear ingredients were added and avoid duplicate button presses
+                    recipe.addToShoppingList = false;
+                }
+            });
+            return {
+                ...state,
+                recipes: state.recipes,
+                grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
+            };
         // Get grocery sections
         case "GET_GROCERY_SECTIONS":
             return {

@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { AccordionButton } from "./index";
 
 export default styled.li`
-    background-color: #fff;
+    background-color: ${(props) => (props.active === "active" ? "#ccc" : "#f7f7f7")};
     box-shadow: ${(props) =>
         props.isShoppingList || props.isGrocerySection || props.isIngredient
             ? "0 1px 3px rgba(0, 0, 0, .5), 0 1px 2px rgba(0, 0, 0, .5)"
@@ -14,6 +15,11 @@ export default styled.li`
     margin: ${(props) => (props.isShoppingList || props.isGrocerySection || (props.isIngredient && !props.isForm) ? "" : "10px 0px")};
     width: ${(props) => (props.isIngredient ? "90%" : "")};
     float: ${(props) => (props.isIngredient ? "right" : "")};
-    border-right: ${(props) => (props.isRecipe ? (props.ingredientCount > 0 ? "5px solid #2ecc71" : "5px solid #c0392b;") : "")};
+    border-right: ${(props) =>
+        props.isRecipe || props.isGrocerySectionHeader ? (props.ingredientCount > 0 ? "5px solid #2ecc71" : "5px solid #c0392b;") : ""};
     list-style-type: ${(props) => (props.isRecipe ? "none" : "")};
+
+    ${AccordionButton}:hover & {
+        background-color: #ccc;
+    }
 `;
