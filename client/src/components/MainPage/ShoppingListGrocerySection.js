@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     margin: auto;
 `;
 
-export const ShoppingListGrocerySection = ({ sectionName, section, didClear }) => {
+export const ShoppingListGrocerySection = ({ sectionName, section, clearSwitch }) => {
     const { addIngredientToShoppingListSection } = useContext(GlobalContext);
 
     const content = useRef(null);
@@ -31,6 +31,9 @@ export const ShoppingListGrocerySection = ({ sectionName, section, didClear }) =
     const [placeHolderText, setPlaceHolderText] = useState(`Enter ${sectionName}`);
 
     const handleOnClick = () => {
+        if (newIngredient.length === 0) {
+            return;
+        }
         addIngredientToShoppingListSection(sectionName, newIngredient);
         setHeightState(`${content.current.scrollHeight + 36}px`);
         setNewIngredient("");
@@ -43,9 +46,14 @@ export const ShoppingListGrocerySection = ({ sectionName, section, didClear }) =
     };
 
     useEffect(() => {
-        setHeightState(`${content.current.scrollHeight}px`);
+        if (section.length === 0) {
+            setHeightState("56px");
+        } else {
+            setHeightState(`${content.current.scrollHeight}px`);
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [clearSwitch]);
 
     return (
         <>

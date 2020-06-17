@@ -4,7 +4,7 @@ export default (state, action) => {
         case "GET_RECIPES":
             let recipeMap = {};
             action.payload.forEach((recipe) => {
-                recipe.addToShoppingList = true;
+                recipe.addToShoppingList = false;
                 recipeMap[recipe._id] = recipe;
             });
             return {

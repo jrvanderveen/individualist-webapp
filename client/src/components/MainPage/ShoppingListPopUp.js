@@ -36,7 +36,10 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     // Reducers
     const { shoppingList } = useContext(GlobalContext);
     const grocerySectionIngredientsMap = shoppingList.grocerySectionIngredientsMap;
-    const [didClear, setDidClear] = useState(false);
+    const [clearSwitch, setClearSwitch] = useState(false);
+    const setClearSwtichParrent = () => {
+        setClearSwitch(!clearSwitch);
+    };
 
     async function downloadShoppingList() {
         const errors = [];
@@ -68,14 +71,16 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
-                <ShoppingListOptions togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} setDidClearFunc={setDidClear} />
+                <ShoppingListOptions
+                    togglePopUpFunc={togglePopUpFunc}
+                    downloadShoppingListFunc={downloadShoppingList}
+                    setClearSwitchFunc={setClearSwtichParrent}
+                />
 
                 <h3>Shopping List</h3>
                 <Ul>
                     {Object.entries(grocerySectionIngredientsMap).map(([name, section], index) =>
-                        name === "toJSON" ? null : (
-                            <ShoppingListGrocerySection key={index} sectionName={name} section={section} didClear={didClear} setDidClearFunc={setDidClear} />
-                        )
+                        name === "toJSON" ? null : <ShoppingListGrocerySection key={index} sectionName={name} section={section} clearSwitch={clearSwitch} />
                     )}
                 </Ul>
             </ShoppingListContent>

@@ -13,7 +13,7 @@ const Container = styled.section`
 `;
 
 export const MainPage = () => {
-    const [showPopUp, setShowPopUp] = useState(true);
+    const [showPopUp, setShowPopUp] = useState(false);
     const togglePopUp = () => {
         setShowPopUp(!showPopUp);
     };

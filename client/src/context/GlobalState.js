@@ -226,9 +226,18 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    async function clearShoppingList() {
+    // Non async function, force wait before rerendering shopping list
+    function clearShoppingList() {
+        let empty = true;
+        Object.keys(state.shoppingList.grocerySectionIngredientsMap).forEach((key) => {
+            if (state.shoppingList.grocerySectionIngredientsMap[key].length > 0) {
+                empty = false;
+            }
+        });
+        if (empty) return;
+
         let _id = state.shoppingList._id;
-        await axios.delete(`/api/v1/shoppingList/${_id}`);
+        axios.delete(`/api/v1/shoppingList/${_id}`);
         try {
             dispatch({
                 type: "CLEAR_SHOPPING_LIST",

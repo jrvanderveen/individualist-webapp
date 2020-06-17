@@ -16,7 +16,7 @@ const ExitButton = styled.button`
     outline: none;
 `;
 
-export const ShoppingListOptions = ({ togglePopUpFunc, downloadShoppingListFunc, setDidClearFunc }) => {
+export const ShoppingListOptions = ({ togglePopUpFunc, downloadShoppingListFunc, setClearSwitchFunc }) => {
     const { clearShoppingList } = useContext(GlobalContext);
 
     const handleClick = (call) => {
@@ -25,8 +25,8 @@ export const ShoppingListOptions = ({ togglePopUpFunc, downloadShoppingListFunc,
         } else if (call === "download") {
             downloadShoppingListFunc();
         } else if (call === "clear") {
-            setDidClearFunc(true);
             clearShoppingList();
+            setClearSwitchFunc();
         }
     };
     return (
