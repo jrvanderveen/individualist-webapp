@@ -54,7 +54,7 @@ export const AddRecipe = () => {
                 </div>
                 <div className="form-group">
                     <Label htmlFor="amount">Servings</Label>
-                    <Input type="number" min="1" value={servings} onChange={(e) => setServings(e.target.value)} placeholder="Enter Servings..." />
+                    <Input type="number" min="1" max="99" value={servings} onChange={(e) => setServings(e.target.value)} placeholder="Enter Servings..." />
                 </div>
                 <div className="form-group">
                     <Label htmlFor="servings">URL</Label>

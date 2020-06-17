@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default styled.button`
+export default styled.span`
     cursor: pointer;
     color: #fff;
     border: 0;

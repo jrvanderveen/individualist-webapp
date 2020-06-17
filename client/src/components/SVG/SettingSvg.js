@@ -6,7 +6,6 @@ const SettingsIcon = styled.svg`
     height: 50px;
     fill: #581845;
     float: right;
-    margin-bottom: 10px;
 `;
 
 export const SettingsSvg = (props) => {

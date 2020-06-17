@@ -24,11 +24,12 @@ const initialState = {
                     servings, int
                     URL, string
                     createdAt, string
-                    addToShoppingList, bool
                     ingredients: [{ingredient}] array of ingredients 
                         name,
                         grocerySection,
                         _id
+                    //not saved to db
+                    addToShoppingList, bool
         */
     },
     shoppingList: {
@@ -40,7 +41,6 @@ const initialState = {
         grocerySectionIngredientsMap: new DefaultDict(Array), //dont want key errors
     },
     creatingShoppingList: false,
-    editing: false,
     error: null,
 };
 
@@ -201,7 +201,7 @@ export const GlobalProvider = ({ children }) => {
                 "Content-Type": "application/json",
             },
         };
-        const res = await axios.post("/api/v1/shoppingList", state.shoppingList, config);
+        await axios.post("/api/v1/shoppingList", state.shoppingList, config);
     }
 
     async function addIngredientToShoppingListSection(sectionName, ingredient) {
@@ -335,7 +335,6 @@ export const GlobalProvider = ({ children }) => {
                 recipes: state.recipes,
                 shoppingList: state.shoppingList,
                 creatingShoppingList: state.creatingShoppingList,
-                editing: state.editing,
                 grocerySections: state.grocerySections,
                 error: state.error,
                 onStartUp,

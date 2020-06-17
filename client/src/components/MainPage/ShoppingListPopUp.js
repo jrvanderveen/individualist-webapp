@@ -80,6 +80,8 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
                 <h3>Shopping List</h3>
                 <Ul>
                     {Object.entries(grocerySectionIngredientsMap).map(([name, section], index) =>
+                        // toJSON is being inserted at somepoint not sure where
+                        // prety sure its due to the fact that its a default dict
                         name === "toJSON" ? null : <ShoppingListGrocerySection key={index} sectionName={name} section={section} clearSwitch={clearSwitch} />
                     )}
                 </Ul>

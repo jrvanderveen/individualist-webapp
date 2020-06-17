@@ -5,6 +5,7 @@ export default (state, action) => {
             let recipeMap = {};
             action.payload.forEach((recipe) => {
                 recipe.addToShoppingList = false;
+                recipe.editing = false;
                 recipeMap[recipe._id] = recipe;
             });
             return {

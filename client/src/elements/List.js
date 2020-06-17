@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { AccordionButton } from "./index";
 
 export default styled.li`
-    background-color: ${(props) => (props.active === "active" ? "#ccc" : "#f7f7f7")};
+    background-color: ${(props) => (props.active ? "#ccc" : "#f7f7f7")};
     box-shadow: ${(props) =>
         props.isShoppingList || props.isGrocerySection || props.isIngredient
             ? "0 1px 3px rgba(0, 0, 0, .5), 0 1px 2px rgba(0, 0, 0, .5)"
@@ -11,9 +11,15 @@ export default styled.li`
     display: flex;
     justify-content: space-between;
     position: relative;
-    padding: ${(props) => (props.isShoppingList ? "2.5px 5px 2.5px 5px" : props.isRecipe ? "0" : props.isShoppingListIngredient ? "5px" : "10px")};
+    padding: ${(props) => (props.isShoppingList ? "2.5px 5px 2.5px 5px" : props.isRecipe ? "0" : props.isShoppingListIngredient ? "0px" : "10px")};
     margin: ${(props) =>
-        props.isShoppingList || props.isGrocerySection || (props.isIngredient && !props.isForm) ? "" : props.isShoppingListIngredient ? "5px 0px" : "10px 0px"};
+        props.isShoppingList || props.isGrocerySection || (props.isIngredient && !props.isForm)
+            ? ""
+            : props.isShoppingListIngredient
+            ? "5px 0px"
+            : props.isRecipe
+            ? "5px 0px"
+            : "10px 0px"};
     width: ${(props) => (props.isIngredient ? "90%" : "")};
     float: ${(props) => (props.isIngredient ? "right" : "")};
     border-right: ${(props) =>
@@ -23,4 +29,6 @@ export default styled.li`
     ${AccordionButton}:hover & {
         background-color: #ccc;
     }
+    line-height: ${(props) => (props.isRecipe ? "1.25" : "")};
+    min-height: ${(props) => (props.isRecipe ? "50px" : "")};
 `;

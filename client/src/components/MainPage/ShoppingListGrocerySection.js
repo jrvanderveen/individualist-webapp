@@ -6,10 +6,6 @@ import { ShoppingListIngredient } from "./ShoppingListIngredient";
 
 import { List, AccordionButton, Input, AccordionContent } from "../../elements/index";
 
-const Ul = styled.ul`
-    padding-left: 3%;
-`;
-
 const Wrapper = styled.div`
     margin: auto;
 `;
@@ -20,15 +16,13 @@ export const ShoppingListGrocerySection = ({ sectionName, section, clearSwitch }
     const content = useRef(null);
     const [setActive, setActiveState] = useState("active");
     const [setHeight, setHeightState] = useState("0px");
+    const [newIngredient, setNewIngredient] = useState("");
+    const [placeHolderText, setPlaceHolderText] = useState(`Enter ${sectionName}`);
 
     const toggleAccordion = (props) => {
         setActiveState(setActive === "" ? "active" : "");
         setHeightState(setActive === "active" ? "0px" : `${content.current.scrollHeight}px`);
     };
-
-    /////////////////////////////////////
-    const [newIngredient, setNewIngredient] = useState("");
-    const [placeHolderText, setPlaceHolderText] = useState(`Enter ${sectionName}`);
 
     const handleOnClick = () => {
         if (newIngredient.length === 0) {

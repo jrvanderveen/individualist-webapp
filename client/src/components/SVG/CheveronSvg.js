@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const AccordionIcon = styled.svg`
-    margin-left: auto;
     transition: transform 0.3s;
     width: 10px;
     fill: #777;
