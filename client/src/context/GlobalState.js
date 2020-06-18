@@ -16,7 +16,7 @@ const initialState = {
 
     recipes: {
         /*PERSISTS
-            RecipeObjectId: {recipe}
+            RecipeObjectId: string
                 reipe:
                     __v, int
                     _id, string
@@ -329,6 +329,21 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    // Save edited recipe
+    function saveEditedRecipe(recipe) {
+        try {
+            dispatch({
+                type: "SAVE_EDITED_RECIPE",
+                payload: recipe,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
     return (
         <GlobalContext.Provider
             value={{
@@ -353,6 +368,7 @@ export const GlobalProvider = ({ children }) => {
                 addGrocerySection,
                 deleteGrocerySection,
                 setDefaultGrocerySection,
+                saveEditedRecipe,
             }}
         >
             {children}

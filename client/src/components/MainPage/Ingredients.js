@@ -21,7 +21,7 @@ const TD = styled.td`
     padding-left: ${(props) => (props.isRight ? "10px" : "5px")};
 `;
 
-export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredient }) => {
+export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredient, recipeObj, setRecipeObjFunc }) => {
     // Reducers
     const { addRecipeIngredient, grocerySections } = useContext(GlobalContext);
     // State
@@ -43,46 +43,58 @@ export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredien
 
     return (
         <ul>
-            {recipe.ingredients.map((ingredient, index) => {
+            {recipeObj.recipe.ingredients.map((ingredient, index) => {
                 return (
-                    <Ingredient key={index} recipeId={recipe._id} ingredient={ingredient} index={index + 1} handleDeleteIngredient={handleDeleteIngredient} />
+                    <Ingredient
+                        key={index}
+                        recipeId={recipeObj.recipe._id}
+                        ingredient={ingredient}
+                        index={index}
+                        handleDeleteIngredient={handleDeleteIngredient}
+                        recipeObj={recipeObj}
+                        setRecipeObjFunc={setRecipeObjFunc}
+                    />
                 );
             })}
-            <List isIngredient isForm>
-                <Form onSubmit={onSubmit}>
-                    <Table>
-                        <TableBody>
-                            <TR>
-                                <TD>
-                                    <Input
-                                        isIngredient
-                                        value={newIngredient}
-                                        onChange={(e) => setNewIngredient(e.target.value)}
-                                        placeholder="Enter Ingredient..."
-                                        required="required"
-                                    />
-                                </TD>
-                                <TD isRight>
-                                    <Wrapper isGrocerySection>
-                                        <DropDownButton
-                                            default={grocerySections.default}
-                                            handleChange={setNewIngredientGrocerySection}
-                                            sections={grocerySections.sections}
+            {recipeObj.active ? null : (
+                <List isIngredient isForm>
+                    <Form onSubmit={onSubmit}>
+                        <Table>
+                            <TableBody>
+                                <TR>
+                                    <TD>
+                                        <Input
+                                            isIngredient
+                                            value={newIngredient}
+                                            onChange={(e) => setNewIngredient(e.target.value)}
+                                            placeholder="Enter Ingredient..."
+                                            required="required"
                                         />
-                                    </Wrapper>
-                                </TD>
-                            </TR>
-                            <TR>
-                                <TD colSpan={2}>
-                                    <Button type="submit" ingredient>
-                                        Save
-                                    </Button>
-                                </TD>
-                            </TR>
-                        </TableBody>
-                    </Table>
-                </Form>
-            </List>
+                                    </TD>
+                                    <TD isRight>
+                                        <Wrapper isGrocerySection>
+                                            <DropDownButton
+                                                defaultSection={grocerySections.default}
+                                                handleChange={setNewIngredientGrocerySection}
+                                                sections={grocerySections.sections}
+                                                recipeObj={recipeObj}
+                                                setRecipeObjFunc={setRecipeObjFunc}
+                                            />
+                                        </Wrapper>
+                                    </TD>
+                                </TR>
+                                <TR>
+                                    <TD colSpan={2}>
+                                        <Button type="submit" ingredient>
+                                            Save
+                                        </Button>
+                                    </TD>
+                                </TR>
+                            </TableBody>
+                        </Table>
+                    </Form>
+                </List>
+            )}
         </ul>
     );
 };

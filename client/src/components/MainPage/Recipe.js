@@ -39,7 +39,7 @@ const Span = styled.span`
 
 export const Recipe = ({ recipe }) => {
     // Reducers
-    const { deleteRecipe } = useContext(GlobalContext);
+    const { deleteRecipe, saveEditedRecipe } = useContext(GlobalContext);
 
     // Window
     const content = useRef(null);
@@ -48,7 +48,7 @@ export const Recipe = ({ recipe }) => {
     const [setActive, setActiveState] = useState(false);
     const [setHeight, setHeightState] = useState("0px");
     const [setRotate, setRotateState] = useState("");
-    const [recipeObj, setRecipeObj] = useState({ active: false, currRecipe: recipe, editRecipe: recipe });
+    const [recipeObj, setRecipeObj] = useState({ active: false, recipe: recipe, editRecipe: {} });
 
     const toggleAccordion = () => {
         setActiveState(!setActive);
@@ -63,13 +63,18 @@ export const Recipe = ({ recipe }) => {
         setHeightState(`${content.current.scrollHeight + 50.833333}px`);
     };
     const handleEditingClicks = (type) => {
+        // On eddit set active to true and clone recipe object to edit
         if (type === "edit") {
-            setRecipeObj({ ...recipeObj, active: !recipeObj.active });
+            setRecipeObj({ ...recipeObj, active: true, editRecipe: recipeObj.recipe });
             if (!setActive) toggleAccordion();
+
+            // On save set active to false and replace recipe with cloned/edited version
         } else if (type === "save") {
-            setRecipeObj({ ...recipeObj, active: !recipeObj.active, currRecipe: recipeObj.editRecipe });
+            saveEditedRecipe(recipeObj.editRecipe);
+            setRecipeObj({ ...recipeObj, active: false, recipe: recipeObj.editRecipe, editRecipe: {} });
+            //On cancle set active to false and deleted clone
         } else if (type === "cancle") {
-            setRecipeObj({ ...recipeObj, active: !recipeObj.active, editRecipe: recipeObj.currRecipe });
+            setRecipeObj({ ...recipeObj, active: false, editRecipe: {} });
         }
     };
 
@@ -78,11 +83,11 @@ export const Recipe = ({ recipe }) => {
             <Wrapper isRecipe>
                 {!recipeObj.active ? (
                     <>
-                        <SelectRecipeButton active={recipeObj.currRecipe.addToShoppingList} recipe_id={recipeObj.currRecipe._id} />
-                        <DeleteButton isRecipe onClick={() => deleteRecipe(recipeObj.currRecipe._id)}>
+                        <SelectRecipeButton active={recipeObj.recipe.addToShoppingList} recipe_id={recipeObj.recipe._id} />
+                        <DeleteButton isRecipe onClick={() => deleteRecipe(recipeObj.recipe._id)}>
                             x
                         </DeleteButton>
-                        <StyledLink text="Website" href={recipeObj.currRecipe.URL} />
+                        <StyledLink text="Website" href={recipeObj.recipe.URL} />
                         <Span onClick={() => handleEditingClicks("edit")}>Edit</Span>
                     </>
                 ) : (
@@ -104,18 +109,18 @@ export const Recipe = ({ recipe }) => {
                 )}
 
                 <AccordionButton active={setActive} onClick={() => (!recipeObj.active ? toggleAccordion() : null)}>
-                    <List active={setActive || recipeObj.active} ingredientCount={recipeObj.currRecipe.ingredients.length} isRecipe>
+                    <List active={setActive || recipeObj.active} ingredientCount={recipeObj.recipe.ingredients.length} isRecipe>
                         <Ul>
                             {!recipeObj.active ? (
                                 <>
                                     <Li large key="name">
-                                        {recipeObj.currRecipe.name}
+                                        {recipeObj.recipe.name}
                                     </Li>
                                     <Li med key="servings">
-                                        Servings: {recipeObj.currRecipe.servings}
+                                        Servings: {recipeObj.recipe.servings}
                                     </Li>
                                     <Li med key="ingredientCount">
-                                        Ingredients: {recipeObj.currRecipe.ingredients.length} &nbsp;&nbsp;
+                                        Ingredients: {recipeObj.recipe.ingredients.length} &nbsp;&nbsp;
                                         <CheveronSvg rotate={setRotate} />
                                     </Li>
                                 </>
@@ -142,7 +147,7 @@ export const Recipe = ({ recipe }) => {
                                         />
                                     </Li>
                                     <Li med key="ingredientCount">
-                                        Ingredients: {recipeObj.currRecipe.ingredients.length} &nbsp;&nbsp;
+                                        Ingredients: {recipeObj.recipe.ingredients.length} &nbsp;&nbsp;
                                         <CheveronSvg rotate={setRotate} />
                                     </Li>
                                 </>
@@ -153,7 +158,12 @@ export const Recipe = ({ recipe }) => {
             </Wrapper>
             {/* Accordion Content contains list of ingredients */}
             <AccordionContent ref={content} maxHeight={setHeight}>
-                <Ingredients recipe={recipe} handleDeleteIngredient={handleDeleteIngredient} handleAddIngredient={handleAddIngredient} />
+                <Ingredients
+                    handleDeleteIngredient={handleDeleteIngredient}
+                    handleAddIngredient={handleAddIngredient}
+                    recipeObj={recipeObj}
+                    setRecipeObjFunc={setRecipeObj}
+                />
             </AccordionContent>
         </>
     );

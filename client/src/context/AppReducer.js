@@ -165,6 +165,15 @@ export default (state, action) => {
                 grocerySections: state.grocerySections,
             };
 
+        // Save edited recipe
+        case "SAVE_EDITED_RECIPE":
+            state.recipes[action.payload._id] = action.payload;
+            console.log(action.payload);
+            return {
+                ...state,
+                recipes: state.recipes,
+            };
+
         //ERRORS
         case "RECIPE_ERROR":
             console.log(action.payload);
