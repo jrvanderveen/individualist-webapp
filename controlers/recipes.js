@@ -125,3 +125,22 @@ exports.addRecipeIngredient = async (req, res, next) => {
         });
     }
 };
+
+// @desc Edit recipe
+// @route POST /api/v1/recipes/edit
+// @access Public
+exports.saveEditedRecipe = async (req, res, next) => {
+    console.log(req.body);
+    try {
+        await Recipe.replaceOne({ _id: req.body._id }, req.body, { upsert: true });
+
+        return res.status(200).json({
+            success: true,
+        });
+    } catch {
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};

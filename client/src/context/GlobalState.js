@@ -330,7 +330,13 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Save edited recipe
-    function saveEditedRecipe(recipe) {
+    async function saveEditedRecipe(recipe) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        await axios.post("/api/v1/recipes/edit", recipe, config);
         try {
             dispatch({
                 type: "SAVE_EDITED_RECIPE",
