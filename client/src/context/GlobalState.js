@@ -300,7 +300,6 @@ export const GlobalProvider = ({ children }) => {
     // Delete grocery section
     async function deleteGrocerySection(_id, sectionName, defaultSection) {
         try {
-            await axios.delete(`/api/v1/settings/grocerySections/${_id}/${sectionName}/${defaultSection}`);
             dispatch({
                 type: "DELETE_GROCERY_SECTION",
                 payload: sectionName,
@@ -311,6 +310,12 @@ export const GlobalProvider = ({ children }) => {
                 payload: error,
             });
         }
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        await axios.post(`/api/v1/settings/grocerySections/${_id}/${sectionName}/${defaultSection}`, state.shoppingList, config);
     }
 
     // Set the default section

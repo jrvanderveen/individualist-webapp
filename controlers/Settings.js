@@ -1,5 +1,6 @@
 const GrocerySections = require("../models/GrocerySections");
 const Recipe = require("../models/recipe");
+const ShoppingList = require("../models/ShoppingList");
 const os = require("os");
 const mongoose = require("mongoose");
 
@@ -84,10 +85,12 @@ exports.addGrocerySection = async (req, res, next) => {
 // @route DELETE /api/v1/settings/grocerySections/_id/section_name
 // @access Public
 exports.deleteGrocerySection = async (req, res, next) => {
-    console.log("deleteGrocerySection");
     try {
-        await GrocerySections.updateOne({ _id: req.params._id }, { $pull: { sections: req.params.section_name } });
-        await Recipe.updateMany({ "ingredients.grocerySection": req.params.section_name }, { $set: { "ingredients.$[].grocerySection": req.params.default } });
+        let sectionName = req.params.section_name;
+        await GrocerySections.updateOne({ _id: req.params._id }, { $pull: { sections: sectionName } });
+
+        await Recipe.updateMany({ "ingredients.grocerySection": sectionName }, { $set: { "ingredients.$[].grocerySection": req.params.default } });
+        await ShoppingList.replaceOne({ _id: req.body._id }, req.body, { upsert: true });
 
         return res.status(200).json({
             success: true,

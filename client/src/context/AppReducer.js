@@ -137,27 +137,36 @@ export default (state, action) => {
         // Add new grocery section
         case "ADD_GROCERY_SECTION":
             state.grocerySections.sections.push(action.payload);
+            let tmp = state.shoppingList.grocerySectionIngredientsMap[action.payload];
             return {
                 ...state,
                 grocerySections: state.grocerySections,
+                shoppingList: state.shoppingList,
             };
 
         // delete grocery section
         case "DELETE_GROCERY_SECTION":
-            let sectionIndex = state.grocerySections.sections.indexOf(action.payload);
+            let defaultSection = state.grocerySections.default;
+            let sectionName = action.payload;
+
+            let sectionIndex = state.grocerySections.sections.indexOf(sectionName);
             if (sectionIndex !== -1) state.grocerySections.sections.splice(sectionIndex, 1);
             Object.entries(state.recipes).forEach(([_id, recipe]) => {
                 recipe.ingredients.forEach((ingredient) => {
-                    if (ingredient.grocerySection === action.payload) {
-                        ingredient.grocerySection = state.grocerySections.default;
+                    if (ingredient.grocerySection === sectionName) {
+                        ingredient.grocerySection = defaultSection;
                     }
                 });
             });
+            state.shoppingList.grocerySectionIngredientsMap[defaultSection].push(...state.shoppingList.grocerySectionIngredientsMap[sectionName]);
+            delete state.shoppingList.grocerySectionIngredientsMap[sectionName];
             return {
                 ...state,
                 recipes: state.recipes,
                 grocerySections: state.grocerySections,
+                shoppingList: state.shoppingList,
             };
+
         case "SET_GROCERY_SECTION_DEFAULT":
             state.grocerySections.default = action.payload;
             return {

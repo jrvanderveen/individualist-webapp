@@ -8,5 +8,8 @@ export default styled.input`
     padding: ${(props) =>
         props.isShoppingListIngredient || props.isRecipeServings ? "5px 0px 5px 5px" : props.isRecipeWebsite ? "2.5px" : "10px 0px 10px 10px"};
     width: ${(props) => (props.isRecipeServings ? "45px" : props.isRecipeWebsite ? "50%" : "100%")};
-    margin-right: ${(props) => (props.isGrocerySection || props.isShoppingListIngredient, props.isRecipeIngredient ? "10px" : "0px")};
+    /* margin-right: ${(props) => (
+        props.isGrocerySection || props.isShoppingListIngredient, props.isRecipeIngredient || props.isGrocerySection ? "10px" : "0px"
+    )}; */
+    margin-right: 10px;
 `;

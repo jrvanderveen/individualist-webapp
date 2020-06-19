@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Header } from "../components/MainPage/Header";
 import { RecipeList } from "../components/MainPage/RecipeList";
-import { AddRecipe } from "../components/MainPage/NewRecipe/AddRecipe";
+import { AddRecipe } from "../components/MainPage/AddRecipe";
 import { Options } from "../components/MainPage/Options";
 import { ShoppingListPopUp } from "../components/MainPage/ShoppingListPopUp";
 

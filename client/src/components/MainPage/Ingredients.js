@@ -21,7 +21,7 @@ const TD = styled.td`
     padding-left: ${(props) => (props.isRight ? "10px" : "5px")};
 `;
 
-export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredient, recipeObj, setRecipeObjFunc }) => {
+export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recipeObj, setRecipeObjFunc }) => {
     // Reducers
     const { addRecipeIngredient, grocerySections } = useContext(GlobalContext);
     // State
@@ -36,7 +36,7 @@ export const Ingredients = ({ recipe, handleDeleteIngredient, handleAddIngredien
             name: newIngredient,
             grocerySection: newIngredientGrocerySection,
         };
-        addRecipeIngredient(recipe._id, newIgredient);
+        addRecipeIngredient(recipeObj.recipe._id, newIgredient);
         setNewIngredient("");
         handleAddIngredient();
     };

@@ -17,7 +17,7 @@ export const ShoppingListGrocerySection = ({ sectionName, section, clearSwitch }
     const [setActive, setActiveState] = useState("active");
     const [setHeight, setHeightState] = useState("0px");
     const [newIngredient, setNewIngredient] = useState("");
-    const [placeHolderText, setPlaceHolderText] = useState(`Enter ${sectionName}`);
+    const [placeHolderText, setPlaceHolderText] = useState(`Enter ${sectionName}...`);
 
     const toggleAccordion = (props) => {
         setActiveState(setActive === "" ? "active" : "");
