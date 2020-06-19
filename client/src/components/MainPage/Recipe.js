@@ -2,10 +2,11 @@ import React, { useContext, useState, useRef } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { Ingredients } from "./Ingredients";
 import { CheveronSvg } from "../SVG/CheveronSvg";
+import { SelectRecipeButton } from "./SelectRecipeButton";
 import { List, AccordionButton, Wrapper, DeleteButton, Link, AccordionContent, Input, Label } from "../../elements/index";
 import styled from "styled-components";
-import { SelectRecipeButton } from "./SelectRecipeButton";
 
+// Styled Components
 const Ul = styled.ul`
     width: 100%;
     list-style: none;
@@ -37,31 +38,50 @@ const Span = styled.span`
     margin-left: ${(props) => (props.isSave ? "10px" : "")};
 `;
 
+/*
+    SUMMARY:
+        Display non ingredient recipe attributes.  Allow delete recipe  
+        Create accordion content containing ingredients.
+        Create the recipe obj which will be used to display edit and replace recipe on save.
+
+    PARAMS: 
+        recipe: recipe to display 
+
+*/
 export const Recipe = ({ recipe }) => {
-    // Reducers
+    // Context
     const { deleteRecipe, saveEditedRecipe } = useContext(GlobalContext);
 
-    // Window
-    const content = useRef(null);
-
-    // Set/Update state
+    // State
     const [setActive, setActiveState] = useState(false);
     const [setHeight, setHeightState] = useState("0px");
     const [setRotate, setRotateState] = useState("");
     const [recipeObj, setRecipeObj] = useState({ active: false, recipe: recipe, editRecipe: {} });
 
+    // Window
+    const content = useRef(null);
+
+    // Functions
+    // display or dont display ingredients.  rotate the cheveron svg
     const toggleAccordion = () => {
         setActiveState(!setActive);
         setHeightState(setActive ? "0px" : `${content.current.scrollHeight}px`);
         setRotateState(setActive ? "" : "rotate");
     };
 
+    // Decrease accodion content height
     const handleDeleteIngredient = () => {
         setHeightState(`${content.current.scrollHeight - 50.833333}px`);
     };
+
+    // Increase accodion content height
     const handleAddIngredient = () => {
         setHeightState(`${content.current.scrollHeight + 50.833333}px`);
     };
+
+    // Edit: clone recipe to use for edint and togle accordion open
+    // Save: replace recipe with editRecipe
+    // Cancle: delete edit recipe
     const handleEditingClicks = (type) => {
         // On eddit set active to true and clone recipe object to edit
         if (type === "edit") {
@@ -78,6 +98,10 @@ export const Recipe = ({ recipe }) => {
         }
     };
 
+    // Display recipe options and links above recipe
+    // display recipe attributes in button
+    // accordion content: ingredients
+    // If in eding mode display editRecipe values
     return (
         <>
             <Wrapper isRecipe>

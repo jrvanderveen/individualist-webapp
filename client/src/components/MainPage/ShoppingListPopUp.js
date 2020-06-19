@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
+import axios from "axios";
 import { GlobalContext } from "../../context/GlobalState";
-import styled from "styled-components";
 import { ShoppingListOptions } from "./ShoppingListOptions";
 import { ShoppingListGrocerySection } from "./ShoppingListGrocerySection";
-import axios from "axios";
+import styled from "styled-components";
 
+// Styled components
 const ShoppingListDiv = styled.div`
     position: fixed;
     z-index: 1;
@@ -32,15 +33,33 @@ const Ul = styled.ul`
     margin-bottom: 5px;
 `;
 
+/*
+    SUMMARY:
+        Shopping list popup in front of main page.
+        Map grocery sections and ingredients to component.
+        Display options component.
+
+    PARAMS: 
+        togglePopUpFunc: pass through to close shoppinglist popup
+
+*/
 export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
-    // Reducers
+    // Context
     const { shoppingList } = useContext(GlobalContext);
-    const grocerySectionIngredientsMap = shoppingList.grocerySectionIngredientsMap;
+
+    //State
     const [clearSwitch, setClearSwitch] = useState(false);
+
+    // Variables
+    const grocerySectionIngredientsMap = shoppingList.grocerySectionIngredientsMap;
+
+    // Functions
+    // On hitting clear set switch to !switch
     const setClearSwtichParrent = () => {
         setClearSwitch(!clearSwitch);
     };
 
+    // Download shopping list in plain text from server
     async function downloadShoppingList() {
         const errors = [];
 
@@ -68,6 +87,7 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
         }
     }
 
+    //
     return (
         <ShoppingListDiv>
             <ShoppingListContent>

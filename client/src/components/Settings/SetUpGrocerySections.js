@@ -1,9 +1,10 @@
 import React, { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
-import { H3, List, Input } from "../../elements/index";
 import { GrocerySection } from "./GrocerySection";
+import { H3, List, Input } from "../../elements/index";
 import styled from "styled-components";
 
+// Styled Components
 const Ul = styled.ul`
     padding-left: 3%;
 `;
@@ -12,17 +13,32 @@ const Wrapper = styled.div`
     margin: auto;
 `;
 
+/*
+    SUMMARY:
+        Map grocery sections to components
+        Create new sections
+        Set default section               
+    PARAMS: 
+        
+
+*/
 export const SetUpGrocerySections = () => {
+    // Context
     const { grocerySections, getGrocerySections, addGrocerySection } = useContext(GlobalContext);
+
+    // State
     const [grocerySection, setGrocerySection] = useState("");
     const [placeHolderText, setPlaceHolderText] = useState("Enter Grocery Section...");
     const [errors, setErrors] = useState([]);
 
+    // Functions
+    // get current section from db
     useEffect(() => {
         getGrocerySections();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Create new section
     const handleOnClick = () => {
         let errs = [];
         if (grocerySection.length === 0) {
@@ -45,6 +61,7 @@ export const SetUpGrocerySections = () => {
         setGrocerySection("");
     };
 
+    // allow enter to create section
     const handleKeyDown = (key) => {
         if (key === "Enter") {
             handleOnClick();

@@ -1,11 +1,11 @@
 import React from "react";
+import "./App.css"; // Styled components used instead
 import { GlobalProvider } from "./context/GlobalState";
-import { createGlobalStyle } from "styled-components";
-import "./App.css";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { NotFound } from "./pages/404";
 import { Settings } from "./pages/Settings";
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -33,6 +33,9 @@ const GlobalStyle = createGlobalStyle`
 
 `;
 
+// App pages:
+//      Main Page - View/add/edit recipes and shoppinglist
+//      Settings  - Update grocery sections / user settings (to come)
 function App() {
     return (
         <GlobalProvider>

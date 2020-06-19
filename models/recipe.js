@@ -3,19 +3,21 @@ const mongoose = require("mongoose");
 const RecipeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Please add some text"],
+        required: true,
     },
     servings: {
         type: Number,
-        required: [true, "Please add a positive number"],
+        default: 1,
     },
     URL: {
         type: String,
-        required: [false, ""],
+        default: "",
     },
     ingredients: {
+        //ingredient = {_id: id, name: "name", grocerySection: "section name"}
         type: Array,
-        required: [true, "System error"],
+        default: [],
+        required: false,
     },
     createdAt: {
         type: Date,

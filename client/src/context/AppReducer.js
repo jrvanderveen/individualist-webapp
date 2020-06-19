@@ -1,6 +1,9 @@
 export default (state, action) => {
     switch (action.type) {
-        // Build recipe map for saved recipes
+        //////////////////////////////////////////////////////////////
+        // RECIPES
+        // Build recipe map for saved recipes in action.payload
+        // addToShoppingList, editing not saved in db
         case "GET_RECIPES":
             let recipeMap = {};
             action.payload.forEach((recipe) => {
@@ -49,40 +52,6 @@ export default (state, action) => {
                 recipes: state.recipes,
             };
 
-        // Set or unset shooping list bool
-        case "SET_CREATE_SHOPPING_LIST_BOOL":
-            state.creatingShoppingList = !state.creatingShoppingList;
-            if (action.payload === "cancel") {
-                Object.keys(state.recipes).forEach((_id) => {
-                    state.recipes[_id].addToShoppingList = false;
-                });
-                return {
-                    ...state,
-                    recipes: state.recipes,
-                    creatingShoppingList: state.creatingShoppingList,
-                };
-            } else {
-                return {
-                    ...state,
-                    creatingShoppingList: state.creatingShoppingList,
-                };
-            }
-        //Get the currently saved shoppinglist and add to state
-        case "GET_SHOPPING_LIST":
-            state.grocerySections.sections.forEach((section) => {
-                state.shoppingList.grocerySectionIngredientsMap[section] = [];
-            });
-            if (action.payload.grocerySectionIngredientsMap) {
-                Object.keys(action.payload.grocerySectionIngredientsMap).forEach((key) => {
-                    state.shoppingList.grocerySectionIngredientsMap[key] = action.payload.grocerySectionIngredientsMap[key];
-                });
-            }
-            state.shoppingList._id = action.payload._id;
-            return {
-                ...state,
-                shoppingList: state.shoppingList,
-            };
-
         // Set or unset recipe addToShoppingList bool
         case "SET_RECIPE_FOR_SHOPPING_LIST":
             state.recipes[action.payload].addToShoppingList = !state.recipes[action.payload].addToShoppingList;
@@ -110,8 +79,58 @@ export default (state, action) => {
                 grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
             };
 
-        // Add manually enteres ingredient to section
-        // payload = [sectionName, ingredient]
+        // Save edited recipe
+        // action.payload = edited recipe
+        case "SAVE_EDITED_RECIPE":
+            state.recipes[action.payload._id] = action.payload;
+            console.log(action.payload);
+            return {
+                ...state,
+                recipes: state.recipes,
+            };
+
+        //////////////////////////////////////////////////////////////
+        // SHOPPINGLIST
+        // Add shoppinglist to state
+        // action.payload = {grocerySectionIngredientsMap}
+        case "GET_SHOPPING_LIST":
+            state.grocerySections.sections.forEach((section) => {
+                state.shoppingList.grocerySectionIngredientsMap[section] = [];
+            });
+            if (action.payload.grocerySectionIngredientsMap) {
+                Object.keys(action.payload.grocerySectionIngredientsMap).forEach((key) => {
+                    state.shoppingList.grocerySectionIngredientsMap[key] = action.payload.grocerySectionIngredientsMap[key];
+                });
+            }
+            state.shoppingList._id = action.payload._id;
+            return {
+                ...state,
+                shoppingList: state.shoppingList,
+            };
+
+        // Set or unset shooping list bool
+        // if canceling unset all selected recipes
+        // action.payload = "cancle" or "save"
+        case "SET_CREATE_SHOPPING_LIST_BOOL":
+            state.creatingShoppingList = !state.creatingShoppingList;
+            if (action.payload === "cancel") {
+                Object.keys(state.recipes).forEach((_id) => {
+                    state.recipes[_id].addToShoppingList = false;
+                });
+                return {
+                    ...state,
+                    recipes: state.recipes,
+                    creatingShoppingList: state.creatingShoppingList,
+                };
+            } else {
+                return {
+                    ...state,
+                    creatingShoppingList: state.creatingShoppingList,
+                };
+            }
+
+        // Add manually added ingrdient to shopping list section
+        // action.payload = [sectionName, ingredient]
         case "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION":
             state.shoppingList.grocerySectionIngredientsMap[action.payload[0]].push(action.payload[1]);
             return {
@@ -119,6 +138,7 @@ export default (state, action) => {
                 grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
             };
 
+        // Clear shopping list of all ingredients
         case "CLEAR_SHOPPING_LIST":
             Object.keys(state.shoppingList.grocerySectionIngredientsMap).forEach((sectionName) => {
                 state.shoppingList.grocerySectionIngredientsMap[sectionName] = [];
@@ -127,7 +147,11 @@ export default (state, action) => {
                 ...state,
                 grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
             };
+
+        //////////////////////////////////////////////////////////////
+        // GROCERYSECTIONS
         // Get grocery sections
+        // Save grocery sections to state
         case "GET_GROCERY_SECTIONS":
             return {
                 ...state,
@@ -135,6 +159,7 @@ export default (state, action) => {
             };
 
         // Add new grocery section
+        // action.payload = grocery section name
         case "ADD_GROCERY_SECTION":
             state.grocerySections.sections.push(action.payload);
             let tmp = state.shoppingList.grocerySectionIngredientsMap[action.payload];
@@ -145,6 +170,8 @@ export default (state, action) => {
             };
 
         // delete grocery section
+        // If shopping list or recipes contain ingredients for the deleted section update them to default section
+        // action.payload = section name
         case "DELETE_GROCERY_SECTION":
             let defaultSection = state.grocerySections.default;
             let sectionName = action.payload;
@@ -167,20 +194,13 @@ export default (state, action) => {
                 shoppingList: state.shoppingList,
             };
 
+        // Set grocery sectin default
+        // action.payload = section name
         case "SET_GROCERY_SECTION_DEFAULT":
             state.grocerySections.default = action.payload;
             return {
                 ...state,
                 grocerySections: state.grocerySections,
-            };
-
-        // Save edited recipe
-        case "SAVE_EDITED_RECIPE":
-            state.recipes[action.payload._id] = action.payload;
-            console.log(action.payload);
-            return {
-                ...state,
-                recipes: state.recipes,
             };
 
         //ERRORS

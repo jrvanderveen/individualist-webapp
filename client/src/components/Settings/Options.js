@@ -1,8 +1,9 @@
 import React from "react";
-import styled from "styled-components";
-import { HomeSvg } from "../SVG/HomeSvg";
 import { Link } from "react-router-dom";
+import { HomeSvg } from "../SVG/HomeSvg";
+import styled from "styled-components";
 
+// Styled Components
 const Button = styled.button`
     cursor: pointer;
     background-color: ${(props) => (props.clicked === true ? "#8171d1" : "#9c88ff")};
@@ -35,6 +36,15 @@ const Div = styled.div`
     min-width: 250px;
 `;
 
+/*
+    SUMMARY:
+        Settings options to go home or switch between settings pages        
+
+    PARAMS: 
+        settingLabels: different settings names
+        selectSettingPage: pass through the option selected
+
+*/
 export const Options = ({ settingLabels, selectSettingPage }) => {
     return (
         <Div>

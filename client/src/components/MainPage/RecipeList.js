@@ -1,17 +1,31 @@
 import React, { useContext, useEffect } from "react";
-import { Recipe } from "./Recipe";
-import { H3 } from "../../elements/index";
-import { GlobalContext } from "../../context/GlobalState";
-import styled from "styled-components";
-import { SettingsSvg } from "../SVG/SettingSvg";
 import { Link } from "react-router-dom";
+import { GlobalContext } from "../../context/GlobalState";
+import { Recipe } from "./Recipe";
+import { SettingsSvg } from "../SVG/SettingSvg";
+import styled from "styled-components";
+import { H3 } from "../../elements/index";
 
+// Styled Components
 const Ul = styled.ul`
     padding-left: 3%;
 `;
 
+/*
+    SUMMARY:
+        Get recipes from DB and map them to recipe components.
+        Link to settings page
+
+    PARAMS: 
+
+*/
 export const RecipeList = () => {
+    // State
     const { recipes, onStartUp } = useContext(GlobalContext);
+
+    // Functions
+    // If reder check if we need to get recipes.
+    //      if visiting the settings page and returning no update needed
     useEffect(() => {
         if (Object.entries(recipes).length === 0) {
             onStartUp();

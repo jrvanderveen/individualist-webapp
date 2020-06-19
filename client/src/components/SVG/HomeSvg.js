@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+//Styled components
 const HomeIcon = styled.svg`
     width: 50px;
     height: 50px;
@@ -8,7 +9,14 @@ const HomeIcon = styled.svg`
     margin: 0px 50px 0px 10px;
 `;
 
-export const HomeSvg = (props) => {
+/*
+    SUMMARY:
+        Home SVG for settings page   
+
+    PARAMS: 
+
+*/
+export const HomeSvg = () => {
     return (
         <HomeIcon viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
             <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">

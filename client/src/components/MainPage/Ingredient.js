@@ -1,22 +1,39 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
-
 import { DropDownButton } from "../util/DropDownButton";
 import { DeleteButton, List, Wrapper, Input } from "../../elements/index";
 import styled from "styled-components";
 
+// Styled Components
 const Div = styled.div`
     margin-left: 10px;
 `;
 
+/*
+    SUMMARY:
+        Diplay/edit/delete recipe ingredient 
+
+    PARAMS: 
+        recipeId: recipe._id
+        ingredient: specific recipe from recipe
+        index: index of the ingredient in recipe ingredient list
+        handleDeleteIngredient: function to update accordion content height of ingredients
+        setRecipeObjFunc: update recipeObj
+        recipeObj: {active: true/false, recipe: {recipe object}, editRecipe: {copy of recipe object used for editing}}
+
+*/
 export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient, recipeObj, setRecipeObjFunc }) => {
-    // Reducers
+    // Context
     const { deleteRecipeIngredient, grocerySections } = useContext(GlobalContext);
-    // functions
+
+    // Functions
+    // Delete ingredient from recipe and update accordion content max-height
     const handleOnClick = () => {
         deleteRecipeIngredient(recipeId, ingredient);
         handleDeleteIngredient();
     };
+
+    // While editing is active update editRecipe obj ingredient name for index
     const handleInputChange = (e) => {
         setRecipeObjFunc({
             ...recipeObj,
@@ -31,6 +48,8 @@ export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient
         });
     };
 
+    // Recipe ingredient
+    // If in eding mode display editRecipe values
     return (
         <Wrapper>
             <List isIngredient>

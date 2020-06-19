@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { List, Wrapper } from "../../elements/index";
+import styled from "styled-components";
 
+// Styled Components
 const Span = styled.span`
     ${(props) =>
         props.lineThrough === true &&
@@ -11,13 +12,21 @@ const Span = styled.span`
     `};
 `;
 
-export const ShoppingListIngredient = (props) => {
+/*
+    SUMMARY:
+        display ingredient and on click make red line through ingredient name
+
+    PARAMS: 
+        ingredient: grocery section ingredient name
+*/
+export const ShoppingListIngredient = ({ ingredient }) => {
+    // State
     const [active, setActive] = useState(false);
 
     return (
-        <List key={props.ingredient} isShoppingList>
+        <List key={ingredient} isShoppingList>
             <Span lineThrough={active}>
-                <Wrapper>{props.ingredient}</Wrapper>
+                <Wrapper>{ingredient}</Wrapper>
             </Span>
             <button className="float-right btn btn-danger btn-sm" onClick={() => setActive(!active)}>
                 X

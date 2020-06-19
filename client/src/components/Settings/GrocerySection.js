@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { List, Wrapper } from "../../elements/index";
 import { GlobalContext } from "../../context/GlobalState";
-
+import { List, Wrapper } from "../../elements/index";
 import styled from "styled-components";
 
+// Styled components
 const ButtonWrapper = styled.div`
     float: right;
 `;
@@ -17,6 +17,19 @@ const Input = styled.input`
     margin-right: 10px;
 `;
 
+/*
+    SUMMARY:
+        Display grocery section name and whether its default.
+        Allow delete section        
+
+    PARAMS: 
+        sectionLabel: grocery section name
+        _id: shoppingList._id
+        isDefault: is default grocery section
+        setErrorsFunc: errors to display if failed new section validation
+        defaultSection: default section name
+
+*/
 export const GrocerySection = ({ sectionLabel, _id, isDefault, setErrorsFunc, defaultSection }) => {
     const { deleteGrocerySection, setDefaultGrocerySection } = useContext(GlobalContext);
 

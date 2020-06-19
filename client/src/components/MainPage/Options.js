@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
 import { GlobalContext } from "../../context/GlobalState";
+import styled from "styled-components";
 
+// Styled Components
 const Button = styled.button`
     cursor: pointer;
     background-color: ${(props) => (props.clicked === true ? "#8171d1" : "#9c88ff")};
@@ -12,11 +13,9 @@ const Button = styled.button`
     padding: 5px;
     margin: ${(props) => (props.top ? "10px 5px 5px 5px" : "5px 5px 0px 5px")};
     width: 90%;
-    opacity: ${(props) => (props.bottom && props.available === false ? 0 : 1)};
     &:hover {
         background-color: #8171d1;
     }
-    pointer-events: ${(props) => (props.available === false ? "none" : "")};
 `;
 
 const Div = styled.div`
@@ -35,8 +34,20 @@ const Ul = styled.ul`
 const Li = styled.li`
     width: 47.5%;
 `;
+
+/*
+    SUMMARY:
+        Options for main page.  Can view shopping list or add recipes to shopping list
+
+    PARAMS: 
+        togglePopUpFunc: togle the shopping list popup window
+
+*/
 export const Options = ({ togglePopUpFunc }) => {
+    // Context
     const { setCreateShoppingListBool, creatingShoppingList, saveAddedRecipes } = useContext(GlobalContext);
+
+    // Options for main page
     return (
         <Div>
             <Button middle clicked={creatingShoppingList} onClick={togglePopUpFunc}>
@@ -45,18 +56,20 @@ export const Options = ({ togglePopUpFunc }) => {
             <Button middle clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool("close")}>
                 Add To Shopping List
             </Button>
-            <Ul>
-                <Li>
-                    <Button bottom available={creatingShoppingList} onClick={saveAddedRecipes}>
-                        Save
-                    </Button>
-                </Li>
-                <Li>
-                    <Button bottom available={creatingShoppingList} onClick={() => setCreateShoppingListBool("cancel")}>
-                        Cancel
-                    </Button>
-                </Li>
-            </Ul>
+            {creatingShoppingList ? (
+                <Ul>
+                    <Li>
+                        <Button bottom onClick={saveAddedRecipes}>
+                            Save
+                        </Button>
+                    </Li>
+                    <Li>
+                        <Button bottom onClick={() => setCreateShoppingListBool("cancel")}>
+                            Cancel
+                        </Button>
+                    </Li>
+                </Ul>
+            ) : null}
         </Div>
     );
 };

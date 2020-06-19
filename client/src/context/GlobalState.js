@@ -59,7 +59,9 @@ export const GlobalProvider = ({ children }) => {
         await getShoppingList();
     }
 
-    //Get all recipes
+    //////////////////////////////////////////////////////////////
+    // RECIPES
+    //Get all recipes and add to state
     async function getRecipes() {
         try {
             const res = await axios.get("/api/v1/recipes");
@@ -75,7 +77,6 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Recipe Actions
     // Delete specific recipe
     async function deleteRecipe(id) {
         try {
@@ -94,6 +95,7 @@ export const GlobalProvider = ({ children }) => {
 
     // Add recipe with current content (no ingredients yet)
     async function addRecipe(recipe) {
+        console.log(recipe);
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -113,7 +115,6 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Ingredient Actions
     // Delete ingredient from specific recipe
     async function deleteRecipeIngredient(recipeId, ingredient) {
         try {
@@ -139,7 +140,7 @@ export const GlobalProvider = ({ children }) => {
         };
 
         try {
-            const res = await axios.post(`/api/v1/recipes/${recipeId}/${ingredient.name}`, ingredient, config);
+            const res = await axios.post(`/api/v1/recipes/${recipeId}`, ingredient, config);
             dispatch({
                 type: "ADD_RECIPE_INGREDIENT",
                 payload: [recipeId, res.data.data.ingredient],
@@ -152,23 +153,7 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Shopping List actions
-    async function getShoppingList() {
-        const res = await axios.get("/api/v1/shoppingList");
-        try {
-            dispatch({
-                type: "GET_SHOPPING_LIST",
-                payload: res.data.data,
-            });
-        } catch (error) {
-            dispatch({
-                type: "RECIPE_ERROR",
-                payload: error,
-            });
-        }
-    }
-
-    // Add recipe ingredients to shopping list
+    // Mark recipe to be added to shopping list
     function addRecipeToShoppingList(recipeId) {
         try {
             dispatch({
@@ -183,9 +168,9 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Add recipe ingredients to shopping list
+    // Add all selected recipes ingredients to shopping list
     async function saveAddedRecipes() {
-        //dispatch to update state then post new ShoppingList
+        //dispatch to update state then post new ShoppingList pulled from updated state
         try {
             dispatch({
                 type: "SAVE_RECIPES_ADDED_TO_SHOPPING_LIST",
@@ -204,6 +189,61 @@ export const GlobalProvider = ({ children }) => {
         await axios.post("/api/v1/shoppingList", state.shoppingList, config);
     }
 
+    // Save edited recipe
+    async function saveEditedRecipe(recipe) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        await axios.post("/api/v1/recipes/edit", recipe, config);
+        try {
+            dispatch({
+                type: "SAVE_EDITED_RECIPE",
+                payload: recipe,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    //////////////////////////////////////////////////////////////
+    // SHOPPINGLIST
+    // Get current shopping list and add to state
+    async function getShoppingList() {
+        const res = await axios.get("/api/v1/shoppingList");
+        try {
+            dispatch({
+                type: "GET_SHOPPING_LIST",
+                payload: res.data.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // This setting controls visibility of select recipe buttons
+    function setCreateShoppingListBool(cancelOrClose) {
+        try {
+            dispatch({
+                type: "SET_CREATE_SHOPPING_LIST_BOOL",
+                payload: cancelOrClose,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // Manually add ingredient to shopping list grocer section
     async function addIngredientToShoppingListSection(sectionName, ingredient) {
         const config = {
             headers: {
@@ -250,23 +290,9 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
-    // Setting actions
-    // This setting controls visibility of select recipe buttons
-    function setCreateShoppingListBool(cancelOrClose) {
-        try {
-            dispatch({
-                type: "SET_CREATE_SHOPPING_LIST_BOOL",
-                payload: cancelOrClose,
-            });
-        } catch (error) {
-            dispatch({
-                type: "RECIPE_ERROR",
-                payload: error,
-            });
-        }
-    }
-    // Grocery Section Actions
-    // Get list of all current sections
+    //////////////////////////////////////////////////////////////
+    // GROCERYSECTIONS
+    // Get list of all current sections and add to state
     async function getGrocerySections() {
         try {
             const res = await axios.get("/api/v1/settings/grocerySections");
@@ -281,6 +307,7 @@ export const GlobalProvider = ({ children }) => {
             });
         }
     }
+
     // Add new grocery section
     async function addGrocerySection(_id, sectionName) {
         try {
@@ -329,27 +356,6 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "SETTINGS_ERROR",
-                payload: error,
-            });
-        }
-    }
-
-    // Save edited recipe
-    async function saveEditedRecipe(recipe) {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        await axios.post("/api/v1/recipes/edit", recipe, config);
-        try {
-            dispatch({
-                type: "SAVE_EDITED_RECIPE",
-                payload: recipe,
-            });
-        } catch (error) {
-            dispatch({
-                type: "RECIPE_ERROR",
                 payload: error,
             });
         }

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+// Styled Component
 const SettingsIcon = styled.svg`
     width: 50px;
     height: 50px;
@@ -8,7 +9,16 @@ const SettingsIcon = styled.svg`
     float: right;
 `;
 
-export const SettingsSvg = (props) => {
+/*
+    SUMMARY:
+        Settings svg for home page   
+
+    PARAMS: 
+        rotate: rotate or dont rotate svg 
+
+*/
+
+export const SettingsSvg = () => {
     return (
         <SettingsIcon viewBox="0 0 500 500">
             {/* // Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  */}

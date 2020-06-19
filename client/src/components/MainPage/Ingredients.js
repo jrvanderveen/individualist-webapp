@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
-import { List, Input, Button, Wrapper } from "../../elements/index";
 import { Ingredient } from "./Ingredient";
 import { DropDownButton } from "../util/DropDownButton";
+import { List, Input, Button, Wrapper } from "../../elements/index";
 import styled from "styled-components";
 
+// Styled Components
 const Form = styled.form`
     display: flex;
     flex-flow: row wrap;
@@ -21,14 +22,28 @@ const TD = styled.td`
     padding-left: ${(props) => (props.isRight ? "10px" : "5px")};
 `;
 
+/*
+    SUMMARY:
+        Display new ingredient form and map ingredients to ingredient component
+
+    PARAMS: 
+        handleDeleteIngredient: function to update accordion content height of ingredients
+        handleAddIngredient: function to update accordion content height of ingredients
+        recipeId: recipe._id
+        setRecipeObjFunc: update recipeObj
+        recipeObj: {active: true/false, recipe: {recipe object}, editRecipe: {copy of recipe object used for editing}}
+
+*/
 export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recipeObj, setRecipeObjFunc }) => {
-    // Reducers
+    // Context
     const { addRecipeIngredient, grocerySections } = useContext(GlobalContext);
+
     // State
     const [newIngredientGrocerySection, setNewIngredientGrocerySection] = useState(grocerySections.default);
     const [newIngredient, setNewIngredient] = useState("");
 
     // functions
+    // On submit new inrgedient add to state reset field and use handleAddIngredient to increase accorion content size
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -41,6 +56,8 @@ export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recip
         handleAddIngredient();
     };
 
+    // Map list of ingredients and display new ingredient form at end of list
+    // If in eding mode display editRecipe values
     return (
         <ul>
             {recipeObj.recipe.ingredients.map((ingredient, index) => {

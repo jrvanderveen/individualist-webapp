@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
+import { GlobalContext } from "../../context/GlobalState";
 import { Wrapper, Button } from "../../elements/index";
 import styled from "styled-components";
-import { GlobalContext } from "../../context/GlobalState";
 
+// Styled components
 const ExitButton = styled.button`
     float: right;
     font-size: 1.5rem;
@@ -16,9 +17,21 @@ const ExitButton = styled.button`
     outline: none;
 `;
 
+/*
+    SUMMARY:
+        Exit, Clear, or Download shopping lit
+
+    PARAMS: 
+        togglePopUpFunc: Close shoppinglist popup
+        downloadShoppingListFunc: download current ingredients in shoppinglist
+        setClearSwitchFunc: Clear shoppinglist ingredients
+*/
 export const ShoppingListOptions = ({ togglePopUpFunc, downloadShoppingListFunc, setClearSwitchFunc }) => {
+    // State
     const { clearShoppingList } = useContext(GlobalContext);
 
+    // Functions
+    // Exit, download, save
     const handleClick = (call) => {
         if (call === "exit") {
             togglePopUpFunc();

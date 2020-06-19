@@ -2,15 +2,26 @@ import React, { useState, useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { H3, Input, Label, Button } from "../../elements/index";
 
+/*
+    SUMMARY:
+        Add new recipe (name, url, servings)
+
+    PARAMS: 
+
+*/
 export const AddRecipe = () => {
+    // Context
+    const { addRecipe } = useContext(GlobalContext);
+    const { recipes } = useContext(GlobalContext);
+
+    // State
     const [name, setRecipeName] = useState("");
     const [servings, setServings] = useState(1);
     const [URL, setRecipeURL] = useState("");
     const [errors, setErrors] = useState([]);
 
-    const { addRecipe } = useContext(GlobalContext);
-    const { recipes } = useContext(GlobalContext);
-
+    // Functions
+    // On submit check for validation errors, post recipe, reset state
     const onSubmit = (e) => {
         e.preventDefault();
         setErrors([]);
@@ -25,12 +36,15 @@ export const AddRecipe = () => {
             setErrors(errors);
             return;
         }
-
+        let url = URL;
+        if (!/^https?:\/\//i.test(url)) {
+            url = "http://" + url;
+        }
+        console.log(url);
         const newRecipe = {
-            id: Math.floor(Math.random() * 100000000),
             name,
             servings,
-            URL,
+            URL: url,
             ingredients: [],
         };
         addRecipe(newRecipe);
@@ -39,6 +53,7 @@ export const AddRecipe = () => {
         setRecipeURL("");
     };
 
+    // New recipe form (no ingredients added at start)
     return (
         <>
             <H3>Add new Recipe</H3>
@@ -48,16 +63,16 @@ export const AddRecipe = () => {
                         {error}
                     </p>
                 ))}
-                <div className="form-group">
-                    <Label htmlFor="name">Name</Label>
+                <div>
+                    <Label>Name</Label>
                     <Input type="text" value={name} onChange={(e) => setRecipeName(e.target.value)} placeholder="Enter Name..." required="required" />
                 </div>
-                <div className="form-group">
-                    <Label htmlFor="amount">Servings</Label>
+                <div>
+                    <Label>Servings</Label>
                     <Input type="number" min="1" max="99" value={servings} onChange={(e) => setServings(e.target.value)} placeholder="Enter Servings..." />
                 </div>
-                <div className="form-group">
-                    <Label htmlFor="servings">URL</Label>
+                <div>
+                    <Label>URL</Label>
                     <Input type="text" value={URL} onChange={(e) => setRecipeURL(e.target.value)} placeholder="Enter URL..." />
                 </div>
                 <Button isAddRecipeButton>Add Recipe</Button>
