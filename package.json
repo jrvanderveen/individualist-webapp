@@ -1,5 +1,5 @@
 {
-    "name": "cooking-with-code-with-db",
+    "name": "individualist",
     "version": "1.0.0",
     "description": "cooking with code with a mongo db backend",
     "main": "server.js",

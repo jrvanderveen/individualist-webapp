@@ -10,7 +10,6 @@ dotenv.config({ path: "./config/config.env" });
 
 // DB Set up
 const connectDB = require("./config/db");
-
 connectDB(process.env.MONGO_URI);
 
 // APP
