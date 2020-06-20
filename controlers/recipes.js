@@ -80,7 +80,7 @@ exports.deleteRecipe = async (req, res, next) => {
 // @access Public
 exports.deleteRecipeIngredient = async (req, res, next) => {
     try {
-        await Recipe.updateOne({ _id: req.params.recipe_id }, { $pull: { ingredients: { _id: ObjectID(req.params.ingredient_id) } } });
+        await Recipe.updateOne({ _id: req.params.recipe_id }, { $pull: { ingredients: { _id: req.params.ingredient_id } } });
         return res.status(200).json({
             success: true,
             data: {},
@@ -107,8 +107,8 @@ exports.addRecipeIngredient = async (req, res, next) => {
             });
         }
         ingredient = req.body;
-        ingredient._id = ObjectID();
-        await Recipe.updateOne({ _id: ObjectID(req.params._id) }, { $push: { ingredients: ingredient } });
+        // ingredient._id = ObjectID();
+        await Recipe.updateOne({ _id: req.params._id }, { $push: { ingredients: ingredient } });
 
         return res.status(200).json({
             success: true,
@@ -129,11 +129,6 @@ exports.addRecipeIngredient = async (req, res, next) => {
 // @route POST /api/v1/recipes/edit
 // @access Public
 exports.saveEditedRecipe = async (req, res, next) => {
-    req.body.ingredients.forEach((ingredient) => {
-        ingredient._id = ObjectID(ingredient._id);
-    });
-    console.log(req.body.ingredients[0]._id, typeof req.body.ingredients[0]._id);
-
     try {
         await Recipe.replaceOne({ _id: req.body._id }, req.body, { upsert: true });
 

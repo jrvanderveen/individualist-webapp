@@ -25,3 +25,4 @@ yarn-error.log*
 
 # Random
 /config/config.env
+/documents

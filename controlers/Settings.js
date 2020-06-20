@@ -89,7 +89,15 @@ exports.deleteGrocerySection = async (req, res, next) => {
         let sectionName = req.params.section_name;
         await GrocerySections.updateOne({ _id: req.params._id }, { $pull: { sections: sectionName } });
 
-        await Recipe.updateMany({ "ingredients.grocerySection": sectionName }, { $set: { "ingredients.$[].grocerySection": req.params.default } });
+        console.log(sectionName, req.params.default);
+        await Recipe.updateMany(
+            {},
+            { $set: { "ingredients.$[ingredient].grocerySection": req.params.default } },
+            {
+                multi: true,
+                arrayFilters: [{ "ingredient.grocerySection": sectionName }],
+            }
+        );
         await ShoppingList.replaceOne({ _id: req.body._id }, req.body, { upsert: true });
 
         return res.status(200).json({

@@ -5,9 +5,12 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require("colors");
 
+// Set env path
+dotenv.config({ path: "./config/config.env" });
+
 // DB Set up
 const connectDB = require("./config/db");
-dotenv.config({ path: "./config/config.env" });
+
 connectDB(process.env.MONGO_URI);
 
 // APP

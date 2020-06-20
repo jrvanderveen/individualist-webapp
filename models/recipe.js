@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const IngredientSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    grocerySection: {
+        type: String,
+        required: true,
+    },
+});
+
 const RecipeSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -14,8 +25,7 @@ const RecipeSchema = new mongoose.Schema({
         default: "",
     },
     ingredients: {
-        //ingredient = {_id: id, name: "name", grocerySection: "section name"}
-        type: Array,
+        type: [IngredientSchema],
         default: [],
         required: false,
     },
