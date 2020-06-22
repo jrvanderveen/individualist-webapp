@@ -29,7 +29,7 @@ const Button = styled.button`
 `;
 
 const Div = styled.div`
-    position: fixed;
+    position: absolute;
     left: 0px;
     top: 40%;
     max-width: 300px;

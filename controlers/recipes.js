@@ -5,8 +5,10 @@ const ObjectID = require("mongoose").Types.ObjectId;
 // @route GET /api/v1/recipes
 // @access Public
 exports.getRecipes = async (req, res, next) => {
+    console.log("here");
     try {
         const recipes = await Recipe.find();
+        console.log(res);
         return res.status(200).json({
             success: true,
             count: recipes.length,

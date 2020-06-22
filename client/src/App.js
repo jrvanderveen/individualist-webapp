@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import { MainPage } from "./pages/MainPage";
 import { NotFound } from "./pages/404";
 import { Settings } from "./pages/Settings";
+import { Login } from "./pages/Login";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -42,6 +43,7 @@ function App() {
             <GlobalStyle />
             <Router>
                 <Switch>
+                    <Route exact path="/login" component={Login} />
                     <Route exact path="/" component={MainPage} />
                     <Route exact path="/settings" component={Settings} />
                     <Route exact path="/404" component={NotFound} />
