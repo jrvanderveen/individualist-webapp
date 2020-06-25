@@ -1,35 +1,81 @@
-# cooking-with-code
-Using this project to teach myself node/react/full stack application building.  
+<br/>
+<h1 align="center" >
+	  INDIVIDUA&#8729;LIST
+</h1>
+<h4 align="center">Save recipes and easily create custom shopping lists</h4>
 
-SUMMARY:
+<p align="center">
+  <a href="http://myindividualist.com/">Demo</a> •
+  <a href="#features">Features</a> •
+  <a href="#contributing">Tutorial</a> • 
+  <a href="#installation">Installation</a> •
+  <a href="#contributing">Contributing</a> 
 
-This site will eventually be a place where home cooks can come to save old recipe and expedite their shopping. Cooks will be able to create recipes with an ingredient list and when it comes time for shopping (the worst part of cooking) this site will give users the ability to select multiple recipes and export a shopping list for all the ingredients required. Before exporting they will be able to unselect items they already own (like salt, pepper,...). Each ingredient will have a grocery store section attribute allowing an exported list to look something like this:
+</p>
 
-Meats:
+# Features
+ 
 
-    1 pound ground beef
+#### Save and Edit Recipes
 
-Vegetables:
+Found a delicious recipe online?  Create a new recipe and save each ingredient and link the website.  Made a mistake? No problem delete the recipe or edit the incorrect values and save.    
 
-    4 large tomatoes
-    carrots
-    zucchini
-    parsley
+#### Persistent shopping list
 
-Other:
+Easily create shopping list by adding all ingredients from recipe with a single click or add single items as you think of them.  All items on the shopping list will be listed with other items from the same grocery section.
 
-    red wine
-    8 ounce tomatoe sauce
+#### Custom Grocery Sections 
 
-REQUIRES:
+Create a list of grocery sections ex: Produce, Vegetables, Frozen, Other ...  When saving a new ingredient for a recipe set the grocery section value from one in the list.  Add items to your shopping list based on the grocery section.
 
-    Mongo Atlas DB
-    npm install
-    npm run dev (server back end locally, runs client code on http://localhost:3000/)
+# Tutorial
+![Demo Gif](demo/test.gif)
 
-TODO:
+# Installation
 
-      build more beautiful front end
-      Create export shopping list functionality
-            Allow user to select recipies to add then create new view of all ingredients seperated and sorted.  This new list can have items deleted.
-      add in additional features like rating or searching for recipes
+1. Clone this repository from your terminal
+
+   `$ https://github.com/jrvanderveen/cooking-with-code`
+
+2. Setup 
+ ```
+ npm install
+ cd client npm install
+ cd ..
+ 
+ # Run front and backend
+ npm run dev
+ 
+ # Backend only
+ npm run server
+ 
+ # Frontend only
+ npm run client
+ 
+ # Build client
+ cd client
+ npm run build
+ 
+ # Prod (Prereq build client)
+ npm start
+```
+
+4. Create a MongoDB database 
+
+5. `cd config` Create `config.env` file with values:
+
+6. Edit `.env` to reflect your database information
+```
+#(development / production)
+NODE_ENV=development
+PORT=5000
+MONGO_URI=Your Mongo URI
+#verbose = everything on
+#limited = only basic server logging
+LOGING_LEVEL=limited
+```
+7. Start with `npm run dev`
+
+# Contributing
+
+Want to help? Great! Checkout the [project](https://github.com/jrvanderveen/cooking-with-code/projects/1) and find something you'd like to tackle.
