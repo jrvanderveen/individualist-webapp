@@ -2,9 +2,12 @@ import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
 import DefaultDict from "../utils/DefaultDict";
+import { Redirect } from "react-router-dom";
 
 // Initial state
 const initialState = {
+    loggedIn: false,
+    username: "",
     grocerySections: {
         /* PERSISTS
             default, string
@@ -51,36 +54,103 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
+    // UTIL
+    // Function used for all protected routes when dispatching comes after post
+    function parseRedirectWithDispatch(redirect, data, dispatchString) {
+        if (redirect.success) {
+            //success
+            if (dispatchString) {
+                dispatch({
+                    type: dispatchString,
+                    payload: data,
+                });
+            }
+        } else {
+            return <Redirect to={redirect.redirect ? redirect.redirect : "/login"} />;
+        }
+    }
+    // Function used for all protected routes when dispatching can come before post
+    function parseRedirectNoDispatch(redirect) {
+        if (!redirect.success) {
+            return <Redirect to={redirect.redirect ? redirect.redirect : "/login"} />;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////
+    // SIGNIN
+    // Check login state of user before initial render
+    async function isUserSignedIn() {
+        try {
+            const res = await axios.post("/api/v1.1/login/state");
+            dispatch({
+                type: "LOG_IN_STATE",
+                payload: res.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: "LOGIN_ERROR",
+                payload: error,
+            });
+        }
+    }
+    // Log user in
+    async function signOut() {
+        try {
+            await axios.get("/api/v1.1/login/signOut");
+            dispatch({
+                type: "LOG_USER_OUT",
+            });
+            return <Redirect to="/login" />;
+        } catch (error) {
+            dispatch({
+                type: "LOGIN_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // Log user in
+    async function signIn(userObj) {
+        try {
+            const res = await axios.post("/api/v1.1/login/signIn", userObj);
+            dispatch({
+                type: "LOG_USER_IN",
+                payload: res.data.username,
+            });
+            return res.data.success;
+        } catch (error) {
+            dispatch({
+                type: "LOGIN_ERROR",
+                payload: error,
+            });
+            return false;
+        }
+    }
     //On start up get recipes and grocery sections
     //Get recipes grocery sections then recipes to avoid incomplete data
+    // TODO:
+    //  Update to use just one request
     async function onStartUp() {
-        // await getGrocerySections();
+        // Preserve order
+        await getGrocerySections();
         await getRecipes();
-        // await getShoppingList();
+        await getShoppingList();
     }
 
     //////////////////////////////////////////////////////////////
     // RECIPES
-    //Get all recipes and add to state
+    // Get all recipes and add to state
+    // @PROTECTED
     async function getRecipes() {
         try {
-            const res = await axios
-                .get("/api/v1/recipes")
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+            await axios
+                .get("/api/v1.1/recipes")
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, res.data.data, "GET_RECIPES");
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
-
-            dispatch({
-                type: "GET_RECIPES",
-                payload: res.data.data,
-            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -90,19 +160,16 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Delete specific recipe
+    // @PROTECTED
     async function deleteRecipe(id) {
         try {
-            await axios
-                .delete(`/api/v1/recipes/${id}`)
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+            axios
+                .post(`/api/v1.1/recipes/delete`, { _id: id })
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data);
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
             dispatch({
                 type: "DELETE_RECIPE",
@@ -117,30 +184,22 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Add recipe with current content (no ingredients yet)
+    // @PROTECTED
     async function addRecipe(recipe) {
-        console.log(recipe);
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
         try {
-            const res = await axios
-                .post("/api/v1/recipes", recipe, config)
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+            await axios
+                .post("/api/v1.1/recipes/add", recipe, config)
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, res.data.data, "ADD_RECIPE");
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
-            dispatch({
-                type: "ADD_RECIPE",
-                payload: res.data.data,
-            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -150,19 +209,16 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Delete ingredient from specific recipe
+    // @PROTECTED
     async function deleteRecipeIngredient(recipeId, ingredient) {
         try {
-            await axios
-                .delete(`/api/v1/recipes/${recipeId}/${ingredient._id}`)
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+            axios
+                .post(`/api/v1.1/recipes/ingredient/delete`, { recipeId: recipeId, ingredientId: ingredient._id })
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data);
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
             dispatch({
                 type: "DELETE_RECIPE_INGREDIENT",
@@ -177,6 +233,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Append ingredient to end of specific recipe
+    // @PROTECTED
     async function addRecipeIngredient(recipeId, ingredient) {
         const config = {
             headers: {
@@ -185,22 +242,14 @@ export const GlobalProvider = ({ children }) => {
         };
 
         try {
-            const res = await axios
-                .post(`/api/v1/recipes/${recipeId}`, ingredient, config)
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+            axios
+                .post(`/api/v1.1/recipes/ingredient/add`, { recipeId: recipeId, ingredient: ingredient }, config)
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, [recipeId, res.data.data.ingredient], "ADD_RECIPE_INGREDIENT");
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
-            dispatch({
-                type: "ADD_RECIPE_INGREDIENT",
-                payload: [recipeId, res.data.data.ingredient],
-            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -225,6 +274,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Add all selected recipes ingredients to shopping list
+    // @PROTECTED
     async function saveAddedRecipes() {
         //dispatch to update state then post new ShoppingList pulled from updated state
         try {
@@ -242,40 +292,34 @@ export const GlobalProvider = ({ children }) => {
                 "Content-Type": "application/json",
             },
         };
-        await axios
-            .post("/api/v1/shoppingList", state.shoppingList, config)
-            .then(function (response) {
-                if (response.data.redirect === "/") {
-                    window.location = "/";
-                } else if (response.data.redirect === "/login") {
-                    window.location = "/login";
-                }
+        console.log(state.shoppingList);
+        axios
+            .post("/api/v1.1/shoppingList", state.shoppingList, config)
+            .then((res) => {
+                parseRedirectNoDispatch(res.data);
             })
             .catch(function (error) {
-                window.location = "/login";
+                throw error;
             });
     }
 
     // Save edited recipe
+    // @PROTECTED
     async function saveEditedRecipe(recipe) {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        await axios
-            .post("/api/v1/recipes/edit", recipe, config)
-            .then(function (response) {
-                if (response.data.redirect === "/") {
-                    window.location = "/";
-                } else if (response.data.redirect === "/login") {
-                    window.location = "/login";
-                }
-            })
-            .catch(function (error) {
-                window.location = "/login";
-            });
         try {
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            axios
+                .post("/api/v1.1/recipes/edit", recipe, config)
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data, recipe, "SAVE_EDITED_RECIPE");
+                })
+                .catch(function (error) {
+                    throw error;
+                });
             dispatch({
                 type: "SAVE_EDITED_RECIPE",
                 payload: recipe,
@@ -291,24 +335,17 @@ export const GlobalProvider = ({ children }) => {
     //////////////////////////////////////////////////////////////
     // SHOPPINGLIST
     // Get current shopping list and add to state
+    // @PROTECTED
     async function getShoppingList() {
-        const res = await axios
-            .get("/api/v1/shoppingList")
-            .then(function (response) {
-                if (response.data.redirect === "/") {
-                    window.location = "/";
-                } else if (response.data.redirect === "/login") {
-                    window.location = "/login";
-                }
-            })
-            .catch(function (error) {
-                window.location = "/login";
-            });
         try {
-            dispatch({
-                type: "GET_SHOPPING_LIST",
-                payload: res.data.data,
-            });
+            await axios
+                .get("/api/v1.1/shoppingList")
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, res.data.data, "GET_SHOPPING_LIST");
+                })
+                .catch(function (error) {
+                    throw error;
+                });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -333,31 +370,23 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Manually add ingredient to shopping list grocer section
+    // @PROTECTED
     async function addIngredientToShoppingListSection(sectionName, ingredient) {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        let _id = state.shoppingList._id;
-        const res = await axios
-            .post("/api/v1/shoppingList/update", { _id, sectionName, ingredient }, config)
-            .then(function (response) {
-                if (response.data.redirect === "/") {
-                    window.location = "/";
-                } else if (response.data.redirect === "/login") {
-                    window.location = "/login";
-                }
-            })
-            .catch(function (error) {
-                window.location = "/login";
-            });
-        const ingredientObj = res.data.data.ingredient;
         try {
-            dispatch({
-                type: "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION",
-                payload: [sectionName, ingredientObj],
-            });
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            let _id = state.shoppingList._id;
+            await axios
+                .post("/api/v1.1/shoppingList/update", { _id, sectionName, ingredient }, config)
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, [sectionName, res.data.data.ingredient], "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION");
+                })
+                .catch(function (error) {
+                    throw error;
+                });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -367,29 +396,26 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Non async function, force wait before rerendering shopping list
+    // @PROTECTED
     function clearShoppingList() {
-        let empty = true;
-        Object.keys(state.shoppingList.grocerySectionIngredientsMap).forEach((key) => {
-            if (state.shoppingList.grocerySectionIngredientsMap[key].length > 0) {
-                empty = false;
-            }
-        });
-        if (empty) return;
-
-        let _id = state.shoppingList._id;
-        axios
-            .delete(`/api/v1/shoppingList/${_id}`)
-            .then(function (response) {
-                if (response.data.redirect === "/") {
-                    window.location = "/";
-                } else if (response.data.redirect === "/login") {
-                    window.location = "/login";
-                }
-            })
-            .catch(function (error) {
-                window.location = "/login";
-            });
         try {
+            let empty = true;
+            Object.keys(state.shoppingList.grocerySectionIngredientsMap).forEach((key) => {
+                if (state.shoppingList.grocerySectionIngredientsMap[key].length > 0) {
+                    empty = false;
+                }
+            });
+            if (empty) return;
+
+            let _id = state.shoppingList._id;
+            axios
+                .post("/api/v1.1/shoppingList/clear", { _id: _id })
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data);
+                })
+                .catch(function (error) {
+                    throw error;
+                });
             dispatch({
                 type: "CLEAR_SHOPPING_LIST",
             });
@@ -404,24 +430,17 @@ export const GlobalProvider = ({ children }) => {
     //////////////////////////////////////////////////////////////
     // GROCERYSECTIONS
     // Get list of all current sections and add to state
+    // @PROTECTED
     async function getGrocerySections() {
         try {
-            const res = await axios
-                .get("/api/v1/settings/grocerySections")
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+            await axios
+                .get("/api/v1.1/settings/grocerySections")
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, res.data.data ? res.data.data[0] : null, "GET_GROCERY_SECTIONS");
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
-            dispatch({
-                type: "GET_GROCERY_SECTIONS",
-                payload: res.data.data[0],
-            });
         } catch (error) {
             dispatch({
                 type: "SETTINGS_ERROR",
@@ -431,24 +450,17 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Add new grocery section
+    // @PROTECTED
     async function addGrocerySection(_id, sectionName) {
         try {
             await axios
-                .post(`/api/v1/settings/grocerySections/${_id}/${sectionName}`)
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+                .post(`/api/v1.1/settings/grocerySections/add`, { _id: _id, sectionName: sectionName })
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, sectionName, "ADD_GROCERY_SECTION");
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
-            dispatch({
-                type: "ADD_GROCERY_SECTION",
-                payload: sectionName,
-            });
         } catch (error) {
             dispatch({
                 type: "SETTINGS_ERROR",
@@ -458,6 +470,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Delete grocery section
+    // @PROTECTED
     async function deleteGrocerySection(_id, sectionName, defaultSection) {
         try {
             dispatch({
@@ -475,34 +488,32 @@ export const GlobalProvider = ({ children }) => {
                 "Content-Type": "application/json",
             },
         };
-        await axios
-            .post(`/api/v1/settings/grocerySections/${_id}/${sectionName}/${defaultSection}`, state.shoppingList, config)
-            .then(function (response) {
-                if (response.data.redirect === "/") {
-                    window.location = "/";
-                } else if (response.data.redirect === "/login") {
-                    window.location = "/login";
-                }
+
+        axios
+            .post(
+                "/api/v1.1/settings/grocerySections/delete",
+                { _id: _id, sectionName: sectionName, defaultSection: defaultSection, shoppingList: state.shoppingList },
+                config
+            )
+            .then((res) => {
+                parseRedirectNoDispatch(res.data);
             })
             .catch(function (error) {
-                window.location = "/login";
+                throw error;
             });
     }
 
     // Set the default section
+    // @PROTECTED
     async function setDefaultGrocerySection(_id, sectionName) {
         try {
-            await axios
-                .post(`/api/v1/settings/grocerySections/default/${_id}/${sectionName}`)
-                .then(function (response) {
-                    if (response.data.redirect === "/") {
-                        window.location = "/";
-                    } else if (response.data.redirect === "/login") {
-                        window.location = "/login";
-                    }
+            axios
+                .post("/api/v1.1/settings/grocerySections/default/", { _id: _id, sectionName: sectionName })
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data);
                 })
                 .catch(function (error) {
-                    window.location = "/login";
+                    throw error;
                 });
             dispatch({
                 type: "SET_GROCERY_SECTION_DEFAULT",
@@ -519,11 +530,16 @@ export const GlobalProvider = ({ children }) => {
     return (
         <GlobalContext.Provider
             value={{
+                loggedIn: state.loggedIn,
+                username: state.username,
                 recipes: state.recipes,
                 shoppingList: state.shoppingList,
                 creatingShoppingList: state.creatingShoppingList,
                 grocerySections: state.grocerySections,
                 error: state.error,
+                signOut,
+                isUserSignedIn,
+                signIn,
                 onStartUp,
                 getRecipes,
                 deleteRecipe,

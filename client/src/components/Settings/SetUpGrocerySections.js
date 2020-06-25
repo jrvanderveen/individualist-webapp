@@ -24,19 +24,12 @@ const Wrapper = styled.div`
 */
 export const SetUpGrocerySections = () => {
     // Context
-    const { grocerySections, getGrocerySections, addGrocerySection } = useContext(GlobalContext);
+    const { grocerySections, onStartUp, addGrocerySection } = useContext(GlobalContext);
 
     // State
     const [grocerySection, setGrocerySection] = useState("");
     const [placeHolderText, setPlaceHolderText] = useState("Enter Grocery Section...");
     const [errors, setErrors] = useState([]);
-
-    // Functions
-    // get current section from db
-    useEffect(() => {
-        getGrocerySections();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     // Create new section
     const handleOnClick = () => {

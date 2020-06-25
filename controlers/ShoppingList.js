@@ -3,14 +3,14 @@ const os = require("os");
 const ShoppingList = require("../models/ShoppingList");
 
 // @desc Get shopping list
-// @route GET /api/v1/shoppingList/download
-// @access Public
+// @route GET /api/v1.1/shoppingList/download
+// @access Private
 exports.getShoppingList = async (req, res, next) => {
     try {
-        let shoppingList = await ShoppingList.find();
+        let shoppingList = await ShoppingList.find({ userId: req.user._id });
 
         if (shoppingList.length === 0) {
-            shoppingList = await ShoppingList.create({});
+            shoppingList = await ShoppingList.create({ userId: req.user._id });
         } else {
             shoppingList = shoppingList[0];
         }
@@ -29,8 +29,8 @@ exports.getShoppingList = async (req, res, next) => {
 };
 
 // @desc Post add ingredients from recipe to shopping list
-// @route POST /api/v1/shoppingList
-// @access Public
+// @route POST /api/v1.1/shoppingList
+// @access Private
 exports.postNewShoppingList = async (req, res, next) => {
     try {
         // if id is passed in then replace otherwise create
@@ -60,8 +60,8 @@ exports.postNewShoppingList = async (req, res, next) => {
 };
 
 // @desc Add section ingredient
-// @route POST /api/v1/shoppingList
-// @access Public
+// @route POST /api/v1.1/shoppingList
+// @access Private
 exports.addSectionIngredient = async (req, res, next) => {
     let { _id, sectionName, ingredient } = req.body;
     let ingredientObj = { _id: ObjectID(), name: ingredient };
@@ -100,10 +100,10 @@ exports.addSectionIngredient = async (req, res, next) => {
 };
 
 // @desc Clear all ingredients from list
-// @route DELTE /api/v1/shoppingList
-// @access Public
+// @route DELTE /api/v1.1/shoppingList
+// @access Private
 exports.clearShoppingList = async (req, res, next) => {
-    let _id = req.params.shopping_list_id;
+    let _id = req.body._id;
     try {
         const shoppingList = await ShoppingList.findById({ _id: ObjectID(_id) });
         if (!shoppingList) {
@@ -128,8 +128,8 @@ exports.clearShoppingList = async (req, res, next) => {
 };
 
 // @desc Return shopping list as attachment
-// @route GET /api/v1/shoppingList
-// @access Public
+// @route GET /api/v1.1/shoppingList
+// @access Private
 exports.createShoppingListFile = (req, res, next) => {
     try {
         const shoppingList = JSON.parse(req.query.grocerySectionIngredientsMap);

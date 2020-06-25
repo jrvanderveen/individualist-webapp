@@ -98,6 +98,15 @@ export const Recipe = ({ recipe }) => {
         }
     };
 
+    const qualifiedWebsiteFunc = () => {
+        let url = recipeObj.recipe.URL;
+        if (!/^https?:\/\//i.test(url)) {
+            url = "http://" + url;
+        }
+        return url;
+    };
+    const website = qualifiedWebsiteFunc();
+
     // Display recipe options and links above recipe
     // display recipe attributes in button
     // accordion content: ingredients
@@ -111,7 +120,7 @@ export const Recipe = ({ recipe }) => {
                         <DeleteButton isRecipe onClick={() => deleteRecipe(recipeObj.recipe._id)}>
                             x
                         </DeleteButton>
-                        <StyledLink text="Website" href={recipeObj.recipe.URL} />
+                        <StyledLink text="Website" href={website} />
                         <Span onClick={() => handleEditingClicks("edit")}>Edit</Span>
                     </>
                 ) : (

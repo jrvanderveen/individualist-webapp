@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ObjectID = require("mongoose").Types.ObjectId;
 
 const IngredientSchema = new mongoose.Schema({
     name: {
@@ -12,6 +13,10 @@ const IngredientSchema = new mongoose.Schema({
 });
 
 const RecipeSchema = new mongoose.Schema({
+    userId: {
+        type: ObjectID,
+        required: false, // TODO: once data is updated switch to true
+    },
     name: {
         type: String,
         required: true,

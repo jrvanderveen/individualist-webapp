@@ -40,7 +40,6 @@ export const AddRecipe = () => {
         if (!/^https?:\/\//i.test(url)) {
             url = "http://" + url;
         }
-        console.log(url);
         const newRecipe = {
             name,
             servings,

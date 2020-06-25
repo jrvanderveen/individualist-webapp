@@ -11,7 +11,7 @@ const Button = styled.button`
     border: 0;
     font-size: 14px;
     padding: 5px;
-    margin: ${(props) => (props.top ? "10px 5px 5px 5px" : "5px 5px 0px 5px")};
+    margin: ${(props) => (props.seperate ? "15px 5px 0px 5px" : "5px 5px 0px 5px")};
     width: 90%;
     &:hover {
         background-color: #8171d1;
@@ -45,7 +45,7 @@ const Li = styled.li`
 */
 export const Options = ({ togglePopUpFunc }) => {
     // Context
-    const { setCreateShoppingListBool, creatingShoppingList, saveAddedRecipes } = useContext(GlobalContext);
+    const { setCreateShoppingListBool, creatingShoppingList, saveAddedRecipes, signOut } = useContext(GlobalContext);
 
     // Options for main page
     return (
@@ -70,6 +70,9 @@ export const Options = ({ togglePopUpFunc }) => {
                     </Li>
                 </Ul>
             ) : null}
+            <Button seperate onClick={signOut}>
+                Logout
+            </Button>
         </Div>
     );
 };

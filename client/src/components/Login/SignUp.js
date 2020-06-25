@@ -18,47 +18,47 @@ const Wrapper = styled.div`
 */
 export const SignUp = ({ setLogInStateFunc }) => {
     // State
-    const [userName, setUserName] = useState("a");
-    const [email, setEmail] = useState("a@gmail");
-    const [password, setPassword] = useState("a");
-    const [repeatPassword, setRepeatPassword] = useState("a");
+    const [username, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [repeatPassword, setRepeatPassword] = useState("");
 
     //Functions
     const onSubmit = (e) => {
         e.preventDefault();
-        if (userName === "" || email === "" || password === "" || repeatPassword === "") {
+        if (username === "" || email === "" || password === "" || repeatPassword === "") {
             return;
         }
         if (password !== repeatPassword) {
             setRepeatPassword("");
             return;
         }
-        signUp({ userName, email, password }).then(() => {});
+        signUp({ username, email, password, repeatPassword }).then(() => {});
     };
 
     async function signUp(signUpObj) {
-        console.log("sign up");
-        try {
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            };
-            axios
-                .post("/api/v1/login/signup", signUpObj, config)
-                .then((res) => {
-                    console.log(res);
+        axios
+            .post("/api/v1.1/login/signup", signUpObj)
+            .then((res) => {
+                if (!res.data.error) {
                     setLogInStateFunc("login");
-                })
-                .catch((error) => {
-                    console.log(error.response);
-                });
-        } catch (error) {}
+                } else {
+                    setUserName(res.data.error);
+                }
+            })
+            .catch((error) => {
+                console.log("login error: ");
+                console.log(error);
+            });
     }
 
     return (
         <form className="form-signup" onSubmit={onSubmit}>
-            <div className="social-login">
+            <h1 className="h3 mb-3 font-weight-normal" style={{ textAlign: "center" }}>
+                {" "}
+                Sign Up
+            </h1>
+            {/* <div className="social-login">
                 <button className="btn facebook-btn social-btn" type="button">
                     <span>Sign up with Facebook</span>{" "}
                 </button>
@@ -69,11 +69,11 @@ export const SignUp = ({ setLogInStateFunc }) => {
                 </button>
             </div>
 
-            <p style={{ textAlign: "center" }}>OR</p>
+            <p style={{ textAlign: "center" }}>OR</p> */}
 
             <input
                 type="text"
-                value={userName}
+                value={username}
                 onChange={(e) => setUserName(e.target.value)}
                 className="form-control"
                 placeholder="User name..."
@@ -106,7 +106,7 @@ export const SignUp = ({ setLogInStateFunc }) => {
 
             <button className="btn btn-primary btn-block">Sign Up</button>
             <Wrapper>
-                <span onClick={() => setLogInStateFunc("login")}>Sign In</span>
+                <span onClick={() => setLogInStateFunc("login")}>Sign in</span>
             </Wrapper>
         </form>
     );

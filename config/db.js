@@ -1,17 +1,24 @@
 const mongoose = require("mongoose");
+const MongoClient = require("mongodb").MongoClient;
 
-const connectDB = async (mongoURI) => {
-    try {
-        const conn = await mongoose.connect(mongoURI, {
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-        });
-        console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold);
-    } catch (err) {
-        console.log(`Error: ${err.message}`.red);
-        process.exit(1);
-    }
+module.exports = {
+    connectDB: async function (mongoURI, callback) {
+        mongoose
+            .connect(mongoURI, {
+                useNewUrlParser: true,
+                useCreateIndex: true,
+                useUnifiedTopology: true,
+            })
+            .then((x) => {
+                console.log(`MongoDB Connected: ${mongoose.connections[0].host}`.cyan.underline.bold);
+                return callback(null);
+            })
+            .catch((err) => {
+                return callback(err);
+            });
+    },
+
+    getConnection: function () {
+        return mongoose.connection;
+    },
 };
-
-module.exports = connectDB;

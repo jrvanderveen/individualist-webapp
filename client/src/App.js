@@ -1,13 +1,8 @@
 import React from "react";
 import "./App.css"; // Styled components used instead
 import { GlobalProvider } from "./context/GlobalState";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import { MainPage } from "./pages/MainPage";
-import { NotFound } from "./pages/404";
-import { Settings } from "./pages/Settings";
-import { Login } from "./pages/Login";
+import { Routes } from "./Routes";
 import { createGlobalStyle } from "styled-components";
-
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: #f7f7f7;
@@ -20,18 +15,15 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-family: "Lato", sans-serif;
   }
-
   :root {
     --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     }
-
     * {
         box-sizing: border-box;
     } 
     .error {
     color: #c0392b;
 }
-
 `;
 
 // App pages:
@@ -41,17 +33,8 @@ function App() {
     return (
         <GlobalProvider>
             <GlobalStyle />
-            <Router>
-                <Switch>
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/" component={MainPage} />
-                    <Route exact path="/settings" component={Settings} />
-                    <Route exact path="/404" component={NotFound} />
-                    <Redirect to="/404" />
-                </Switch>
-            </Router>
+            <Routes />
         </GlobalProvider>
     );
 }
-
 export default App;

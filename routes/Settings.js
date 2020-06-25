@@ -5,8 +5,9 @@ const { getGrocerySections, addGrocerySection, deleteGrocerySection, setDefaultG
 
 // Preserve this order
 router.route("/grocerySections").all(ensureAuthenticated).get(getGrocerySections);
-router.route("/grocerySections/default/:_id/:section_name").all(ensureAuthenticated).post(setDefaultGrocerySection);
-router.route("/grocerySections/:_id/:section_name/:default").all(ensureAuthenticated).post(deleteGrocerySection);
-router.route("/grocerySections/:_id/:section_name").all(ensureAuthenticated).post(addGrocerySection);
+router.route("/grocerySections/add").all(ensureAuthenticated).post(addGrocerySection);
+router.route("/grocerySections/delete").all(ensureAuthenticated).post(deleteGrocerySection);
+
+router.route("/grocerySections/default").all(ensureAuthenticated).post(setDefaultGrocerySection);
 
 module.exports = router;

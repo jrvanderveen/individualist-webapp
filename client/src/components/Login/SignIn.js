@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useContext } from "react";
+import { GlobalContext } from "../../context/GlobalState";
+import { Redirect } from "react-router-dom";
 
 /*
     SUMMARY:
@@ -9,41 +10,32 @@ import axios from "axios";
         setLogInStateFunc: switch between sign in and sign up form
 */
 export const SignIn = ({ setLogInStateFunc }) => {
+    // Context
+    const { signIn } = useContext(GlobalContext);
+
     // State
-    const [email, setEmail] = useState("");
+    const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
     // Functions
     const onSubmit = (e) => {
         e.preventDefault();
-        signIn({ email, password }).then(() => {});
+        signIn({ username: username, password: password }).then((result) => {
+            if (!result) {
+                setUserName("invalid user/password");
+                setPassword("");
+            } else {
+                return <Redirect to="/" />;
+            }
+        });
     };
-
-    async function signIn(signInObj) {
-        console.log("sign in");
-        try {
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            };
-            axios
-                .post("/api/v1/login/signIn", { signInObj }, config)
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((error) => {
-                    console.log(error.response);
-                });
-        } catch (error) {}
-    }
     return (
         <form className="form-signin" onSubmit={onSubmit}>
             <h1 className="h3 mb-3 font-weight-normal" style={{ textAlign: "center" }}>
                 {" "}
                 Sign in
             </h1>
-            <div className="social-login">
+            {/* <div className="social-login">
                 <button className="btn facebook-btn social-btn" type="button">
                     <span>
                         <i className="fab fa-facebook-f"></i> Sign in with Facebook
@@ -54,14 +46,14 @@ export const SignIn = ({ setLogInStateFunc }) => {
                         <i className="fab fa-google-plus-g"></i> Sign in with Google+
                     </span>{" "}
                 </button>
-            </div>
-            <p style={{ textAlign: "center" }}> OR </p>
+            </div> 
+            <p style={{ textAlign: "center" }}> OR </p>*/}
             <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="username"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
                 className="form-control"
-                placeholder="Email address..."
+                placeholder="User Name..."
                 required="required"
                 autoFocus
             />

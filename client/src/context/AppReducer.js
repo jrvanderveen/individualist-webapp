@@ -1,6 +1,35 @@
 export default (state, action) => {
     switch (action.type) {
         //////////////////////////////////////////////////////////////
+        // LOGIN
+        // Set login state
+        // action.payload = {success: bool, username: string}
+        case "LOG_IN_STATE":
+            return {
+                ...state,
+                loggedIn: action.payload.success,
+                username: action.payload.username,
+            };
+
+        // Log user out
+        case "LOG_USER_OUT":
+            state.loggedIn = false;
+            state.username = "";
+            return {
+                ...state,
+                loggedIn: state.loggedIn,
+                username: state.username,
+            };
+        // Log user in by saving user name and setting logged in = true
+        case "LOG_USER_IN":
+            state.loggedIn = true;
+            return {
+                ...state,
+                loggedIn: state.loggedIn,
+                username: action.payload,
+            };
+
+        //////////////////////////////////////////////////////////////
         // RECIPES
         // Build recipe map for saved recipes in action.payload
         // addToShoppingList, editing not saved in db
@@ -83,7 +112,6 @@ export default (state, action) => {
         // action.payload = edited recipe
         case "SAVE_EDITED_RECIPE":
             state.recipes[action.payload._id] = action.payload;
-            console.log(action.payload);
             return {
                 ...state,
                 recipes: state.recipes,
@@ -103,6 +131,7 @@ export default (state, action) => {
                 });
             }
             state.shoppingList._id = action.payload._id;
+            state.shoppingList.userId = action.payload.userId;
             return {
                 ...state,
                 shoppingList: state.shoppingList,
@@ -162,7 +191,10 @@ export default (state, action) => {
         // action.payload = grocery section name
         case "ADD_GROCERY_SECTION":
             state.grocerySections.sections.push(action.payload);
-            let tmp = state.shoppingList.grocerySectionIngredientsMap[action.payload];
+            // Force default dict to intalize entry
+            if (state.shoppingList.grocerySectionIngredientsMap[action.payload]) {
+            }
+
             return {
                 ...state,
                 grocerySections: state.grocerySections,
@@ -204,6 +236,12 @@ export default (state, action) => {
             };
 
         //ERRORS
+        case "LOGIN_ERROR":
+            console.log(action.payload);
+            return {
+                ...state,
+                error: action.payload,
+            };
         case "RECIPE_ERROR":
             console.log(action.payload);
             return {

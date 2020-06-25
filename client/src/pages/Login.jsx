@@ -9,8 +9,16 @@ import { SignUp } from "../components/Login/SignUp";
     PARAMS: 
 
 */
-export const Login = () => {
-    const [loginState, setLogInState] = useState("signup");
+export const Login = ({ setLoggedInFunc }) => {
+    const [loginState, setLogInState] = useState("login");
 
-    return <div id="logreg-forms">{loginState === "login" ? <SignIn setLogInStateFunc={setLogInState} /> : <SignUp setLogInStateFunc={setLogInState} />}</div>;
+    return (
+        <div id="logreg-forms">
+            {loginState === "login" ? (
+                <SignIn setLogInStateFunc={setLogInState} setLoggedInFunc={setLoggedInFunc} />
+            ) : (
+                <SignUp setLogInStateFunc={setLogInState} />
+            )}
+        </div>
+    );
 };

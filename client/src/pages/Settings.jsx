@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { GlobalContext } from "../context/GlobalState";
 import { Options } from "../components/Settings/Options";
 import { SetUpGrocerySections } from "../components/Settings/SetUpGrocerySections";
 import { UserSettings } from "../components/Settings/UserSettings";
@@ -18,6 +19,19 @@ const Container = styled.section`
 
 */
 export const Settings = () => {
+    // State
+    const { grocerySections, onStartUp } = useContext(GlobalContext);
+
+    // Functions
+    // If reder check if we need to get grocerySections.
+    //      if visiting the settings page and returning no update needed
+    useEffect(() => {
+        if (Object.entries(grocerySections.sections).length === 0) {
+            onStartUp();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const settingsMap = { "Grocery Store Sections": <SetUpGrocerySections />, "User Settings": <UserSettings /> };
     const [activeOption, setActiveOption] = useState("Grocery Store Sections");
     return (
