@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { GrocerySection } from "./GrocerySection";
 import { H3, List, Input } from "../../elements/index";
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 */
 export const SetUpGrocerySections = () => {
     // Context
-    const { grocerySections, onStartUp, addGrocerySection } = useContext(GlobalContext);
+    const { grocerySections, addGrocerySection } = useContext(GlobalContext);
 
     // State
     const [grocerySection, setGrocerySection] = useState("");

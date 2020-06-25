@@ -26,7 +26,7 @@ export const SignUp = ({ setLogInStateFunc }) => {
     //Functions
     const onSubmit = (e) => {
         e.preventDefault();
-        if (username === "" || email === "" || password === "" || repeatPassword === "") {
+        if (username === "" || password === "" || repeatPassword === "") {
             return;
         }
         if (password !== repeatPassword) {
@@ -85,7 +85,8 @@ export const SignUp = ({ setLogInStateFunc }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="form-control"
                 placeholder="Email address..."
-                required="required"
+                // required="required"
+                disabled="disabled"
             />
             <input
                 type="password"
