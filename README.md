@@ -7,7 +7,7 @@
 <p align="center">
   <a href="http://myindividualist.com/">Demo</a> •
   <a href="#features">Features</a> •
-  <a href="#contributing">Tutorial</a> • 
+  <a href="#tutorial">Tutorial</a> • 
   <a href="#installation">Installation</a> •
   <a href="#contributing">Contributing</a> 
 
