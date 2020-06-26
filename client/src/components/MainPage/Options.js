@@ -18,7 +18,7 @@ const Button = styled.button`
     }
 `;
 
-const Div = styled.div`
+const Wrapper = styled.div`
     position: absolute;
     left: 0px;
     top: 40%;
@@ -49,7 +49,7 @@ export const Options = ({ togglePopUpFunc }) => {
 
     // Options for main page
     return (
-        <Div>
+        <Wrapper>
             <Button middle clicked={creatingShoppingList} onClick={togglePopUpFunc}>
                 View Shopping List
             </Button>
@@ -73,6 +73,6 @@ export const Options = ({ togglePopUpFunc }) => {
             <Button seperate onClick={signOut}>
                 Logout
             </Button>
-        </Div>
+        </Wrapper>
     );
 };

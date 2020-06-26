@@ -9,6 +9,11 @@ const Div = styled.div`
     margin-left: 10px;
 `;
 
+const IngredientLabel = styled.div`
+    width: 100%;
+    overflow: hidden;
+`;
+
 /*
     SUMMARY:
         Diplay/edit/delete recipe ingredient 
@@ -67,7 +72,9 @@ export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient
                         onChange={(e) => handleInputChange(e)}
                     />
                 ) : (
-                    `${index + 1}: ${ingredient.name}`
+                    <>
+                        {index + 1}:&nbsp;&nbsp;<IngredientLabel>{ingredient.name}</IngredientLabel>
+                    </>
                 )}
                 <Div>
                     <DropDownButton

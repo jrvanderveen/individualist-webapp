@@ -3,6 +3,7 @@ import AppReducer from "./AppReducer";
 import axios from "axios";
 import DefaultDict from "../utils/DefaultDict";
 import { Redirect } from "react-router-dom";
+const ObjectID = require("mongoose").Types.ObjectId;
 
 // Initial state
 const initialState = {
@@ -235,21 +236,25 @@ export const GlobalProvider = ({ children }) => {
     // Append ingredient to end of specific recipe
     // @PROTECTED
     async function addRecipeIngredient(recipeId, ingredient) {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-
         try {
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            ingredient._id = new ObjectID();
             axios
                 .post(`/api/v1.1/recipes/ingredient/add`, { recipeId: recipeId, ingredient: ingredient }, config)
                 .then((res) => {
-                    parseRedirectWithDispatch(res.data, [recipeId, res.data.data.ingredient], "ADD_RECIPE_INGREDIENT");
+                    parseRedirectNoDispatch(res.data);
                 })
                 .catch(function (error) {
                     throw error;
                 });
+            dispatch({
+                type: "ADD_RECIPE_INGREDIENT",
+                payload: [recipeId, ingredient],
+            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -379,14 +384,19 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let _id = state.shoppingList._id;
-            await axios
-                .post("/api/v1.1/shoppingList/update", { _id, sectionName, ingredient }, config)
+            const ingredientObj = { name: ingredient, _id: ObjectID() };
+            axios
+                .post("/api/v1.1/shoppingList/update", { _id, sectionName, ingredientObj }, config)
                 .then((res) => {
-                    parseRedirectWithDispatch(res.data, [sectionName, res.data.data.ingredient], "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION");
+                    parseRedirectNoDispatch(res.data);
                 })
                 .catch(function (error) {
                     throw error;
                 });
+            dispatch({
+                type: "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION",
+                payload: [sectionName, ingredientObj],
+            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",

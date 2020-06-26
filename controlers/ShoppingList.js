@@ -63,8 +63,7 @@ exports.postNewShoppingList = async (req, res, next) => {
 // @route POST /api/v1.1/shoppingList
 // @access Private
 exports.addSectionIngredient = async (req, res, next) => {
-    let { _id, sectionName, ingredient } = req.body;
-    let ingredientObj = { _id: ObjectID(), name: ingredient };
+    let { _id, sectionName, ingredientObj } = req.body;
     try {
         const shoppingList = await ShoppingList.findById({ _id: ObjectID(_id) });
         if (!shoppingList) {

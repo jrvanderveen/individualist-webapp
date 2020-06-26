@@ -1,35 +1,50 @@
-# cooking-with-code
-Using this project to teach myself node/react/full stack application building.  
 
-SUMMARY:
+<h1 align="center" margin-top="100">
+	  INDIVIDUA&#8729;LIST
+</h1>
+<h4 align="center">Save recipes and easily create custom shopping lists</h4>
 
-This site will eventually be a place where home cooks can come to save old recipe and expedite their shopping. Cooks will be able to create recipes with an ingredient list and when it comes time for shopping (the worst part of cooking) this site will give users the ability to select multiple recipes and export a shopping list for all the ingredients required. Before exporting they will be able to unselect items they already own (like salt, pepper,...). Each ingredient will have a grocery store section attribute allowing an exported list to look something like this:
+<p align="center">
+  <a href="http://myindividualist.com/">Demo</a> •
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#contributing">Contributing</a>
+</p>
 
-Meats:
+# Features
+ 
+#### Save and Edit Recipes
 
-    1 pound ground beef
+Found a delicious recipe online?  Save and link the recipe with INDIVIDUA&#8729;LIST.  
 
-Vegetables:
+#### Persistent shopping list
 
-    4 large tomatoes
-    carrots
-    zucchini
-    parsley
+Leave the _rests_ to us. Smart Rests find the best rest combination between notes so you can spend more time writing music. 
 
-Other:
+#### Full Edit History
 
-    red wine
-    8 ounce tomatoe sauce
+Make a mistake? Change your mind? No worries. We’ll keep track of your edits so you don’t have to.
 
-REQUIRES:
+# Installation
 
-    Mongo Atlas DB
-    npm install
-    npm run dev (server back end locally, runs client code on http://localhost:3000/)
+1. Clone this repository from your terminal
 
-TODO:
+   `$ git clone https://github.com/d-rowe/musyn.git`
 
-      build more beautiful front end
-      Create export shopping list functionality
-            Allow user to select recipies to add then create new view of all ingredients seperated and sorted.  This new list can have items deleted.
-      add in additional features like rating or searching for recipes
+2. Install dependencies with `npm install`
+
+3. Create a database in PostgreSQL
+
+4. Execute the database schema located in `database/schema.sql`
+
+5. Copy `.env.example` to `.env`
+
+   `$ cp .env.example .env`
+
+6. Edit `.env` to reflect your database information
+
+7. Start with `npm run dev`
+
+# Contributing
+
+Want to help? Great! Checkout the [issue](https://github.com/d-rowe/musyn/issues) tracker and find something you'd like to tackle.
