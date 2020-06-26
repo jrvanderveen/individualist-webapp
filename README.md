@@ -1,5 +1,5 @@
-
-<h1 align="center" margin-top="100">
+<br/>
+<h1 align="center" >
 	  INDIVIDUA&#8729;LIST
 </h1>
 <h4 align="center">Save recipes and easily create custom shopping lists</h4>
@@ -7,44 +7,75 @@
 <p align="center">
   <a href="http://myindividualist.com/">Demo</a> •
   <a href="#features">Features</a> •
+  <a href="#tutorial">Tutorial</a> • 
   <a href="#installation">Installation</a> •
-  <a href="#contributing">Contributing</a>
+  <a href="#contributing">Contributing</a> 
+
 </p>
 
 # Features
  
+
 #### Save and Edit Recipes
 
-Found a delicious recipe online?  Save and link the recipe with INDIVIDUA&#8729;LIST.  
+Found a delicious recipe online?  Create a new recipe and save each ingredient and link the website.  Made a mistake? No problem delete the recipe or edit the incorrect values and save.    
 
 #### Persistent shopping list
 
-Leave the _rests_ to us. Smart Rests find the best rest combination between notes so you can spend more time writing music. 
+Easily create shopping list by adding all ingredients from recipe with a single click or add single items as you think of them.  All items on the shopping list will be listed with other items from the same grocery section.
 
-#### Full Edit History
+#### Custom Grocery Sections 
 
-Make a mistake? Change your mind? No worries. We’ll keep track of your edits so you don’t have to.
+Create a list of grocery sections ex: Produce, Vegetables, Frozen, Other ...  When saving a new ingredient for a recipe set the grocery section value from one in the list.  Add items to your shopping list based on the grocery section.
+
+# Tutorial
+![Demo Gif](demo/test.gif)
 
 # Installation
 
 1. Clone this repository from your terminal
 
-   `$ git clone https://github.com/d-rowe/musyn.git`
+   `$ https://github.com/jrvanderveen/cooking-with-code`
 
-2. Install dependencies with `npm install`
+2. Setup 
+ ```
+ npm install
+ cd client npm install
+ cd ..
+ 
+ # Run front and backend
+ npm run dev
+ 
+ # Backend only
+ npm run server
+ 
+ # Frontend only
+ npm run client
+ 
+ # Build client
+ cd client
+ npm run build
+ 
+ # Prod (Prereq build client)
+ npm start
+```
 
-3. Create a database in PostgreSQL
+4. Create a MongoDB database 
 
-4. Execute the database schema located in `database/schema.sql`
-
-5. Copy `.env.example` to `.env`
-
-   `$ cp .env.example .env`
+5. `cd config` Create `config.env` file with values:
 
 6. Edit `.env` to reflect your database information
-
+```
+#(development / production)
+NODE_ENV=development
+PORT=5000
+MONGO_URI=Your Mongo URI
+#verbose = everything on
+#limited = only basic server logging
+LOGING_LEVEL=limited
+```
 7. Start with `npm run dev`
 
 # Contributing
 
-Want to help? Great! Checkout the [issue](https://github.com/d-rowe/musyn/issues) tracker and find something you'd like to tackle.
+Want to help? Great! Checkout the [project](https://github.com/jrvanderveen/cooking-with-code/projects/1) and find something you'd like to tackle.
