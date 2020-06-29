@@ -409,14 +409,6 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     function clearShoppingList() {
         try {
-            let empty = true;
-            Object.keys(state.shoppingList.grocerySectionIngredientsMap).forEach((key) => {
-                if (state.shoppingList.grocerySectionIngredientsMap[key].length > 0) {
-                    empty = false;
-                }
-            });
-            if (empty) return;
-
             let _id = state.shoppingList._id;
             axios
                 .post("/api/v1.1/shoppingList/clear", { _id: _id })

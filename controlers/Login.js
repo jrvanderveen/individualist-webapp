@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const GrocerySections = require("../models/GrocerySections");
+const ShoppingList = require("../models/ShoppingList");
 const passport = require("passport");
 
 // @desc On app start determine if user is authenticated
@@ -48,7 +50,7 @@ exports.signUp = async (req, res, next) => {
                         error: `Server Error`,
                     });
                 }
-                createDefaultGrocerySections(savedUser._id);
+                setUserDefaults(savedUser._id);
                 res.json(savedUser);
             });
         }
@@ -56,7 +58,7 @@ exports.signUp = async (req, res, next) => {
 };
 
 // Helper method to create default grocery section document
-const createDefaultGrocerySections = async (userId) => {
+const setUserDefaults = (userId) => {
     console.log("createDefaultGrocerySections");
     try {
         const grocerySectionObject = {
@@ -64,7 +66,17 @@ const createDefaultGrocerySections = async (userId) => {
             default: "Other",
             sections: ["Other", "Produce", "Meat"],
         };
-        const grocerySectionsDoc = await GrocerySections.create(grocerySectionObject);
+        GrocerySections.create(grocerySectionObject);
+
+        const shoppingListObject = {
+            userId: userId,
+            grocerySectionIngredientsMap: {
+                Other: [],
+                Produce: [],
+                Meat: [],
+            },
+        };
+        ShoppingList.create(shoppingListObject);
     } catch (err) {
         console.log(`ERROR: Creating default grocery section document`.red);
     }

@@ -104,15 +104,19 @@ exports.addSectionIngredient = async (req, res, next) => {
 exports.clearShoppingList = async (req, res, next) => {
     let _id = req.body._id;
     try {
-        const shoppingList = await ShoppingList.findById({ _id: ObjectID(_id) });
+        let shoppingList = await ShoppingList.findById({ _id: ObjectID(_id) });
         if (!shoppingList) {
             return res.status(404).json({
                 success: false,
                 error: "No shopping list found",
             });
         }
+        const grocerySectionIngredientsMap = {};
+        Object.keys(shoppingList.grocerySectionIngredientsMap).forEach((key) => {
+            grocerySectionIngredientsMap[key] = [];
+        });
 
-        await ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { grocerySectionIngredientsMap: {} } });
+        await ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { grocerySectionIngredientsMap: grocerySectionIngredientsMap } });
 
         return res.status(200).json({
             success: true,
