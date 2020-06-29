@@ -78,7 +78,7 @@ const setUserDefaults = (userId) => {
         };
         ShoppingList.create(shoppingListObject);
     } catch (err) {
-        console.log(`ERROR: Creating default grocery section document`.red);
+        console.log(`ERROR: Creating user default documents`.red);
     }
 };
 

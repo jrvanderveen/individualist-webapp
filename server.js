@@ -18,6 +18,7 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
 
     // Express
     const app = express();
+
     app.use(express.json());
     if (process.env.NODE_ENV === "development") {
         app.use(morgan("dev"));
@@ -26,7 +27,7 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     // Express Session
     app.use(
         session({
-            secret: "fraggle-rock",
+            secret: process.env.SESSION_SECRET,
             store: new MongoStore({ mongooseConnection: mongoUtil.getConnection() }),
             resave: false,
             saveUninitialized: false,

@@ -237,19 +237,19 @@ export default (state, action) => {
 
         //ERRORS
         case "LOGIN_ERROR":
-            console.log(action.payload);
+            console.log("Login " + action.payload);
             return {
                 ...state,
                 error: action.payload,
             };
         case "RECIPE_ERROR":
-            console.log(action.payload);
+            console.log("Recipe " + action.payload);
             return {
                 ...state,
                 error: action.payload,
             };
         case "SETTINGS_ERROR":
-            console.log(action.payload);
+            console.log("Settings " + action.payload);
             return {
                 ...state,
                 error: action.payload,

@@ -82,7 +82,15 @@ export const GlobalProvider = ({ children }) => {
     // Check login state of user before initial render
     async function isUserSignedIn() {
         try {
-            const res = await axios.post("/api/v1.1/login/state");
+            const res = await axios
+                .post("/api/v1.1/login/state")
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
             dispatch({
                 type: "LOG_IN_STATE",
                 payload: res.data,
