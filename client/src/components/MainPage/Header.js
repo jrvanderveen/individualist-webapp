@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
 import { GlobalContext } from "../../context/GlobalState";
+import styled from "styled-components";
 
 // Styled components
 const H1 = styled.h1`
@@ -23,7 +23,7 @@ export const Header = () => {
     const { username } = useContext(GlobalContext);
 
     return (
-        <Wrapper>
+        <Wrapper> 
             <H1>INDIVIDUA&#8729;LIST</H1>
             <div>Welcome {username}</div>
         </Wrapper>

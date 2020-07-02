@@ -1,4 +1,5 @@
 const Recipe = require("../models/recipe");
+const GrocerySections = require("../models/GrocerySections");
 const ObjectID = require("mongoose").Types.ObjectId;
 
 // @desc Get all recipes
@@ -48,6 +49,42 @@ exports.addRecipe = async (req, res, next) => {
                 error: "Server Error",
             });
         }
+    }
+};
+
+// @desc Recipes created from the individualist webscraper
+// @route POST /api/v1.1/recipes/addFull
+// @access Private
+// req.body = {name, servings, URL, ingredients[]} no ingredients on create
+exports.addFullRecipe = async (req, res, next) => {
+    console.log("addFullRecipe");
+    try {
+        const userId = req.user._id;
+        const ingredientsObj = [];
+        const userSections = await GrocerySections.findOne({ userId: userId });
+        req.body.ingredients.forEach((ingredient) => {
+            ingredientsObj.push({ name: ingredient, grocerySection: userSections["default"] });
+        });
+        const recipeObj = {
+            userId: userId,
+            name: req.body.name ? req.body.name : "Name Me!",
+            servings: req.body.servings ? req.body.servings : 1,
+            URL: req.body.URL ? req.body.URL : "http://",
+            ingredients: ingredientsObj,
+        };
+        console.log(recipeObj);
+        const recipe = await Recipe.create(recipeObj);
+        console.log(recipe);
+        return res.status(201).json({
+            success: true,
+            data: recipe,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
     }
 };
 
