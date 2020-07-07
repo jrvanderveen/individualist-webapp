@@ -46,6 +46,7 @@ const initialState = {
     },
     creatingShoppingList: false,
     error: null,
+    postMessage: "",
 };
 
 // Create context
@@ -203,7 +204,7 @@ export const GlobalProvider = ({ children }) => {
             await axios
                 .post("/api/v1.1/recipes/add", recipe, config)
                 .then((res) => {
-                    parseRedirectWithDispatch(res.data, res.data.data, "ADD_RECIPE");
+                    parseRedirectWithDispatch(res.data, { recipe: res.data.data, scraper: res.data.scraper }, "ADD_RECIPE");
                 })
                 .catch(function (error) {
                     throw error;
@@ -546,6 +547,7 @@ export const GlobalProvider = ({ children }) => {
                 creatingShoppingList: state.creatingShoppingList,
                 grocerySections: state.grocerySections,
                 error: state.error,
+                postMessage: state.postMessage,
                 signOut,
                 isUserSignedIn,
                 signIn,

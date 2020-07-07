@@ -1,6 +1,7 @@
 const Recipe = require("../models/recipe");
 const GrocerySections = require("../models/GrocerySections");
 const ObjectID = require("mongoose").Types.ObjectId;
+const axios = require("axios");
 
 // @desc Get all recipes
 // @route GET /api/v1.1/recipes
@@ -29,10 +30,22 @@ exports.getRecipes = async (req, res, next) => {
 exports.addRecipe = async (req, res, next) => {
     try {
         req.body.userId = req.user._id;
-        const recipe = await Recipe.create(req.body);
-
+        let recipeObj = req.body;
+        let scraperResult = "success";
+        if (req.body.URL) {
+            let scraperRes = await axios.post("http://ec2-18-218-233-252.us-east-2.compute.amazonaws.com:5001" + "/api/v1/scraper/recipe", {
+                url: req.body.URL,
+            });
+            if (!scraperRes.data.error) {
+                recipeObj = await buildFullRecipe(req.body.name, req.body.servings, req.body.userId, scraperRes.data);
+            } else {
+                scraperResult = scraperRes.data.error;
+            }
+        }
+        const recipe = await Recipe.create(recipeObj);
         return res.status(201).json({
             success: true,
+            scraper: scraperResult,
             data: recipe,
         });
     } catch (err) {
@@ -59,22 +72,8 @@ exports.addRecipe = async (req, res, next) => {
 exports.addFullRecipe = async (req, res, next) => {
     console.log("addFullRecipe");
     try {
-        const userId = req.user._id;
-        const ingredientsObj = [];
-        const userSections = await GrocerySections.findOne({ userId: userId });
-        req.body.ingredients.forEach((ingredient) => {
-            ingredientsObj.push({ name: ingredient, grocerySection: userSections["default"] });
-        });
-        const recipeObj = {
-            userId: userId,
-            name: req.body.name ? req.body.name : "Name Me!",
-            servings: req.body.servings ? req.body.servings : 1,
-            URL: req.body.URL ? req.body.URL : "http://",
-            ingredients: ingredientsObj,
-        };
-        console.log(recipeObj);
+        recipeObj = await buildFullRecipe(req.body.name ? req.body.name : "Name Me!", req.body.servings ? req.body.servings : 1, req.user._id, scraperRes.data);
         const recipe = await Recipe.create(recipeObj);
-        console.log(recipe);
         return res.status(201).json({
             success: true,
             data: recipe,
@@ -86,6 +85,25 @@ exports.addFullRecipe = async (req, res, next) => {
             error: "Server Error",
         });
     }
+};
+
+// Helper function for add recipe and add full recipe
+buildFullRecipe = async (recipeName, recipeServings, userId, data) => {
+    //Expecptions cought in parrent function
+    const ingredientsObj = [];
+    const userSections = await GrocerySections.findOne({ userId: userId });
+    data.ingredients.forEach((ingredient) => {
+        ingredientsObj.push({ name: ingredient, grocerySection: userSections["default"] });
+    });
+    const recipeObj = {
+        userId: userId,
+        name: recipeName,
+        servings: recipeServings,
+        URL: data.URL ? data.URL : "http://",
+        ingredients: ingredientsObj,
+    };
+
+    return recipeObj;
 };
 
 // @desc Delete recipe for given _id

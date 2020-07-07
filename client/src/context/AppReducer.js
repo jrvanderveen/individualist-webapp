@@ -55,11 +55,13 @@ export default (state, action) => {
 
         //Add recipe contained in action.payload
         case "ADD_RECIPE":
-            action.payload.addToShoppingList = false;
-            state.recipes[action.payload._id] = action.payload;
+            action.payload.recipe.addToShoppingList = false;
+            state.recipes[action.payload.recipe._id] = action.payload.recipe;
+            state.postMessage = action.payload.scraper === "success" ? "" : "Auto Ingredients:: " + action.payload.scraper;
             return {
                 ...state,
                 recipes: state.recipes,
+                postMessage: state.postMessage,
             };
 
         //Delete ingredient from recipe._id == action.payload[0]

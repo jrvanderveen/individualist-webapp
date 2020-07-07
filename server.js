@@ -8,7 +8,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const passport = require("./passport");
 const mongoUtil = require("./config/db");
-
 // Set env path
 dotenv.config({ path: "./config/config.env" });
 

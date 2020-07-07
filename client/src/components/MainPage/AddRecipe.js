@@ -11,8 +11,7 @@ import { H3, Input, Label, Button } from "../../elements/index";
 */
 export const AddRecipe = () => {
     // Context
-    const { addRecipe } = useContext(GlobalContext);
-    const { recipes } = useContext(GlobalContext);
+    const { addRecipe, recipes, postMessage } = useContext(GlobalContext);
 
     // State
     const [name, setRecipeName] = useState("");
@@ -51,7 +50,7 @@ export const AddRecipe = () => {
         setServings(1);
         setRecipeURL("");
     };
-
+    console.log(postMessage);
     // New recipe form (no ingredients added at start)
     return (
         <>
@@ -62,6 +61,7 @@ export const AddRecipe = () => {
                         {error}
                     </p>
                 ))}
+                {postMessage !== "" ? <p className="error">{postMessage}</p> : null}
                 <div>
                     <Label>Name</Label>
                     <Input type="text" value={name} onChange={(e) => setRecipeName(e.target.value)} placeholder="Enter Name..." required="required" />
