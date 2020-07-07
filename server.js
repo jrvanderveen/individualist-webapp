@@ -44,7 +44,7 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     }
 
     // Routes
-    const recipes = require("./routes/recipes");
+    const recipes = require("./routes/Recipes");
     const shoppingList = require("./routes/ShoppingList");
     const settings = require("./routes/Settings");
     const login = require("./routes/Login");

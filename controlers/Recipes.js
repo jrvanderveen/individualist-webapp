@@ -1,4 +1,4 @@
-const Recipe = require("../models/recipe");
+const Recipe = require("../models/Recipe");
 const GrocerySections = require("../models/GrocerySections");
 const ObjectID = require("mongoose").Types.ObjectId;
 const axios = require("axios");
