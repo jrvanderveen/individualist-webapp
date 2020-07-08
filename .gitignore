@@ -24,3 +24,5 @@ yarn-error.log*
 # Random
 /config/config.env
 /documents
+.cert.pem
+.key.pem

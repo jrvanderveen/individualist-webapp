@@ -8,6 +8,8 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const passport = require("./passport");
 const mongoUtil = require("./config/db");
+const https = require("https");
+const fs = require("fs");
 // Set env path
 dotenv.config({ path: "./config/config.env" });
 
@@ -61,7 +63,23 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
         app.get("*", (req, res) => res.sendFile(path.resolve(__dirname, "client", "build", "index.html")));
     }
 
+    //GET home route
+    app.get("/testing", (req, res) => {
+        res.send("Hello World");
+    });
+
     // Set server listening port
     const PORT = process.env.PORT || 50001;
-    app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
+    // app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
+    https
+        .createServer(
+            {
+                key: fs.readFileSync("./key.pem"),
+                cert: fs.readFileSync("./cert.pem"),
+                ca: process.env.NODE_ENV === "production" && fs.existsSync("./ca.pem") ? fs.readFileSync("./ca.pem") : null,
+                passphrase: process.env.SSL_PASS_PRHASE,
+            },
+            app
+        )
+        .listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
 });
