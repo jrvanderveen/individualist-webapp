@@ -9,9 +9,19 @@ const MongoStore = require("connect-mongo")(session);
 const passport = require("./passport");
 const mongoUtil = require("./config/db");
 const https = require("https");
+var http = require("http");
 const fs = require("fs");
 // Set env path
 dotenv.config({ path: "./config/config.env" });
+
+//HTTPS options
+const options = {
+    key: fs.readFileSync("./SSL/server.key.pem"),
+    ca: [fs.readFileSync("./SSL/intermediate.crt.pem")],
+    cert: fs.readFileSync("./SSL/server.crt.pem"),
+    requestCert: false,
+    rejectUnauthorized: false,
+};
 
 // DB Connect
 mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
@@ -19,6 +29,18 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
 
     // Express
     const app = express();
+
+    //Redirect http to https middleware
+    app.enable("trust proxy");
+    app.use(function (req, res, next) {
+        if (req.secure) {
+            // request was via https, so do no special handling
+            next();
+        } else {
+            // request was via http, so redirect to https
+            res.redirect("https://" + req.headers.host + req.url);
+        }
+    });
 
     app.use(express.json());
     if (process.env.NODE_ENV === "development") {
@@ -63,23 +85,8 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
         app.get("*", (req, res) => res.sendFile(path.resolve(__dirname, "client", "build", "index.html")));
     }
 
-    //GET home route
-    app.get("/testing", (req, res) => {
-        res.send("Hello World");
-    });
-
     // Set server listening port
     const PORT = process.env.PORT || 50001;
     // app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
-    https
-        .createServer(
-            {
-                key: fs.readFileSync("./key.pem"),
-                cert: fs.readFileSync("./cert.pem"),
-                ca: process.env.NODE_ENV === "production" && fs.existsSync("./ca.pem") ? fs.readFileSync("./ca.pem") : null,
-                passphrase: process.env.SSL_PASS_PRHASE,
-            },
-            app
-        )
-        .listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
+    https.createServer(options, app).listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
 });

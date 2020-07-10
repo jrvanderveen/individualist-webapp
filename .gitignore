@@ -26,3 +26,5 @@ yarn-error.log*
 /documents
 .cert.pem
 .key.pem
+.ca.pem
+/SSL

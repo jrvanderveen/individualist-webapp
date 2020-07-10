@@ -74,12 +74,11 @@ MONGO_URI=Your Mongo URI
 # limited = only basic server logging
 LOGING_LEVEL=limited
 SESSION_SECRET=seceret hash string
-SSL_PASS_PRHASE=pass prhase used with openSSL to create key/cert files
 ```
 
-6. Generate create `key.pem` and `cert.pem` files in the main folder. Open SSL is a great freee tool for this.
+1. Generate create `./SSL/server.key.pem`, `./SSL/intermediate.crt.pem`, and `./SSL/server.crt.pem` files in the main folder. Open SSL is a great freee tool for this. Note: the `./SSL/server.crt.pem` should be purchsed from a CA.
 
-7. Start with `npm run dev`
+2. Start with `npm run dev`
 
 # Contributing
 

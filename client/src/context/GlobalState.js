@@ -86,7 +86,6 @@ export const GlobalProvider = ({ children }) => {
             await axios
                 .post("/api/v1.1/login/state")
                 .then((res) => {
-                    console.log(res);
                     dispatch({
                         type: "LOG_IN_STATE",
                         payload: res.data,
@@ -305,7 +304,6 @@ export const GlobalProvider = ({ children }) => {
                 "Content-Type": "application/json",
             },
         };
-        console.log(state.shoppingList);
         axios
             .post("/api/v1.1/shoppingList", state.shoppingList, config)
             .then((res) => {
