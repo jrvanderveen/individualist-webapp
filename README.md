@@ -5,7 +5,7 @@
 <h4 align="center">Save recipes and easily create custom shopping lists</h4>
 
 <p align="center">
-  <a href="http://myindividualist.com/">Demo</a> •
+  <a href="https://myindividualist.com/">Demo</a> •
   <a href="#features">Features</a> •
   <a href="#tutorial">Tutorial</a> • 
   <a href="#installation">Installation</a> •
