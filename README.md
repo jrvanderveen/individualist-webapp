@@ -5,7 +5,7 @@
 <h4 align="center">Save recipes and easily create custom shopping lists</h4>
 
 <p align="center">
-  <a href="http://myindividualist.com/">Demo</a> •
+  <a href="https://myindividualist.com/">Demo</a> •
   <a href="#features">Features</a> •
   <a href="#tutorial">Tutorial</a> • 
   <a href="#installation">Installation</a> •
@@ -76,7 +76,7 @@ LOGING_LEVEL=limited
 SESSION_SECRET=seceret hash string
 ```
 
-1. Generate create `./SSL/server.key.pem`, `./SSL/intermediate.crt.pem`, and `./SSL/server.crt.pem` files in the main folder. Open SSL is a great freee tool for this. Note: the `./SSL/server.crt.pem` should be purchsed from a CA.
+1. Generate create `./SSL/server.key.pem`, `./SSL/intermediate.crt.pem`, and `./SSL/server.crt.pem` files in the main folder. Open SSL is a great freee tool for this. Note: the `./SSL/intermediate.crt.pem` should be purchsed from a CA.
 
 2. Start with `npm run dev`
 
