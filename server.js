@@ -30,18 +30,6 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     // Express
     const app = express();
 
-    //Redirect http to https middleware
-    app.enable("trust proxy");
-    app.use(function (req, res, next) {
-        if (req.secure) {
-            // request was via https, so do no special handling
-            next();
-        } else {
-            // request was via http, so redirect to https
-            res.redirect("https://" + req.headers.host + req.url);
-        }
-    });
-
     app.use(express.json());
     if (process.env.NODE_ENV === "development") {
         app.use(morgan("dev"));
@@ -89,4 +77,11 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     const PORT = process.env.PORT || 50001;
     // app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
     https.createServer(options, app).listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
+    // Redirect from http port 80 to https
+    var http = require("http");
+    http.createServer(function (req, res) {
+        console.log("redirect");
+        res.writeHead(307, { Location: "https://" + req.headers["host"] + req.url });
+        res.end();
+    }).listen(80, console.log(`Redirect Server running in ${process.env.NODE_ENV} mode on port 80`.yellow.bold));
 });

@@ -68,7 +68,7 @@ npm start
 ```
 # development / production
 NODE_ENV=development
-PORT=5000
+PORT=443
 MONGO_URI=Your Mongo URI
 # verbose = everything on
 # limited = only basic server logging
