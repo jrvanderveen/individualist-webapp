@@ -50,7 +50,9 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     // Passport Middleware
     if (process.env.LOGING_LEVEL === "verbose") {
         app.use((req, res, next) => {
-            console.log("req.session", req.session);
+            if (process.env.LOGING_LEVEL === "verbose") {
+                console.log("req.session", req.session);
+            }
             return next();
         });
     }
@@ -75,13 +77,16 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
 
     // Set server listening port
     const PORT = process.env.PORT || 50001;
-    // app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
-    https.createServer(options, app).listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
-    // Redirect from http port 80 to https
-    var http = require("http");
-    http.createServer(function (req, res) {
-        console.log("redirect");
-        res.writeHead(307, { Location: "https://" + req.headers["host"] + req.url });
-        res.end();
-    }).listen(80, console.log(`Redirect Server running in ${process.env.NODE_ENV} mode on port 80`.yellow.bold));
+    if (process.env.NODE_ENV === "production") {
+        https.createServer(options, app).listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
+        // Redirect from http port 80 to https
+        var http = require("http");
+        http.createServer(function (req, res) {
+            console.log("redirect");
+            res.writeHead(307, { Location: "https://" + req.headers["host"] + req.url });
+            res.end();
+        }).listen(80, console.log(`Redirect Server running in ${process.env.NODE_ENV} mode on port 80`.yellow.bold));
+    } else {
+        app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
+    }
 });
