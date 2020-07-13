@@ -31,4 +31,5 @@ export default styled.li`
     }
     line-height: ${(props) => (props.isRecipe ? "1.25" : "")};
     min-height: ${(props) => (props.isRecipe ? "50px" : "")};
+    align-items: center;
 `;

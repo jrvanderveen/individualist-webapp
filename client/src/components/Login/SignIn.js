@@ -15,6 +15,7 @@ export const SignIn = ({ setLogInStateFunc }) => {
 
     // State
     const [username, setUserName] = useState("");
+    const [placeholder, setPlaceHolder] = useState("username");
     const [password, setPassword] = useState("");
 
     // Functions
@@ -22,7 +23,8 @@ export const SignIn = ({ setLogInStateFunc }) => {
         e.preventDefault();
         signIn({ username: username, password: password }).then((result) => {
             if (!result) {
-                setUserName("invalid user/password");
+                setUserName("");
+                setPlaceHolder("invalid user/password");
                 setPassword("");
             } else {
                 return <Redirect to="/" />;
@@ -53,7 +55,7 @@ export const SignIn = ({ setLogInStateFunc }) => {
                 value={username}
                 onChange={(e) => setUserName(e.target.value)}
                 className="form-control"
-                placeholder="User Name..."
+                placeholder={placeholder}
                 required="required"
                 autoFocus
             />

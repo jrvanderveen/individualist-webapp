@@ -1,3 +1,4 @@
+import DefaultDict from "../utils/DefaultDict";
 export default (state, action) => {
     switch (action.type) {
         //////////////////////////////////////////////////////////////
@@ -17,8 +18,17 @@ export default (state, action) => {
             state.username = "";
             return {
                 ...state,
-                loggedIn: state.loggedIn,
-                username: state.username,
+                loggedIn: false,
+                username: "",
+                grocerySections: {},
+                recipes: {},
+                shoppingList: {
+                    _id: -1,
+                    grocerySectionIngredientsMap: new DefaultDict(Array), //dont want key errors
+                },
+                creatingShoppingList: false,
+                error: null,
+                postMessage: "",
             };
         // Log user in by saving user name and setting logged in = true
         case "LOG_USER_IN":
@@ -108,6 +118,7 @@ export default (state, action) => {
                 ...state,
                 recipes: state.recipes,
                 grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
+                creatingShoppingList: false,
             };
 
         // Save edited recipe

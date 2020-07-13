@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { DropDownButton } from "../util/DropDownButton";
-import { DeleteButton, List, Wrapper, Input } from "../../elements/index";
+import { DeleteButton, List, Input, Wrapper } from "../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
@@ -59,33 +59,83 @@ export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient
         <Wrapper>
             <List isIngredient>
                 {recipeObj.active ? null : (
-                    <DeleteButton isIngredient onClick={handleOnClick}>
+                    <DeleteButton isIngredient onClick={handleOnClick} wrapper={Wrapper}>
                         x
                     </DeleteButton>
                 )}
                 {recipeObj.active ? (
-                    <Input
-                        isRecipeIngredient
-                        type="text"
-                        placeholder="Enter Ingredient..."
-                        value={recipeObj.editRecipe.ingredients[index].name || ""}
-                        onChange={(e) => handleInputChange(e)}
-                    />
+                    <>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Ingredient..."
+                                value={recipeObj.editRecipe.ingredients[index].name || ""}
+                                onChange={(e) => handleInputChange(e)}
+                            />
+
+                            <div className="input-group-append">
+                                <Div>
+                                    <DropDownButton
+                                        defaultSection={ingredient.grocerySection}
+                                        sections={grocerySections.sections}
+                                        recipeObj={recipeObj}
+                                        setRecipeObjFunc={setRecipeObjFunc}
+                                        index={index}
+                                    />
+                                </Div>
+                            </div>
+                        </div>
+                    </>
                 ) : (
                     <>
                         {index + 1}:&nbsp;&nbsp;<IngredientLabel>{ingredient.name}</IngredientLabel>
+                        <Div>
+                            <button type="button" className="btn btn-info" disabled>
+                                {ingredient.grocerySection}
+                            </button>
+                        </Div>
                     </>
                 )}
-                <Div>
-                    <DropDownButton
-                        defaultSection={ingredient.grocerySection}
-                        sections={grocerySections.sections}
-                        recipeObj={recipeObj}
-                        setRecipeObjFunc={setRecipeObjFunc}
-                        index={index}
-                    />
-                </Div>
             </List>
         </Wrapper>
+        // <Wrapper>
+        //     <List isIngredient>
+        //         {recipeObj.active ? null : (
+        //             <DeleteButton isIngredient onClick={handleOnClick}>
+        //                 x
+        //             </DeleteButton>
+        //         )}
+        //         {recipeObj.active ? (
+        //             <>
+        //                 <Input
+        //                     isRecipeIngredient
+        //                     type="text"
+        //                     placeholder="Enter Ingredient..."
+        //                     value={recipeObj.editRecipe.ingredients[index].name || ""}
+        //                     onChange={(e) => handleInputChange(e)}
+        //                 />
+        //                 <Div>
+        //                     <DropDownButton
+        //                         defaultSection={ingredient.grocerySection}
+        //                         sections={grocerySections.sections}
+        //                         recipeObj={recipeObj}
+        //                         setRecipeObjFunc={setRecipeObjFunc}
+        //                         index={index}
+        //                     />
+        //                 </Div>
+        //             </>
+        //         ) : (
+        //             <>
+        //                 {index + 1}:&nbsp;&nbsp;<IngredientLabel>{ingredient.name}</IngredientLabel>
+        //                 <Div>
+        //                     <button type="button" className="btn btn-info" disabled>
+        //                         {ingredient.grocerySection}
+        //                     </button>
+        //                 </Div>
+        //             </>
+        //         )}
+        //     </List>
+        // </Wrapper>
     );
 };

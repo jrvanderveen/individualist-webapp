@@ -50,7 +50,7 @@ export const AddRecipe = () => {
         setServings(1);
         setRecipeURL("");
     };
-    console.log(postMessage);
+
     // New recipe form (no ingredients added at start)
     return (
         <>
