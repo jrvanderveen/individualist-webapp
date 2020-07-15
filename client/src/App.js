@@ -6,13 +6,8 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: #f7f7f7;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
-    min-width: 1400px;
-    margin: 0;
+    min-width: 100vw;
     font-family: "Lato", sans-serif;
   }
   :root {

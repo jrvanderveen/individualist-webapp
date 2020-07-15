@@ -9,7 +9,9 @@ import styled from "styled-components";
 // Styled Components
 const Container = styled.section`
     margin: 30px auto;
-    width: 800px;
+    width: 100vw;
+    max-width: 1000px;
+    padding: 5px;
 `;
 
 /*
@@ -27,10 +29,10 @@ export const MainPage = () => {
         <>
             <Header />
             <Container>
-                <Options togglePopUpFunc={togglePopUp} />
+                {/* <Options togglePopUpFunc={togglePopUp} /> */}
 
                 <RecipeList />
-                <AddRecipe />
+                {/* <AddRecipe /> */}
             </Container>
             {showPopUp === true ? <ShoppingListPopUp togglePopUpFunc={togglePopUp} /> : null}
         </>

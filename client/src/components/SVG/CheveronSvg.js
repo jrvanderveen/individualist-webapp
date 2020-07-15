@@ -5,6 +5,10 @@ import styled from "styled-components";
 const AccordionIcon = styled.svg`
     transition: transform 0.3s;
     width: 10px;
+    @media (max-width: 768px) {
+        width: 0px;
+        height: 0px;
+    }
     fill: #777;
     ${(props) =>
         props.rotate === "rotate" &&

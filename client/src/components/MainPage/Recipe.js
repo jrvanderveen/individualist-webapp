@@ -3,22 +3,26 @@ import { GlobalContext } from "../../context/GlobalState";
 import { Ingredients } from "./Ingredients";
 import { CheveronSvg } from "../SVG/CheveronSvg";
 import { SelectRecipeButton } from "./SelectRecipeButton";
-import { List, AccordionButton, Wrapper, DeleteButton, Link, AccordionContent, Input, Label } from "../../elements/index";
+import { List, AccordionButton, DeleteButton, Link, AccordionContent, Input, Label } from "../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
 const Ul = styled.ul`
     width: 100%;
     list-style: none;
+    margin-left: 10px;
+    padding: 1vw;
 `;
 
 const Li = styled.li`
-    float: left;
+    display: inline-block;
     width: ${(props) => (props.large ? "45%" : "27.5%")};
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: ${(props) => (props.large ? "center" : "right")};
+    @media (max-width: 768px) {
+        width: ${(props) => (props.large ? "60%" : "40%")};
+        text-align: center;
+        float: ${(props) => (props.large ? "left" : "right")};
+    }
     padding: 5px 0px 5px 0px;
     cursor: pointer;
 `;
@@ -31,11 +35,24 @@ const StyledLink = styled(Link)`
 const Span = styled.span`
     color: blue;
     font-size: 75%;
-    float: right;
     &:hover {
         cursor: pointer;
     }
-    margin-left: ${(props) => (props.isSave ? "10px" : "")};
+    /* margin-left: ${(props) => (props.isSave ? "10px" : "")}; */
+`;
+const RightDiv = styled.div`
+    float: right;
+`;
+
+const Wrapper = styled.div`
+    display: block;
+    width: 100%;
+`;
+
+const OptionsWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 `;
 
 /*
@@ -57,34 +74,14 @@ export const Recipe = ({ recipe }) => {
     const [setHeight, setHeightState] = useState("0px");
     const [setRotate, setRotateState] = useState("");
     const [recipeObj, setRecipeObj] = useState({ active: false, recipe: recipe, editRecipe: {} });
+    const [showIngredients, setShowIngredients] = useState(false);
 
-    // Window
-    const content = useRef(null);
-
-    // Functions
-    // display or dont display ingredients.  rotate the cheveron svg
-    const toggleAccordion = (eddit) => {
-        setActiveState(!setActive);
-        if (eddit) {
-            setHeightState(setActive ? "0px" : `${recipeObj.recipe.ingredients.length * 58 + 10}px`);
-        } else {
-            setHeightState(setActive ? "0px" : `${recipeObj.recipe.ingredients.length * 58 + 144}px`);
-        }
-
+    //Functions
+    const toggleShowIngredients = () => {
+        setActiveState(!showIngredients);
+        setShowIngredients(!showIngredients);
         setRotateState(setActive ? "" : "rotate");
     };
-
-    // Decrease accodion content height
-    const handleDeleteIngredient = () => {
-        //144
-        setHeightState(`${content.current.scrollHeight - 58}px`);
-    };
-
-    // Increase accodion content height
-    const handleAddIngredient = () => {
-        setHeightState(`${content.current.scrollHeight + 58}px`);
-    };
-
     // Edit: clone recipe to use for edint and togle accordion open
     // Save: replace recipe with editRecipe
     // Cancel: delete edit recipe
@@ -93,7 +90,7 @@ export const Recipe = ({ recipe }) => {
         if (type === "edit") {
             setRecipeObj({ ...recipeObj, active: true, editRecipe: recipeObj.recipe });
             if (!setActive) {
-                toggleAccordion(true);
+                toggleShowIngredients();
             } else {
                 setHeightState(`${recipeObj.recipe.ingredients.length * 58 + 10}px`);
             }
@@ -129,14 +126,17 @@ export const Recipe = ({ recipe }) => {
                 {!recipeObj.active ? (
                     <>
                         <SelectRecipeButton active={recipeObj.recipe.addToShoppingList} recipe_id={recipeObj.recipe._id} />
-                        <DeleteButton isRecipe onClick={() => deleteRecipe(recipeObj.recipe._id)}>
-                            x
-                        </DeleteButton>
-                        <StyledLink text="Website" href={website} target="_blank" />
-                        <Span onClick={() => handleEditingClicks("edit")}>Edit</Span>
+                        <OptionsWrapper>
+                            <StyledLink text="Website" href={website} target="_blank" />
+                            <RightDiv>
+                                <Span onClick={() => deleteRecipe(recipeObj.recipe._id)}>Delete</Span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Span onClick={() => handleEditingClicks("edit")}>Edit</Span>
+                            </RightDiv>
+                        </OptionsWrapper>
                     </>
                 ) : (
-                    <>
+                    <OptionsWrapper>
                         <Input
                             isRecipeWebsite
                             type="text"
@@ -144,16 +144,19 @@ export const Recipe = ({ recipe }) => {
                             value={recipeObj.editRecipe.URL || ""}
                             onChange={(e) => setRecipeObj({ ...recipeObj, editRecipe: { ...recipeObj.editRecipe, URL: e.target.value } })}
                         />
-                        <Span isSave onClick={() => handleEditingClicks("save")}>
-                            Save
-                        </Span>
-                        <Span isEdit onClick={() => handleEditingClicks("Cancel")}>
-                            Cancel
-                        </Span>
-                    </>
+                        <RightDiv>
+                            <Span isSave onClick={() => handleEditingClicks("Save")}>
+                                Save
+                            </Span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Span isEdit onClick={() => handleEditingClicks("Cancel")}>
+                                Cancel
+                            </Span>
+                        </RightDiv>
+                    </OptionsWrapper>
                 )}
 
-                <AccordionButton active={setActive} onClick={() => (!recipeObj.active ? toggleAccordion(false) : null)}>
+                <AccordionButton active={showIngredients} onClick={() => !recipeObj.active && toggleShowIngredients()}>
                     <List active={setActive || recipeObj.active} ingredientCount={recipeObj.recipe.ingredients.length} isRecipe>
                         <Ul>
                             {!recipeObj.active ? (
@@ -202,14 +205,11 @@ export const Recipe = ({ recipe }) => {
                 </AccordionButton>
             </Wrapper>
             {/* Accordion Content contains list of ingredients */}
-            <AccordionContent ref={content} maxHeight={setHeight}>
-                <Ingredients
-                    handleDeleteIngredient={handleDeleteIngredient}
-                    handleAddIngredient={handleAddIngredient}
-                    recipeObj={recipeObj}
-                    setRecipeObjFunc={setRecipeObj}
-                />
-            </AccordionContent>
+            {showIngredients && (
+                <AccordionContent>
+                    <Ingredients recipeObj={recipeObj} setRecipeObjFunc={setRecipeObj} />
+                </AccordionContent>
+            )}
         </>
     );
 };

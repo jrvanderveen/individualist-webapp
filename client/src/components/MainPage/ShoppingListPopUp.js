@@ -22,7 +22,7 @@ const ShoppingListContent = styled.div`
     top: 10%;
     left: 30%;
     width: 40%;
-    min-width: 450px;
+    min-width: 90vw;
     max-height: 80%;
     padding: 20px;
     border-radius: 5px;

@@ -9,4 +9,5 @@ export default styled.input`
         props.isShoppingListIngredient || props.isRecipeServings ? "5px 0px 5px 5px" : props.isRecipeWebsite ? "2.5px" : "10px 0px 10px 10px"};
     width: ${(props) => (props.isRecipeServings ? "45px" : props.isRecipeWebsite ? "50%" : "100%")};
     margin-right: 10px;
+    float: ${(props) => props.isRecipeServings && "right"};
 `;

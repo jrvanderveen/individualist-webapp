@@ -20,7 +20,7 @@ export default styled.li`
             : props.isRecipe
             ? "5px 0px"
             : "10px 0px"};
-    width: ${(props) => (props.isIngredient ? "90%" : "")};
+    width: ${(props) => (props.isIngredient ? "90%" : props.isRecipe ? "100%" : "")};
     float: ${(props) => (props.isIngredient ? "right" : "")};
     border-right: ${(props) =>
         props.isRecipe || props.isGrocerySectionHeader ? (props.ingredientCount > 0 ? "5px solid #2ecc71" : "5px solid #c0392b;") : ""};
