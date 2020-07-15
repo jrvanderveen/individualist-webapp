@@ -1,7 +1,13 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { H3, Input, Label, Button } from "../../elements/index";
+import styled from "styled-components";
 
+// Styled Components
+const HiddenInput = styled.input`
+    height: 0px;
+    opacity: 0;
+`;
 /*
     SUMMARY:
         Add new recipe (name, url, servings)
@@ -54,7 +60,9 @@ export const AddRecipe = () => {
     // New recipe form (no ingredients added at start)
     return (
         <>
-            <H3>Add new Recipe</H3>
+            {/* This HiddenInput is really bad.. without it when opening the bottom recipe it will overflow onto the add recipe but does not when there is this hidden input. */}
+            <HiddenInput disabled />
+            <H3 addRecipe>Add new Recipe</H3>
             <form onSubmit={onSubmit}>
                 {errors.map((error) => (
                     <p className="error" key={error}>

@@ -25,9 +25,7 @@ export const ShoppingListIngredient = ({ ingredient }) => {
 
     return (
         <List key={ingredient} isShoppingList>
-            <Span lineThrough={active}>
-                <Wrapper>{ingredient}</Wrapper>
-            </Span>
+            <Span lineThrough={active}>{ingredient}</Span>
             <button className="float-right btn btn-danger btn-sm" onClick={() => setActive(!active)}>
                 X
             </button>

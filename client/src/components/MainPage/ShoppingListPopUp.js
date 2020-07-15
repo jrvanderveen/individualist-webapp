@@ -22,12 +22,18 @@ const ShoppingListContent = styled.div`
     top: 10%;
     left: 30%;
     width: 40%;
-    min-width: 90vw;
+    min-width: 450px;
     max-height: 80%;
     padding: 20px;
     border-radius: 5px;
     border: 2px solid black;
     overflow-y: scroll;
+    @media (max-width: 768px) {
+        top: 0px;
+        left: 0px;
+        min-width: 100vw;
+        min-height: 100vh;
+    }
 `;
 const Ul = styled.ul`
     margin-bottom: 5px;

@@ -2,24 +2,25 @@ import React, { useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { Ingredient } from "./Ingredient";
 import { DropDownButton } from "../util/DropDownButton";
-import { List, Input, Button, Wrapper } from "../../elements/index";
+import { List, Button } from "../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
 const Form = styled.form`
-    display: flex;
-    flex-flow: row wrap;
     width: 100%;
 `;
 
-const Table = styled.table`
+const RowDiv = styled.div`
+    display: flex;
     width: 100%;
 `;
-const TableBody = styled.tbody``;
-const TR = styled.tr``;
-const TD = styled.td`
-    width: 100%;
-    padding-left: ${(props) => (props.isRight ? "10px" : "5px")};
+
+const ColDiv = styled.div`
+    float: ${(props) => (props.right ? "right" : props.left ? "left" : "")};
+    max-width: ${(props) => (props.right ? "33%" : "")};
+    margin-left: ${(props) => (props.right ? "10px" : "")};
+    flex-grow: ${(props) => props.left && "1"};
+    width: ${(props) => props.full && "100%"};
 `;
 
 /*
@@ -27,14 +28,12 @@ const TD = styled.td`
         Display new ingredient form and map ingredients to ingredient component
 
     PARAMS: 
-        handleDeleteIngredient: function to update accordion content height of ingredients
-        handleAddIngredient: function to update accordion content height of ingredients
         recipeId: recipe._id
         setRecipeObjFunc: update recipeObj
         recipeObj: {active: true/false, recipe: {recipe object}, editRecipe: {copy of recipe object used for editing}}
 
 */
-export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recipeObj, setRecipeObjFunc }) => {
+export const Ingredients = ({ recipeObj, setRecipeObjFunc }) => {
     // Context
     const { addRecipeIngredient, grocerySections } = useContext(GlobalContext);
 
@@ -43,7 +42,7 @@ export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recip
     const [newIngredient, setNewIngredient] = useState("");
 
     // functions
-    // On submit new inrgedient add to state reset field and use handleAddIngredient to increase accorion content size
+    // On submit new inrgedient add to state reset field
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -53,7 +52,6 @@ export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recip
         };
         addRecipeIngredient(recipeObj.recipe._id, newIgredient);
         setNewIngredient("");
-        handleAddIngredient();
     };
 
     // Map list of ingredients and display new ingredient form at end of list
@@ -67,7 +65,6 @@ export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recip
                         recipeId={recipeObj.recipe._id}
                         ingredient={ingredient}
                         index={index}
-                        handleDeleteIngredient={handleDeleteIngredient}
                         recipeObj={recipeObj}
                         setRecipeObjFunc={setRecipeObjFunc}
                     />
@@ -76,39 +73,34 @@ export const Ingredients = ({ handleDeleteIngredient, handleAddIngredient, recip
             {recipeObj.active ? null : (
                 <List isIngredient isForm>
                     <Form onSubmit={onSubmit}>
-                        <Table>
-                            <TableBody>
-                                <TR>
-                                    <TD>
-                                        <Input
-                                            isIngredient
-                                            value={newIngredient}
-                                            onChange={(e) => setNewIngredient(e.target.value)}
-                                            placeholder="Enter Ingredient..."
-                                            required="required"
-                                        />
-                                    </TD>
-                                    <TD isRight>
-                                        <Wrapper isGrocerySection>
-                                            <DropDownButton
-                                                defaultSection={grocerySections.default}
-                                                handleChange={setNewIngredientGrocerySection}
-                                                sections={grocerySections.sections}
-                                                recipeObj={recipeObj}
-                                                setRecipeObjFunc={setRecipeObjFunc}
-                                            />
-                                        </Wrapper>
-                                    </TD>
-                                </TR>
-                                <TR>
-                                    <TD colSpan={2}>
-                                        <Button type="submit" ingredient>
-                                            Save
-                                        </Button>
-                                    </TD>
-                                </TR>
-                            </TableBody>
-                        </Table>
+                        <RowDiv>
+                            <ColDiv left>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={newIngredient}
+                                    placeholder="Enter Ingredient..."
+                                    required="required"
+                                    onChange={(e) => setNewIngredient(e.target.value)}
+                                />
+                            </ColDiv>
+                            <ColDiv right>
+                                <DropDownButton
+                                    defaultSection={grocerySections.default}
+                                    handleChange={setNewIngredientGrocerySection}
+                                    sections={grocerySections.sections}
+                                    recipeObj={recipeObj}
+                                    setRecipeObjFunc={setRecipeObjFunc}
+                                />
+                            </ColDiv>
+                        </RowDiv>
+                        <RowDiv>
+                            <ColDiv full>
+                                <Button type="submit" ingredient>
+                                    Save
+                                </Button>
+                            </ColDiv>
+                        </RowDiv>
                     </Form>
                 </List>
             )}

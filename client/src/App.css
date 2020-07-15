@@ -113,3 +113,10 @@
         content: "Google+";
     }
 }
+
+.dropdown-toggle {
+    white-space: normal;
+}
+.dropdown-item {
+    white-space: normal;
+}

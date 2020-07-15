@@ -91,20 +91,15 @@ export const Recipe = ({ recipe }) => {
             setRecipeObj({ ...recipeObj, active: true, editRecipe: recipeObj.recipe });
             if (!setActive) {
                 toggleShowIngredients();
-            } else {
-                setHeightState(`${recipeObj.recipe.ingredients.length * 58 + 10}px`);
             }
-
-            // On save set active to false and replace recipe with cloned/edited version
-        } else {
-            if (type === "save") {
-                saveEditedRecipe(recipeObj.editRecipe);
-                setRecipeObj({ ...recipeObj, active: false, recipe: recipeObj.editRecipe, editRecipe: {} });
-                //On Cancel set active to false and deleted clone
-            } else if (type === "Cancel") {
-                setRecipeObj({ ...recipeObj, active: false, editRecipe: {} });
-            }
-            setHeightState(`${recipeObj.recipe.ingredients.length * 58 + 144}px`);
+        }
+        // On save set active to false and replace recipe with cloned/edited version
+        else if (type === "Save") {
+            saveEditedRecipe(recipeObj.editRecipe);
+            setRecipeObj({ ...recipeObj, active: false, recipe: recipeObj.editRecipe, editRecipe: {} });
+            //On Cancel set active to false and deleted clone
+        } else if (type === "Cancel") {
+            setRecipeObj({ ...recipeObj, active: false, editRecipe: {} });
         }
     };
 

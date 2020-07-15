@@ -29,10 +29,10 @@ export const MainPage = () => {
         <>
             <Header />
             <Container>
-                {/* <Options togglePopUpFunc={togglePopUp} /> */}
+                <Options togglePopUpFunc={togglePopUp} />
 
                 <RecipeList />
-                {/* <AddRecipe /> */}
+                <AddRecipe />
             </Container>
             {showPopUp === true ? <ShoppingListPopUp togglePopUpFunc={togglePopUp} /> : null}
         </>

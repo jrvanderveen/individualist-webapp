@@ -6,8 +6,8 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: #f7f7f7;
-    min-height: 100vh;
-    min-width: 100vw;
+    min-height: 95vh;
+    min-width: 95vw;
     font-family: "Lato", sans-serif;
   }
   :root {
@@ -15,6 +15,8 @@ const GlobalStyle = createGlobalStyle`
     }
     * {
         box-sizing: border-box;
+        word-break: break-all;
+        white-space: normal;
     } 
     .error {
     color: #c0392b;

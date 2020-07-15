@@ -5,13 +5,20 @@ import { DeleteButton, List, Input, Wrapper } from "../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
-const Div = styled.div`
+const SectionDiv = styled.div`
     margin-left: 10px;
+    float: right;
+    max-width: 33%;
 `;
 
 const IngredientLabel = styled.div`
+    float: left;
+    flex-grow: 1;
+`;
+
+const IngredientAtributeWrapper = styled.div`
+    display: flex;
     width: 100%;
-    overflow: hidden;
 `;
 
 /*
@@ -27,7 +34,7 @@ const IngredientLabel = styled.div`
         recipeObj: {active: true/false, recipe: {recipe object}, editRecipe: {copy of recipe object used for editing}}
 
 */
-export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient, recipeObj, setRecipeObjFunc }) => {
+export const Ingredient = ({ recipeId, ingredient, index, recipeObj, setRecipeObjFunc }) => {
     // Context
     const { deleteRecipeIngredient, grocerySections } = useContext(GlobalContext);
 
@@ -35,7 +42,6 @@ export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient
     // Delete ingredient from recipe and update accordion content max-height
     const handleOnClick = () => {
         deleteRecipeIngredient(recipeId, ingredient);
-        handleDeleteIngredient();
     };
 
     // While editing is active update editRecipe obj ingredient name for index
@@ -64,8 +70,8 @@ export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient
                     </DeleteButton>
                 )}
                 {recipeObj.active ? (
-                    <>
-                        <div className="input-group">
+                    <IngredientAtributeWrapper>
+                        <IngredientLabel>
                             <input
                                 type="text"
                                 className="form-control"
@@ -73,66 +79,71 @@ export const Ingredient = ({ recipeId, ingredient, index, handleDeleteIngredient
                                 value={recipeObj.editRecipe.ingredients[index].name || ""}
                                 onChange={(e) => handleInputChange(e)}
                             />
-
-                            <div className="input-group-append">
-                                <Div>
-                                    <DropDownButton
-                                        defaultSection={ingredient.grocerySection}
-                                        sections={grocerySections.sections}
-                                        recipeObj={recipeObj}
-                                        setRecipeObjFunc={setRecipeObjFunc}
-                                        index={index}
-                                    />
-                                </Div>
-                            </div>
-                        </div>
-                    </>
+                        </IngredientLabel>
+                        <SectionDiv>
+                            <DropDownButton
+                                defaultSection={ingredient.grocerySection}
+                                sections={grocerySections.sections}
+                                recipeObj={recipeObj}
+                                setRecipeObjFunc={setRecipeObjFunc}
+                                index={index}
+                            />
+                        </SectionDiv>
+                    </IngredientAtributeWrapper>
                 ) : (
-                    <>
-                        {index + 1}:&nbsp;&nbsp;<IngredientLabel>{ingredient.name}</IngredientLabel>
-                        <Div>
-                            <button type="button" className="btn btn-info" disabled>
+                    <IngredientAtributeWrapper>
+                        <IngredientLabel>
+                            {index + 1}:&nbsp;&nbsp;{ingredient.name}
+                        </IngredientLabel>
+                        <SectionDiv>
+                            <button type="button" className="btn btn-info">
                                 {ingredient.grocerySection}
                             </button>
-                        </Div>
-                    </>
+                        </SectionDiv>
+                    </IngredientAtributeWrapper>
                 )}
             </List>
         </Wrapper>
+
         // <Wrapper>
         //     <List isIngredient>
         //         {recipeObj.active ? null : (
-        //             <DeleteButton isIngredient onClick={handleOnClick}>
+        //             <DeleteButton isIngredient onClick={handleOnClick} wrapper={Wrapper}>
         //                 x
         //             </DeleteButton>
         //         )}
         //         {recipeObj.active ? (
         //             <>
-        //                 <Input
-        //                     isRecipeIngredient
-        //                     type="text"
-        //                     placeholder="Enter Ingredient..."
-        //                     value={recipeObj.editRecipe.ingredients[index].name || ""}
-        //                     onChange={(e) => handleInputChange(e)}
-        //                 />
-        //                 <Div>
-        //                     <DropDownButton
-        //                         defaultSection={ingredient.grocerySection}
-        //                         sections={grocerySections.sections}
-        //                         recipeObj={recipeObj}
-        //                         setRecipeObjFunc={setRecipeObjFunc}
-        //                         index={index}
+        //                 <div className="input-group">
+        //                     <input
+        //                         type="text"
+        //                         className="form-control"
+        //                         placeholder="Enter Ingredient..."
+        //                         value={recipeObj.editRecipe.ingredients[index].name || ""}
+        //                         onChange={(e) => handleInputChange(e)}
         //                     />
-        //                 </Div>
+
+        //                     <div className="input-group-append">
+        //                         <SectionDiv>
+        //                             <DropDownButton
+        //                                 defaultSection={ingredient.grocerySection}
+        //                                 sections={grocerySections.sections}
+        //                                 recipeObj={recipeObj}
+        //                                 setRecipeObjFunc={setRecipeObjFunc}
+        //                                 index={index}
+        //                             />
+        //                         </SectionDiv>
+        //                     </div>
+        //                 </div>
         //             </>
         //         ) : (
         //             <>
         //                 {index + 1}:&nbsp;&nbsp;<IngredientLabel>{ingredient.name}</IngredientLabel>
-        //                 <Div>
+        //                 <SectionDiv>
         //                     <button type="button" className="btn btn-info" disabled>
         //                         {ingredient.grocerySection}
         //                     </button>
-        //                 </Div>
+        //                 </SectionDiv>
         //             </>
         //         )}
         //     </List>

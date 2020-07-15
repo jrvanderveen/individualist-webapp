@@ -11,7 +11,7 @@ const Button = styled.button`
     border: 0;
     font-size: 14px;
     padding: 5px;
-    margin: ${(props) => (props.seperate ? "15px 5px 0px 5px" : "5px 5px 0px 5px")};
+    margin: ${(props) => (props.seperate ? "15px 5px 5px 5px" : "5px 5px 0px 5px")};
     width: 90%;
     &:hover {
         background-color: #8171d1;
@@ -22,7 +22,14 @@ const Wrapper = styled.div`
     position: absolute;
     left: 0px;
     top: 40%;
-    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @media (max-width: 1200px) {
+        position: relative;
+        max-width: 100vw;
+    }
 `;
 
 const Ul = styled.ul`
@@ -56,6 +63,7 @@ export const Options = ({ togglePopUpFunc }) => {
             <Button middle clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool("close")}>
                 Add To Shopping List
             </Button>
+
             {creatingShoppingList ? (
                 <Ul>
                     <Li>
