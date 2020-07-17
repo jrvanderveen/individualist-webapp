@@ -33,6 +33,7 @@ const ShoppingListContent = styled.div`
         left: 0px;
         min-width: 100vw;
         min-height: 100vh;
+        padding-bottom: 5vh;
     }
 `;
 const Ul = styled.ul`

@@ -13,8 +13,7 @@ const Wrapper = styled.div`
 `;
 /*
     SUMMARY:
-        Header for site
-        Welcom
+        Header for Main Page
     PARAMS: 
     
 */
@@ -23,7 +22,7 @@ export const Header = () => {
     const { username } = useContext(GlobalContext);
 
     return (
-        <Wrapper> 
+        <Wrapper>
             <H1>INDIVIDUA&#8729;LIST</H1>
             <div>Welcome {username}</div>
         </Wrapper>

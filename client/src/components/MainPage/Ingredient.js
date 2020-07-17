@@ -21,6 +21,29 @@ const IngredientAtributeWrapper = styled.div`
     width: 100%;
 `;
 
+const DeleteButtonWrapper = styled.div`
+    cursor: pointer;
+    position: absolute;
+
+    @media (min-width: 1200px) {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        ${Wrapper}:hover & {
+            opacity: 1;
+        }
+
+        top: 0px;
+        right: 0px;
+        transform: translate(100%, 40%);
+    }
+    @media (max-width: 1199px) {
+        top: 0px;
+        left: 0px;
+        opacity: 1;
+        transform: translate(-100%, 40%);
+    }
+`;
+
 /*
     SUMMARY:
         Diplay/edit/delete recipe ingredient 
@@ -65,9 +88,14 @@ export const Ingredient = ({ recipeId, ingredient, index, recipeObj, setRecipeOb
         <Wrapper>
             <List isIngredient>
                 {recipeObj.active ? null : (
-                    <DeleteButton isIngredient onClick={handleOnClick} wrapper={Wrapper}>
-                        x
-                    </DeleteButton>
+                    // <DeleteButtonWrapper isIngredient onClick={handleOnClick} wrapper={Wrapper}>
+                    //     x
+                    // </DeleteButtonWrapper>
+                    <DeleteButtonWrapper isIngredient wrapper={Wrapper}>
+                        <button className="float-right btn btn-danger btn-sm" onClick={handleOnClick}>
+                            &times;
+                        </button>
+                    </DeleteButtonWrapper>
                 )}
                 {recipeObj.active ? (
                     <IngredientAtributeWrapper>
@@ -96,7 +124,7 @@ export const Ingredient = ({ recipeId, ingredient, index, recipeObj, setRecipeOb
                             {index + 1}:&nbsp;&nbsp;{ingredient.name}
                         </IngredientLabel>
                         <SectionDiv>
-                            <button type="button" className="btn btn-info">
+                            <button type="button" className="btn btn-sm btn-info">
                                 {ingredient.grocerySection}
                             </button>
                         </SectionDiv>

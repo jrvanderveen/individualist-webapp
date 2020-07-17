@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     }
     * {
         box-sizing: border-box;
-        word-break: break-all;
+        overflow-wrap: break-all;
         white-space: normal;
     } 
     .error {

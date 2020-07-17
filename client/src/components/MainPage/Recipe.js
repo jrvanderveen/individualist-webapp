@@ -10,8 +10,11 @@ import styled from "styled-components";
 const Ul = styled.ul`
     width: 100%;
     list-style: none;
-    margin-left: 10px;
-    padding: 1vw;
+    display: flex;
+    align-items: center;
+    @media (min-width: 769px) {
+        padding-right: 5px;
+    }
 `;
 
 const Li = styled.li`
@@ -70,17 +73,14 @@ export const Recipe = ({ recipe }) => {
     const { deleteRecipe, saveEditedRecipe } = useContext(GlobalContext);
 
     // State
-    const [setActive, setActiveState] = useState(false);
-    const [setHeight, setHeightState] = useState("0px");
     const [setRotate, setRotateState] = useState("");
     const [recipeObj, setRecipeObj] = useState({ active: false, recipe: recipe, editRecipe: {} });
     const [showIngredients, setShowIngredients] = useState(false);
 
     //Functions
-    const toggleShowIngredients = () => {
-        setActiveState(!showIngredients);
+    const toggleAccordion = () => {
         setShowIngredients(!showIngredients);
-        setRotateState(setActive ? "" : "rotate");
+        setRotateState(showIngredients ? "" : "rotate");
     };
     // Edit: clone recipe to use for edint and togle accordion open
     // Save: replace recipe with editRecipe
@@ -89,8 +89,8 @@ export const Recipe = ({ recipe }) => {
         // On eddit set active to true and clone recipe object to edit
         if (type === "edit") {
             setRecipeObj({ ...recipeObj, active: true, editRecipe: recipeObj.recipe });
-            if (!setActive) {
-                toggleShowIngredients();
+            if (!showIngredients) {
+                toggleAccordion();
             }
         }
         // On save set active to false and replace recipe with cloned/edited version
@@ -151,8 +151,8 @@ export const Recipe = ({ recipe }) => {
                     </OptionsWrapper>
                 )}
 
-                <AccordionButton active={showIngredients} onClick={() => !recipeObj.active && toggleShowIngredients()}>
-                    <List active={setActive || recipeObj.active} ingredientCount={recipeObj.recipe.ingredients.length} isRecipe>
+                <AccordionButton onClick={() => !recipeObj.active && toggleAccordion()}>
+                    <List active={showIngredients} ingredientCount={recipeObj.recipe.ingredients.length} isRecipe>
                         <Ul>
                             {!recipeObj.active ? (
                                 <>

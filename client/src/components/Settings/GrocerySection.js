@@ -17,6 +17,10 @@ const Input = styled.input`
     margin-right: 10px;
 `;
 
+const H5 = styled.h5`
+    max-width: 80%;
+`
+
 /*
     SUMMARY:
         Display grocery section name and whether its default.
@@ -53,7 +57,7 @@ export const GrocerySection = ({ sectionLabel, _id, isDefault, setErrorsFunc, de
     return (
         <Wrapper>
             <List isGrocerySection>
-                <h5>{sectionLabel}</h5>
+                <H5>{sectionLabel}</H5>
                 <ButtonWrapper>
                     {isDefault ? <Label>Default</Label> : null}
                     <Input type="checkbox" checked={isDefault ? true : false} onChange={handleOnChange} />

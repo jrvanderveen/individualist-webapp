@@ -9,7 +9,7 @@ export const UserSettings = () => {
     return (
         <>
             <H3>User Settings</H3>
-            <H4>TODO</H4>
+            <H4>COMING SOON</H4>
         </>
     );
 };

@@ -5,8 +5,15 @@ import styled from "styled-components";
 const HomeIcon = styled.svg`
     width: 50px;
     height: 50px;
+    position: relative;
+    margin-top: -55px;
+    margin-right: 30px;
     float: right;
-    margin: 0px 50px 0px 10px;
+    @media (max-width: 1199px) {
+        position: absolute;
+        bottom: 5px;
+        right: 5vw;
+    }
 `;
 
 /*
