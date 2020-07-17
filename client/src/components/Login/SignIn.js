@@ -1,6 +1,19 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import { Redirect } from "react-router-dom";
+import styled from "styled-components";
+
+const Span = styled.span`
+    color: blue;
+    font-size: 80%;
+    &:hover {
+        cursor: pointer;
+    }
+    margin-bottom: 5px;
+`;
+const Wrapper = styled.div`
+    text-align: center;
+`;
 
 /*
     SUMMARY:
@@ -31,13 +44,25 @@ export const SignIn = ({ setLogInStateFunc }) => {
             }
         });
     };
+
+    const onClick = () => {
+        signIn({ username: "guest", password: "guest" }).then((result) => {
+            if (!result) {
+                setUserName("");
+                setPlaceHolder("invalid user/password");
+                setPassword("");
+            } else {
+                return <Redirect to="/" />;
+            }
+        });
+    };
+
     return (
-        <form className="form-signin" onSubmit={onSubmit}>
-            <h1 className="h3 mb-3 font-weight-normal" style={{ textAlign: "center" }}>
-                {" "}
-                Sign in
-            </h1>
-            {/* <div className="social-login">
+        <Wrapper>
+            <form className="form-signin" onSubmit={onSubmit}>
+                <h1 className="h3 mb-3 font-weight-normal"> Sign in</h1>
+                <Span onClick={onClick}>Sign In As Guest</Span>
+                {/* <div className="social-login">
                 <button className="btn facebook-btn social-btn" type="button">
                     <span>
                         <i className="fab fa-facebook-f"></i> Sign in with Facebook
@@ -50,31 +75,32 @@ export const SignIn = ({ setLogInStateFunc }) => {
                 </button>
             </div> 
             <p style={{ textAlign: "center" }}> OR </p>*/}
-            <input
-                type="username"
-                value={username}
-                onChange={(e) => setUserName(e.target.value)}
-                className="form-control"
-                placeholder={placeholder}
-                required="required"
-                autoFocus
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="form-control"
-                placeholder="Password..."
-                required="required"
-            />
+                <input
+                    type="username"
+                    value={username}
+                    onChange={(e) => setUserName(e.target.value)}
+                    className="form-control"
+                    placeholder={placeholder}
+                    required="required"
+                    autoFocus
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="form-control"
+                    placeholder="Password..."
+                    required="required"
+                />
 
-            <button className="btn btn-success btn-block" type="submit">
-                <i className="fas fa-sign-in-alt"></i> Sign in
-            </button>
-            <hr />
-            <button className="btn btn-primary btn-block" onClick={() => setLogInStateFunc("signup")}>
-                Sign up New Account
-            </button>
-        </form>
+                <button className="btn btn-success btn-block" type="submit">
+                    <i className="fas fa-sign-in-alt"></i> Sign in
+                </button>
+                <hr />
+                <button className="btn btn-primary btn-block" onClick={() => setLogInStateFunc("signup")}>
+                    Sign up New Account
+                </button>
+            </form>
+        </Wrapper>
     );
 };
