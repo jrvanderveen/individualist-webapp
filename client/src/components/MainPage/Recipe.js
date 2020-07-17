@@ -41,7 +41,6 @@ const Span = styled.span`
     &:hover {
         cursor: pointer;
     }
-    /* margin-left: ${(props) => (props.isSave ? "10px" : "")}; */
 `;
 const RightDiv = styled.div`
     float: right;

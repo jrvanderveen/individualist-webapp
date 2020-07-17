@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalState";
-import { CheckMarkButton } from "../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
@@ -8,6 +7,22 @@ const CheckMarkStyle = styled.svg`
     width: 24px;
     height: 24px;
     fill: ${(props) => (props.active === true ? "green" : "black")};
+`;
+
+const CheckMarkButton = styled.button`
+    opacity: ${(props) => (props.available === true ? 1 : 0)};
+
+    transition: opacity 0.3s ease;
+    border: none;
+
+    background: none;
+
+    @media (min-width: 1000px) {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        transform: translate(-100%, 250%);
+    }
 `;
 
 /*

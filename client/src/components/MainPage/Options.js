@@ -46,6 +46,7 @@ const Ul = styled.ul`
     list-style-type: none;
     display: flex;
     padding: 0px;
+    margin: 0px;
 `;
 
 const Li = styled.li`
@@ -60,14 +61,14 @@ const Li = styled.li`
         togglePopUpFunc: togle the shopping list popup window
 
 */
-export const Options = ({ togglePopUpFunc }) => {
+export const Options = ({ togglePopUpFunc, showPopUp }) => {
     // Context
     const { setCreateShoppingListBool, creatingShoppingList, saveAddedRecipes, signOut } = useContext(GlobalContext);
 
     // Options for main page
     return (
         <Wrapper>
-            <Button middle clicked={creatingShoppingList} onClick={togglePopUpFunc}>
+            <Button middle clicked={showPopUp} onClick={togglePopUpFunc}>
                 View Shopping List
             </Button>
             <Button middle clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool("close")}>

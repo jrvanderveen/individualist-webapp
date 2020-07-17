@@ -2,7 +2,7 @@
 <h1 align="center" >
 	  INDIVIDUA&#8729;LIST
 </h1>
-<h4 align="center">Save recipes and easily create custom shopping lists</h4>
+<h4 align="center">Save recipes and easily create custom shopping lists.  Mobile Friendly and HTTPS secured!</h4>
 
 <p align="center">
   <a href="https://myindividualist.com/">Demo</a> •
