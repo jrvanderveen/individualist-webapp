@@ -86,7 +86,6 @@ export const SignUp = ({ setLogInStateFunc }) => {
                 className="form-control"
                 placeholder="Email address..."
                 // required="required"
-                disabled="disabled"
             />
             <input
                 type="password"

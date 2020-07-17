@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const GrocerySections = require("../models/GrocerySections");
 const ShoppingList = require("../models/ShoppingList");
-const passport = require("passport");
+const Recipe = require("../models/Recipe");
+const fs = require("fs");
 
 // @desc On app start determine if user is authenticated
 // @route GET /api/v1.1/login/state
@@ -59,28 +60,55 @@ exports.signUp = async (req, res, next) => {
 
 // Helper method to create default grocery section document
 const setUserDefaults = (userId) => {
-    console.log("createDefaultGrocerySections");
+    console.log("Set up new user");
     try {
-        const grocerySectionObject = {
-            userId: userId,
-            default: "Other",
-            sections: ["Other", "Produce", "Meat"],
-        };
-        GrocerySections.create(grocerySectionObject);
+        jsonReader("./controlers/data/SignUpGrocerySections.json", (err, grocerySections) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            grocerySections["userId"] = userId;
+            GrocerySections.create(grocerySections);
+        });
 
-        const shoppingListObject = {
-            userId: userId,
-            grocerySectionIngredientsMap: {
-                Other: [],
-                Produce: [],
-                Meat: [],
-            },
-        };
-        ShoppingList.create(shoppingListObject);
+        jsonReader("./controlers/data/SignUpShoppinglist.json", (err, shoppingList) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            shoppingList["userId"] = userId;
+            ShoppingList.create(shoppingList);
+        });
+
+        jsonReader("./controlers/data/SignUpRecipes.json", (err, recipes) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            recipes.forEach((recipe) => {
+                recipe["userId"] = userId;
+            });
+            Recipe.insertMany(recipes);
+        });
     } catch (err) {
         console.log(`ERROR: Creating user default documents`.red);
     }
 };
+
+//Read File Helper
+function jsonReader(filePath, cb) {
+    fs.readFile(filePath, (err, fileData) => {
+        if (err) {
+            return cb && cb(err);
+        }
+        try {
+            const object = JSON.parse(fileData);
+            return cb && cb(null, object);
+        } catch (err) {
+            return cb && cb(err);
+        }
+    });
+}
 
 // @desc Sign user into MongoStore and create passport session cookie
 // @route GET /api/v1.1/login/signIn
