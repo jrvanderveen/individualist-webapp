@@ -22,6 +22,7 @@ export const SignUp = ({ setLogInStateFunc }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
+    const [userNamePlaceHolder, setUserNamePlaceHolder] = useState("User name...");
 
     //Functions
     const onSubmit = (e) => {
@@ -43,7 +44,8 @@ export const SignUp = ({ setLogInStateFunc }) => {
                 if (!res.data.error) {
                     setLogInStateFunc("login");
                 } else {
-                    setUserName(res.data.error);
+                    setUserName("");
+                    setUserNamePlaceHolder(res.data.error);
                 }
             })
             .catch((error) => {
@@ -76,7 +78,7 @@ export const SignUp = ({ setLogInStateFunc }) => {
                 value={username}
                 onChange={(e) => setUserName(e.target.value)}
                 className="form-control"
-                placeholder="User name..."
+                placeholder={userNamePlaceHolder}
                 required="required"
             />
             <input
