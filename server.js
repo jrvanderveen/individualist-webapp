@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./server/config/config.env" });
 // Dependencies
 const path = require("path");
 const express = require("express");
@@ -8,8 +8,8 @@ const morgan = require("morgan");
 const colors = require("colors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-const passport = require("./passport");
-const mongoUtil = require("./config/db");
+const passport = require("./server/controlers/auth/passport");
+const mongoUtil = require("./server/config/db");
 const https = require("https");
 var http = require("http");
 const fs = require("fs");
@@ -17,9 +17,9 @@ const fs = require("fs");
 
 //HTTPS options
 const options = {
-    key: fs.readFileSync("./SSL/server.key.pem"),
-    ca: [fs.readFileSync("./SSL/intermediate.crt.pem")],
-    cert: fs.readFileSync("./SSL/server.crt.pem"),
+    key: fs.readFileSync("./server/SSL/server.key.pem"),
+    ca: [fs.readFileSync("./server/SSL/intermediate.crt.pem")],
+    cert: fs.readFileSync("./server/SSL/server.crt.pem"),
     requestCert: false,
     rejectUnauthorized: false,
 };
@@ -59,10 +59,10 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     }
 
     // Routes
-    const recipes = require("./routes/Recipes");
-    const shoppingList = require("./routes/ShoppingList");
-    const settings = require("./routes/Settings");
-    const login = require("./routes/Login");
+    const recipes = require("./server/routes/Recipes");
+    const shoppingList = require("./server/routes/ShoppingList");
+    const settings = require("./server/routes/Settings");
+    const login = require("./server/routes/Login");
 
     // Direct Routes
     app.use("/api/v1.1/recipes", recipes);

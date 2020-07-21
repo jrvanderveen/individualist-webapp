@@ -33,7 +33,7 @@ exports.addRecipe = async (req, res, next) => {
         let recipeObj = req.body;
         let scraperResult = "success";
         if (req.body.URL) {
-            let scraperRes = await axios.post("http://ec2-18-218-233-252.us-east-2.compute.amazonaws.com:5001" + "/api/v1/scraper/recipe", {
+            let scraperRes = await axios.post(process.env.SCAPER_ENDPOINT + "/api/v1/scraper/recipe", {
                 url: req.body.URL,
             });
             if (!scraperRes.data.error) {
