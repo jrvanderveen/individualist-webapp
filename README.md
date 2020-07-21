@@ -74,6 +74,16 @@ MONGO_URI=Your Mongo URI
 # limited = only basic server logging
 LOGING_LEVEL=limited
 SESSION_SECRET=seceret hash string
+#You can either comment out the facebook and google login links client side or create a google/facebook developer console for the app and add 
+GOOGLE_CLIENT_ID_PROD=google client id
+GOOGLE_CLIENT_SECRET_PROD=google client secrete
+GOOGLE_CLIENT_ID_DEV=google client id
+GOOGLE_CLIENT_SECRET_DEV=google client secrete
+#Facebook Auth
+FACEBOOK_CLIENT_ID_PROD=facebook client id
+FACEBOOK_CLIENT_SECRET_PROD=facebook client secrete
+FACEBOOK_CLIENT_ID_DEV=facebook client id
+FACEBOOK_CLIENT_SECRET_DEV=facebook client secrete
 ```
 
 1. Generate create `./SSL/server.key.pem`, `./SSL/intermediate.crt.pem`, and `./SSL/server.crt.pem` files in the main folder. Open SSL is a great freee tool for this. Note: the `./SSL/intermediate.crt.pem` should be purchsed from a CA.
