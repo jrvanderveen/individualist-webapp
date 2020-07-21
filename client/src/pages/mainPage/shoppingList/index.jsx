@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { GlobalContext } from "../../context/GlobalState";
-import { ShoppingListOptions } from "./ShoppingListOptions";
-import { ShoppingListGrocerySection } from "./ShoppingListGrocerySection";
+import { GlobalContext } from "../../../context/globalState";
+import { Options } from "./options";
+import { GrocerySection } from "./grocerySection";
 import styled from "styled-components";
 
 // Styled components
@@ -98,18 +98,14 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
-                <ShoppingListOptions
-                    togglePopUpFunc={togglePopUpFunc}
-                    downloadShoppingListFunc={downloadShoppingList}
-                    setClearSwitchFunc={setClearSwtichParrent}
-                />
+                <Options togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} setClearSwitchFunc={setClearSwtichParrent} />
 
                 <h3>Shopping List</h3>
                 <Ul>
                     {Object.entries(grocerySectionIngredientsMap).map(([name, section], index) =>
                         // toJSON is being inserted at somepoint not sure where
                         // prety sure its due to the fact that its a default dict
-                        name === "toJSON" ? null : <ShoppingListGrocerySection key={index} sectionName={name} section={section} clearSwitch={clearSwitch} />
+                        name === "toJSON" ? null : <GrocerySection key={index} sectionName={name} section={section} clearSwitch={clearSwitch} />
                     )}
                 </Ul>
             </ShoppingListContent>

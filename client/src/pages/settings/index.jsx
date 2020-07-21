@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import { GlobalContext } from "../context/GlobalState";
-import { Options } from "../components/Settings/Options";
-import { SetUpGrocerySections } from "../components/Settings/SetUpGrocerySections";
-import { UserSettings } from "../components/Settings/UserSettings";
-import { Header } from "../components/Settings/Header";
+import { GlobalContext } from "../../context/globalState";
+import { Options } from "./options";
+import { GrocerySections } from "./grocerySections";
+import { UserSettings } from "./userSettings";
+import { Header } from "./header";
 import styled from "styled-components";
 
 // Styled Components
@@ -36,7 +36,7 @@ export const Settings = ({ history }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const settingsMap = { "Grocery Store Sections": <SetUpGrocerySections />, "User Settings": <UserSettings /> };
+    const settingsMap = { "Grocery Store Sections": <GrocerySections />, "User Settings": <UserSettings /> };
     const [activeOption, setActiveOption] = useState("Grocery Store Sections");
     return (
         <>

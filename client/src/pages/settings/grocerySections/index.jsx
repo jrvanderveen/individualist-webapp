@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import { GlobalContext } from "../../context/GlobalState";
-import { GrocerySection } from "./GrocerySection";
-import { H3, List, Input } from "../../elements/index";
+import { GlobalContext } from "../../../context/globalState";
+import { GrocerySection } from "./grocerySection";
+import { H3, List, Input } from "../../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
         
 
 */
-export const SetUpGrocerySections = () => {
+export const GrocerySections = () => {
     // Context
     const { grocerySections, addGrocerySection } = useContext(GlobalContext);
 

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { GlobalContext } from "../../context/GlobalState";
-import { Ingredient } from "./Ingredient";
-import { DropDownButton } from "../util/DropDownButton";
-import { List, Button } from "../../elements/index";
+import { GlobalContext } from "../../../context/globalState";
+import { Ingredient } from "./ingredient";
+import { DropDownButton } from "../../../components/util/dropDownButton";
+import { List, Button } from "../../../elements/index";
 import styled from "styled-components";
 
 // Styled Components

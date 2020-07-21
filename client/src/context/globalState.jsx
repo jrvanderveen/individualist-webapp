@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
-import DefaultDict from "../utils/DefaultDict";
+import DefaultDict from "../utils/defaultDict";
 import { Redirect } from "react-router-dom";
 const ObjectID = require("mongoose").Types.ObjectId;
 

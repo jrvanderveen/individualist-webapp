@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { GlobalContext } from "../../context/GlobalState";
-import { Recipe } from "./Recipe";
-import { SettingsSvg } from "../SVG/SettingSvg";
+import { GlobalContext } from "../../../context/globalState";
+import { Recipe } from "./recipe";
+import { SettingsSvg } from "../../../components/SVG/settingSvg";
 import styled from "styled-components";
-import { H3 } from "../../elements/index";
+import { H3 } from "../../../elements/index";
 
 // Styled Components
 const Ul = styled.ul`

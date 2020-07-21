@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { HomeSvg } from "../SVG/HomeSvg";
+import { HomeSvg } from "../../../components/SVG/homeSvg";
 import styled from "styled-components";
 
 // Styled Components

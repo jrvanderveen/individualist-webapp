@@ -1,6 +1,6 @@
 const ObjectID = require("mongoose").Types.ObjectId;
 const os = require("os");
-const ShoppingList = require("../models/ShoppingList");
+const ShoppingList = require("../models/shoppingList");
 
 // @desc Get shopping list
 // @route GET /api/v1.1/shoppingList/download

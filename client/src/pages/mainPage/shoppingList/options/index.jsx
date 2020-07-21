@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "../../context/GlobalState";
-import { Wrapper, Button } from "../../elements/index";
+import { GlobalContext } from "../../../../context/globalState";
+import { Wrapper, Button } from "../../../../elements/index";
 import styled from "styled-components";
 
 // Styled components
@@ -26,7 +26,7 @@ const ExitButton = styled.button`
         downloadShoppingListFunc: download current ingredients in shoppinglist
         setClearSwitchFunc: Clear shoppinglist ingredients
 */
-export const ShoppingListOptions = ({ togglePopUpFunc, downloadShoppingListFunc, setClearSwitchFunc }) => {
+export const Options = ({ togglePopUpFunc, downloadShoppingListFunc, setClearSwitchFunc }) => {
     // State
     const { clearShoppingList } = useContext(GlobalContext);
 
