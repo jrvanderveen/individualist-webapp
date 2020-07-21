@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "../../context/GlobalState";
+import { GlobalContext } from "../../../context/globalState";
 import styled from "styled-components";
 
 // Styled Components

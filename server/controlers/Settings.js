@@ -1,6 +1,6 @@
-const GrocerySections = require("../models/GrocerySections");
-const Recipe = require("../models/Recipe");
-const ShoppingList = require("../models/ShoppingList");
+const GrocerySections = require("../models/grocerySections");
+const Recipe = require("../models/recipe");
+const ShoppingList = require("../models/shoppingList");
 const os = require("os");
 const mongoose = require("mongoose");
 

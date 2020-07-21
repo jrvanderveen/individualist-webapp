@@ -1,4 +1,4 @@
-import DefaultDict from "../utils/DefaultDict";
+import DefaultDict from "../utils/defaultDict";
 export default (state, action) => {
     switch (action.type) {
         //////////////////////////////////////////////////////////////

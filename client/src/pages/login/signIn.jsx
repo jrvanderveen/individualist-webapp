@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { GlobalContext } from "../../context/GlobalState";
+import { GlobalContext } from "../../context/globalState";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 

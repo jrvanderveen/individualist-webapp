@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { List, Wrapper } from "../../elements/index";
+import { List, Wrapper } from "../../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
@@ -19,7 +19,7 @@ const Span = styled.span`
     PARAMS: 
         ingredient: grocery section ingredient name
 */
-export const ShoppingListIngredient = ({ ingredient }) => {
+export const Ingredient = ({ ingredient }) => {
     // State
     const [active, setActive] = useState(false);
 

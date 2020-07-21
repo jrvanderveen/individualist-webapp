@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Header } from "../components/MainPage/Header";
-import { RecipeList } from "../components/MainPage/RecipeList";
-import { AddRecipe } from "../components/MainPage/AddRecipe";
-import { Options } from "../components/MainPage/Options";
-import { ShoppingListPopUp } from "../components/MainPage/ShoppingListPopUp";
+import { RecipeList } from "./recipeList";
+import { Header } from "./header";
+import { AddRecipe } from "./addRecipe";
+import { Options } from "./options";
+import { ShoppingListPopUp } from "./shoppingList";
 import styled from "styled-components";
 
 // Styled Components

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "./context/GlobalState";
+import { GlobalContext } from "./context/globalState";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import { MainPage } from "./pages/MainPage";
+import { MainPage } from "./pages/mainPage";
+import { Login } from "./pages/login";
 import { NotFound } from "./pages/404";
-import { Settings } from "./pages/Settings";
-import { Login } from "./pages/Login";
+import { Settings } from "./pages/settings";
 
 /*
     SUMMARY:
@@ -40,7 +40,7 @@ export const Routes = () => {
                         <Route exact path="/" component={Login} />
                         <Route exact path="/settings" component={Login} />
                         <Route exact path="/404" component={Login} />
-                        {/* <Redirect to="/404" /> */}
+                        <Redirect to="/404" />
                     </Switch>
                 ) : (
                     <Switch>
@@ -48,7 +48,7 @@ export const Routes = () => {
                         <Route exact path="/" component={MainPage} />
                         <Route exact path="/settings" component={Settings} />
                         <Route exact path="/404" component={NotFound} />
-                        {/* <Redirect to="/404" /> */}
+                        <Redirect to="/404" />
                     </Switch>
                 )}
             </Router>

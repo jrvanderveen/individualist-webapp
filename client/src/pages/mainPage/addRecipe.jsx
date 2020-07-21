@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { GlobalContext } from "../../context/GlobalState";
+import { GlobalContext } from "../../context/globalState";
 import { H3, Input, Label, Button } from "../../elements/index";
 import styled from "styled-components";
 

@@ -1,9 +1,9 @@
 import React, { useContext, useState, useRef } from "react";
-import { GlobalContext } from "../../context/GlobalState";
-import { Ingredients } from "./Ingredients";
-import { CheveronSvg } from "../SVG/CheveronSvg";
-import { SelectRecipeButton } from "./SelectRecipeButton";
-import { List, AccordionButton, DeleteButton, Link, AccordionContent, Input, Label } from "../../elements/index";
+import { GlobalContext } from "../../../context/globalState";
+import { Ingredients } from "./ingredients";
+import { CheveronSvg } from "../../../components/SVG/cheveronSvg";
+import { SelectRecipeButton } from "./selectRecipeButton";
+import { List, AccordionButton, DeleteButton, Link, AccordionContent, Input, Label } from "../../../elements/index";
 import styled from "styled-components";
 
 // Styled Components

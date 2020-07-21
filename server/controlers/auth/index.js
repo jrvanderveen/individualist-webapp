@@ -1,7 +1,7 @@
-const User = require("../../models/User");
-const GrocerySections = require("../../models/GrocerySections");
-const ShoppingList = require("../../models/ShoppingList");
-const Recipe = require("../../models/Recipe");
+const User = require("../../models/user");
+const GrocerySections = require("../../models/grocerySections");
+const ShoppingList = require("../../models/shoppingList");
+const Recipe = require("../../models/recipe");
 const fs = require("fs");
 
 // @desc On app start determine if user is authenticated

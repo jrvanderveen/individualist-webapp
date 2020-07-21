@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "../../context/GlobalState";
-import { List, Wrapper } from "../../elements/index";
+import { GlobalContext } from "../../../context/globalState";
+import { List, Wrapper } from "../../../elements/index";
 import styled from "styled-components";
 
 // Styled components
@@ -19,7 +19,7 @@ const Input = styled.input`
 
 const H5 = styled.h5`
     max-width: 80%;
-`
+`;
 
 /*
     SUMMARY:

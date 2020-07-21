@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { GlobalContext } from "../../context/GlobalState";
-import { ShoppingListIngredient } from "./ShoppingListIngredient";
-import { List, AccordionButton, Input, AccordionContent } from "../../elements/index";
+import { GlobalContext } from "../../../context/globalState";
+import { Ingredient } from "./ingredient";
+import { List, AccordionButton, Input, AccordionContent } from "../../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
         clearSwitch: bool updated when user hits clear shopping list
 
 */
-export const ShoppingListGrocerySection = ({ sectionName, section, clearSwitch }) => {
+export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
     // Context
     const { addIngredientToShoppingListSection } = useContext(GlobalContext);
 
@@ -75,7 +75,7 @@ export const ShoppingListGrocerySection = ({ sectionName, section, clearSwitch }
                 <AccordionContent>
                     <ul>
                         {section.map((ingredient, index) => (
-                            <ShoppingListIngredient key={`${index}-${ingredient._id}`} ingredient={ingredient.name} />
+                            <Ingredient key={`${index}-${ingredient._id}`} ingredient={ingredient.name} />
                         ))}
                         <List isShoppingListIngredient isForm>
                             <Input

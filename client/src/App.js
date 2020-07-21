@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css"; // Styled components used instead
-import { GlobalProvider } from "./context/GlobalState";
-import { Routes } from "./Routes";
+import { GlobalProvider } from "./context/globalState";
+import { Routes } from "./routes";
 import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
   body {
