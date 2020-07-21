@@ -1,6 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("./LocalStrategy");
 const GoogleStrategy = require("./GoogleStrategy");
+const FacebookStrategy = require("./FacebookStrategy");
 const User = require("../models/User");
 
 // called on login, saves the id to session req.session.passport.user = {id:'..'}
@@ -25,10 +26,12 @@ passport.deserializeUser((id, done) => {
         done(null, user);
     });
 });
-
+FacebookStrategy;
 //  Use Strategies
 passport.use(LocalStrategy);
 
 passport.use(GoogleStrategy);
+
+passport.use(FacebookStrategy);
 
 module.exports = passport;

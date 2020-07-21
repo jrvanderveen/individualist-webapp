@@ -134,22 +134,7 @@ export const GlobalProvider = ({ children }) => {
             return false;
         }
     }
-    //Login in with Google Auth
-    async function signInGoogle() {
-        console.log("google sign in ");
-        try {
-            const res = await axios.get("/api/v1.1/login/google");
-            console.log(res);
-            return res;
-        } catch (error) {
-            console.log(error);
-            dispatch({
-                type: "LOGIN_ERROR",
-                payload: error,
-            });
-            return false;
-        }
-    }
+
     //On start up get recipes and grocery sections
     //Get recipes grocery sections then recipes to avoid incomplete data
     // TODO:
@@ -565,7 +550,6 @@ export const GlobalProvider = ({ children }) => {
                 signOut,
                 isUserSignedIn,
                 signIn,
-                signInGoogle,
                 onStartUp,
                 getRecipes,
                 deleteRecipe,

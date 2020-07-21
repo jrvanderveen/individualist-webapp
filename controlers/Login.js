@@ -40,6 +40,7 @@ exports.signUp = async (req, res, next) => {
             const newUser = new User({
                 username: username,
                 email: email,
+                authType: "local",
                 password: password,
             });
             console.log(newUser);
@@ -58,8 +59,8 @@ exports.signUp = async (req, res, next) => {
     });
 };
 
-// Helper method to create default grocery section document
-const setUserDefaults = (userId) => {
+// Helper method to create default user documents
+exports.setUserDefaults = (userId) => {
     console.log("Set up new user");
     try {
         jsonReader("./controlers/data/SignUpGrocerySections.json", (err, grocerySections) => {
