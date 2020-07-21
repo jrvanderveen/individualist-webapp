@@ -1,7 +1,7 @@
-const User = require("../models/User");
-const GrocerySections = require("../models/GrocerySections");
-const ShoppingList = require("../models/ShoppingList");
-const Recipe = require("../models/Recipe");
+const User = require("../../models/User");
+const GrocerySections = require("../../models/GrocerySections");
+const ShoppingList = require("../../models/ShoppingList");
+const Recipe = require("../../models/Recipe");
 const fs = require("fs");
 
 // @desc On app start determine if user is authenticated
@@ -29,7 +29,6 @@ exports.userState = async (req, res, next) => {
 exports.signUp = async (req, res, next) => {
     console.log("Sign Up");
     const { username, email, password, repeatPassword } = req.body;
-    console.log(username, email, password, repeatPassword);
     User.findOne({ username: username }).then((user) => {
         if (user) {
             return res.status(200).json({
@@ -37,33 +36,47 @@ exports.signUp = async (req, res, next) => {
                 error: `Sorry, already a user with the username: ${username}`,
             });
         } else {
-            const newUser = new User({
-                username: username,
-                email: email,
-                authType: "local",
-                password: password,
-            });
-            console.log(newUser);
-            newUser.save((err, savedUser) => {
-                console.log(err);
-                if (err) {
-                    return res.status(500).json({
-                        success: false,
-                        error: `Server Error`,
-                    });
-                }
-                setUserDefaults(savedUser._id);
-                res.json(savedUser);
-            });
+            try {
+                this.createNewUser({ username, email, password, repeatPassword }, null).then((data) => {
+                    res.json(data);
+                });
+            } catch {
+                return res.status(500).json({
+                    success: false,
+                    error: "Server Error",
+                });
+            }
         }
     });
 };
-
+// Helper method to create new user
+exports.createNewUser = async (localUser, authUser) => {
+    let newUser = {};
+    if (localUser) {
+        newUser = new User({
+            username: localUser.username,
+            email: localUser.email,
+            authType: "local",
+            password: localUser.password,
+        });
+    } else {
+        newUser = new User({
+            username: authUser.profile.displayName,
+            authId: authUser.profile.id,
+            authType: authUser.type,
+            email: authUser.profile.emails.length > 0 ? authUser.profile.emails[0].value : "",
+            password: authUser.profile.id,
+        });
+    }
+    const savedUser = await User.create(newUser);
+    this.setUserDefaults(savedUser._id);
+    return savedUser;
+};
 // Helper method to create default user documents
 exports.setUserDefaults = (userId) => {
     console.log("Set up new user");
     try {
-        jsonReader("./controlers/data/SignUpGrocerySections.json", (err, grocerySections) => {
+        jsonReader("./server/controlers/auth/data/SignUpGrocerySections.json", (err, grocerySections) => {
             if (err) {
                 console.log(err);
                 return;
@@ -72,7 +85,7 @@ exports.setUserDefaults = (userId) => {
             GrocerySections.create(grocerySections);
         });
 
-        jsonReader("./controlers/data/SignUpShoppinglist.json", (err, shoppingList) => {
+        jsonReader("./server/controlers/auth/data/SignUpShoppinglist.json", (err, shoppingList) => {
             if (err) {
                 console.log(err);
                 return;
@@ -81,7 +94,7 @@ exports.setUserDefaults = (userId) => {
             ShoppingList.create(shoppingList);
         });
 
-        jsonReader("./controlers/data/SignUpRecipes.json", (err, recipes) => {
+        jsonReader("./server/controlers/auth/data/SignUpRecipes.json", (err, recipes) => {
             if (err) {
                 console.log(err);
                 return;

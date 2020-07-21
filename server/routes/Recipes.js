@@ -1,5 +1,5 @@
 const express = require("express");
-const { ensureAuthenticated } = require("../config/auth");
+const { ensureAuthenticated } = require("../controlers/auth/auth");
 const router = express.Router();
 const { getRecipes, addRecipe, addFullRecipe, deleteRecipe, deleteRecipeIngredient, addRecipeIngredient, saveEditedRecipe } = require("../controlers/Recipes");
 

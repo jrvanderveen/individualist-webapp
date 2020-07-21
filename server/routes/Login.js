@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { signUp, signIn, signOut, userState, signInGoogleRedirect } = require("../controlers/Login");
+const { signUp, signIn, signOut, userState, signInGoogleRedirect } = require("../controlers/auth");
 const passport = require("passport");
 
 // Preserve this order
