@@ -132,3 +132,10 @@ exports.signOut = async (req, res, next) => {
         res.send({ msg: "no user to log out" });
     }
 };
+
+// @desc Sign user in with google auth
+// @route GET /api/v1.1/login/signIn/google
+// @access Public
+exports.signInGoogleRedirect = async (req, res, next) => {
+    res.redirect(process.env.NODE_ENV === "production" ? "/" : "http://localhost:3000");
+};

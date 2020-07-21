@@ -40,7 +40,7 @@ export const Routes = () => {
                         <Route exact path="/" component={Login} />
                         <Route exact path="/settings" component={Login} />
                         <Route exact path="/404" component={Login} />
-                        <Redirect to="/404" />
+                        {/* <Redirect to="/404" /> */}
                     </Switch>
                 ) : (
                     <Switch>
@@ -48,7 +48,7 @@ export const Routes = () => {
                         <Route exact path="/" component={MainPage} />
                         <Route exact path="/settings" component={Settings} />
                         <Route exact path="/404" component={NotFound} />
-                        <Redirect to="/404" />
+                        {/* <Redirect to="/404" /> */}
                     </Switch>
                 )}
             </Router>

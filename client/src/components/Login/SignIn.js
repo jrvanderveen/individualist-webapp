@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 */
 export const SignIn = ({ setLogInStateFunc }) => {
     // Context
-    const { signIn } = useContext(GlobalContext);
+    const { signIn, signInGoogle } = useContext(GlobalContext);
 
     // State
     const [username, setUserName] = useState("");
@@ -57,24 +57,31 @@ export const SignIn = ({ setLogInStateFunc }) => {
         });
     };
 
+    const onClickGoogle = () => {
+        signInGoogle().then((result) => {
+            console.log(result);
+        });
+    };
+
     return (
         <Wrapper>
             <form className="form-signin" onSubmit={onSubmit}>
                 <h1 className="h3 mb-3 font-weight-normal"> Sign in</h1>
+
+                <div className="social-login">
+                    {/* <button className="btn facebook-btn social-btn" type="button">
+                        <span>
+                            <i className="fab fa-facebook-f"></i> Sign in with Facebook
+                        </span>{" "}
+                    </button> */}
+                    <a className="btn google-btn social-btn" type="button" href="http://localhost:5000/api/v1.1/login/google">
+                        <span>
+                            <i className="fab fa-google-plus-g"></i> Sign in with Google+
+                        </span>{" "}
+                    </a>
+                </div>
+                <p style={{ textAlign: "center" }}> OR </p>
                 <Span onClick={onClick}>Sign In As Guest</Span>
-                {/* <div className="social-login">
-                <button className="btn facebook-btn social-btn" type="button">
-                    <span>
-                        <i className="fab fa-facebook-f"></i> Sign in with Facebook
-                    </span>{" "}
-                </button>
-                <button className="btn google-btn social-btn" type="button">
-                    <span>
-                        <i className="fab fa-google-plus-g"></i> Sign in with Google+
-                    </span>{" "}
-                </button>
-            </div> 
-            <p style={{ textAlign: "center" }}> OR </p>*/}
                 <input
                     type="username"
                     value={username}

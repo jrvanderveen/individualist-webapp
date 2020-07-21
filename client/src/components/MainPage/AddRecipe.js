@@ -80,7 +80,12 @@ export const AddRecipe = () => {
                 </div>
                 <div>
                     <Label>URL</Label>
-                    <Input type="text" value={URL} onChange={(e) => setRecipeURL(e.target.value)} placeholder="Enter URL..." />
+                    <Input
+                        type="text"
+                        value={URL}
+                        onChange={(e) => setRecipeURL(e.target.value)}
+                        placeholder="Automatically adds ingredients from popular sites"
+                    />
                 </div>
                 <Button isAddRecipeButton>Add Recipe</Button>
             </form>

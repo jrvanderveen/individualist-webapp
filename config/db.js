@@ -8,6 +8,7 @@ module.exports = {
                 useNewUrlParser: true,
                 useCreateIndex: true,
                 useUnifiedTopology: true,
+                useFindAndModify: false,
             })
             .then((x) => {
                 console.log(`MongoDB Connected: ${mongoose.connections[0].host}`.cyan.underline.bold);

@@ -1,7 +1,9 @@
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config/config.env" });
 // Dependencies
 const path = require("path");
 const express = require("express");
-const dotenv = require("dotenv");
+
 const morgan = require("morgan");
 const colors = require("colors");
 const session = require("express-session");
@@ -12,7 +14,6 @@ const https = require("https");
 var http = require("http");
 const fs = require("fs");
 // Set env path
-dotenv.config({ path: "./config/config.env" });
 
 //HTTPS options
 const options = {
