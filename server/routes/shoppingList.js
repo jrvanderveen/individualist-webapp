@@ -1,7 +1,7 @@
 const express = require("express");
 const { ensureAuthenticated } = require("../controlers/auth/auth");
 const router = express.Router();
-const { createShoppingListFile, getShoppingList, postNewShoppingList, addSectionIngredient, clearShoppingList } = require("../controlers/ShoppingList");
+const { createShoppingListFile, getShoppingList, postNewShoppingList, addSectionIngredient, clearShoppingList } = require("../controlers/shoppingList");
 
 // Preserve this order
 router.route("/download").all(ensureAuthenticated).get(createShoppingListFile);

@@ -1,7 +1,7 @@
 const express = require("express");
 const { ensureAuthenticated } = require("../controlers/auth/auth");
 const router = express.Router();
-const { getGrocerySections, addGrocerySection, deleteGrocerySection, setDefaultGrocerySection } = require("../controlers/Settings");
+const { getGrocerySections, addGrocerySection, deleteGrocerySection, setDefaultGrocerySection } = require("../controlers/settings");
 
 // Preserve this order
 router.route("/grocerySections").all(ensureAuthenticated).get(getGrocerySections);
