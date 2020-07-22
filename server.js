@@ -59,10 +59,10 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     }
 
     // Routes
-    const recipes = require("./server/routes/Recipes");
-    const shoppingList = require("./server/routes/ShoppingList");
-    const settings = require("./server/routes/Settings");
-    const login = require("./server/routes/Login");
+    const recipes = require("./server/routes/recipes");
+    const shoppingList = require("./server/routes/shoppingList");
+    const settings = require("./server/routes/settings");
+    const login = require("./server/routes/login");
 
     // Direct Routes
     app.use("/api/v1.1/recipes", recipes);

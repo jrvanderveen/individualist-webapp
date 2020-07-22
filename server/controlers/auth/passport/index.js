@@ -1,7 +1,7 @@
 const passport = require("passport");
-const LocalStrategy = require("./LocalStrategy");
-const GoogleStrategy = require("./GoogleStrategy");
-const FacebookStrategy = require("./FacebookStrategy");
+const LocalStrategy = require("./localStrategy");
+const GoogleStrategy = require("./googleStrategy");
+const FacebookStrategy = require("./facebookStrategy");
 const User = require("../../../models/user");
 
 // called on login, saves the id to session req.session.passport.user = {id:'..'}
