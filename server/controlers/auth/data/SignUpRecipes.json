@@ -3,7 +3,7 @@
         "userId": "",
         "name": "Check out the tutorial by clicking on the website link!",
         "servings": 1,
-        "URL": "https://github.com/jrvanderveen/individualist-webapp#tutorial",
+        "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
@@ -14,7 +14,7 @@
         "userId": "",
         "name": "Edit Me!",
         "servings": 2,
-        "URL": "https://github.com/jrvanderveen/individualist-webapp#tutorial",
+        "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
@@ -25,7 +25,7 @@
         "userId": "",
         "name": "Add me to your shopping list!",
         "servings": 3,
-        "URL": "https://github.com/jrvanderveen/individualist-webapp#tutorial",
+        "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
@@ -36,7 +36,7 @@
         "userId": "",
         "name": "Delete Me!",
         "servings": 3,
-        "URL": "https://github.com/jrvanderveen/individualist-webapp#tutorial",
+        "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
