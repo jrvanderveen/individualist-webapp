@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../../context/globalState";
 import { Redirect } from "react-router-dom";
+import { getENV } from "../../config";
 import styled from "styled-components";
 
 const Span = styled.span`
@@ -42,6 +43,11 @@ export const SignIn = ({ setLogInStateFunc }) => {
     const [placeholder, setPlaceHolder] = useState("username");
     const [password, setPassword] = useState("");
 
+    //Variables
+    const googleRedirect = getENV() === "production" ? "https://myindividualist.com/api/v1.1/login/google" : "http://localhost:5000/api/v1.1/login/google";
+    const facebookRedirect =
+        getENV() === "production" ? "https://myindividualist.com/api/v1.1/login/facebook" : "http://localhost:5000/api/v1.1/login/facebook";
+
     // Functions
     const onSubmit = (e) => {
         e.preventDefault();
@@ -73,14 +79,14 @@ export const SignIn = ({ setLogInStateFunc }) => {
                 <h1 className="h3 mb-3 font-weight-normal"> Sign in</h1>
                 <OAuthWrapper>
                     <ButtonWrapper>
-                        <a className="btn facebook-btn social-btn" href="http://localhost:5000/api/v1.1/login/facebook">
+                        <a className="btn facebook-btn social-btn" href={facebookRedirect}>
                             <span>
                                 <i className="fab fa-facebook-f"></i> Sign in with Facebook
                             </span>{" "}
                         </a>
                     </ButtonWrapper>
                     <ButtonWrapper>
-                        <a className="btn google-btn social-btn" href="http://localhost:5000/api/v1.1/login/google">
+                        <a className="btn google-btn social-btn" href={googleRedirect}>
                             <span>
                                 <i className="fab fa-google-plus-g"></i> Sign in with Google+
                             </span>{" "}

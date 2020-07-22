@@ -25,3 +25,4 @@ yarn-error.log*
 /server/config/config.env
 /documents
 /server/SSL
+/client/src/config.js
