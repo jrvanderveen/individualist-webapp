@@ -83,7 +83,6 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
         // Redirect from http port 80 to https
         var http = require("http");
         http.createServer(function (req, res) {
-            console.log("redirect");
             res.writeHead(307, { Location: "https://" + req.headers["host"] + req.url });
             res.end();
         }).listen(80, console.log(`Redirect Server running in ${process.env.NODE_ENV} mode on port 80`.yellow.bold));
