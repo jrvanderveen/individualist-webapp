@@ -22,7 +22,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Random
-/config/config.env
+/server/config/config.env
 /documents
 .cert.pem
 .key.pem
