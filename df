@@ -1,0 +1,109 @@
+[1mdiff --git a/client/src/App.js b/client/src/App.js[m
+[1mindex e139211..f9698f7 100644[m
+[1m--- a/client/src/App.js[m
+[1m+++ b/client/src/App.js[m
+[36m@@ -1,8 +1,9 @@[m
+[31m-import React from "react";[m
+[32m+[m[32mimport React, { useState } from "react";[m
+ import { Header } from "./components/Header";[m
+ import { RecipeList } from "./components/RecipeList";[m
+ import { AddRecipe } from "./components/AddRecipe";[m
+ import { Options } from "./components/Options";[m
+[32m+[m[32mimport { ShoppingListPopUp } from "./components/ShoppingListPopUp";[m
+ [m
+ import { GlobalProvider } from "./context/GlobalState";[m
+ import "./App.css";[m
+[36m@@ -16,6 +17,7 @@[m [mconst GlobalStyle = createGlobalStyle`[m
+     align-items: center;[m
+     justify-content: center;[m
+     min-height: 100vh;[m
+[32m+[m[32m    min-width: 1250px;[m
+     margin: 0;[m
+     font-family: "Lato", sans-serif;[m
+   }[m
+[36m@@ -39,15 +41,22 @@[m [mconst Container = styled.section`[m
+ `;[m
+ [m
+ function App() {[m
+[32m+[m[32m    const [showPopUp, setShowPopUp] = useState(false);[m
+[32m+[m[32m    const togglePopUp = () => {[m
+[32m+[m[32m        setShowPopUp(!showPopUp);[m
+[32m+[m[32m        console.log("function called from app.js", showPopUp);[m
+[32m+[m[32m    };[m
+[32m+[m[32m    console.log("show pop up", showPopUp);[m
+     return ([m
+         <GlobalProvider>[m
+             <GlobalStyle />[m
+             <Header />[m
+[31m-            <Options />[m
+             <Container>[m
+[32m+[m[32m                <Options togglePopUpFunc={togglePopUp} />[m
+                 <RecipeList />[m
+                 <AddRecipe />[m
+             </Container>[m
+[32m+[m[32m            {showPopUp === true ? <ShoppingListPopUp togglePopUpFunc={togglePopUp} /> : null}[m
+         </GlobalProvider>[m
+     );[m
+ }[m
+[1mdiff --git a/client/src/components/Options.js b/client/src/components/Options.js[m
+[1mindex 488723f..eb7ddc5 100644[m
+[1m--- a/client/src/components/Options.js[m
+[1m+++ b/client/src/components/Options.js[m
+[36m@@ -20,11 +20,11 @@[m [mconst Button = styled.button`[m
+ [m
+ const Div = styled.div`[m
+     position: fixed;[m
+[31m-    right: 0px;[m
+[32m+[m[32m    left: 0px;[m
+     top: 0px;[m
+ `;[m
+ [m
+[31m-export const Options = () => {[m
+[32m+[m[32mexport const Options = ({ togglePopUpFunc }) => {[m
+     const { setCreateShoppingListBool, creatingShoppingList, setEditBool, editing } = useContext(GlobalContext);[m
+     return ([m
+         <Div>[m
+[36m@@ -34,7 +34,7 @@[m [mexport const Options = () => {[m
+             <Button middle clicked={creatingShoppingList} onClick={() => setCreateShoppingListBool()}>[m
+                 Create Shopping List[m
+             </Button>[m
+[31m-            <Button bottom available={creatingShoppingList}>[m
+[32m+[m[32m            <Button bottom available={creatingShoppingList} onClick={togglePopUpFunc}>[m
+                 Finalize List[m
+             </Button>[m
+         </Div>[m
+[1mdiff --git a/client/src/context/GlobalState.js b/client/src/context/GlobalState.js[m
+[1mindex 969d856..ce80811 100644[m
+[1m--- a/client/src/context/GlobalState.js[m
+[1m+++ b/client/src/context/GlobalState.js[m
+[36m@@ -149,6 +149,22 @@[m [mexport const GlobalProvider = ({ children }) => {[m
+         }[m
+     }[m
+ [m
+[32m+[m[32m    function returnSelectedRecipes() {[m
+[32m+[m[32m        let recipeIngredientsBySection = {};[m
+[32m+[m[32m        const grocerySectionList = ["Produce", "Meat/Seafood", "Deli/Prepared", "Other"];[m
+[32m+[m[32m        grocerySectionList.forEach((section) => {[m
+[32m+[m[32m            recipeIngredientsBySection[section] = [];[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        Object.entries(state.recipes).forEach(([_id, recipe]) => {[m
+[32m+[m[32m            if (recipe.forShoppingList === true) {[m
+[32m+[m[32m                Object.entries(recipe.ingredients).forEach(([_ing_id, ingredient]) => {[m
+[32m+[m[32m                    recipeIngredientsBySection[ingredient.grocerySection].push(ingredient.name);[m
+[32m+[m[32m                });[m
+[32m+[m[32m            }[m
+[32m+[m[32m        });[m
+[32m+[m[32m        return recipeIngredientsBySection;[m
+[32m+[m[32m    }[m
+     return ([m
+         <GlobalContext.Provider[m
+             value={{[m
+[36m@@ -164,6 +180,7 @@[m [mexport const GlobalProvider = ({ children }) => {[m
+                 setCreateShoppingListBool,[m
+                 setRecipeForShoppingList,[m
+                 setEditBool,[m
+[32m+[m[32m                returnSelectedRecipes,[m
+             }}[m
+         >[m
+             {children}[m
