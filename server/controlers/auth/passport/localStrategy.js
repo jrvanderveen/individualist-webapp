@@ -6,7 +6,6 @@ const strategy = new LocalStrategy(
         usernameField: "username",
     },
     function (username, password, done) {
-        console.log("Use local Strategy");
         User.findOne({ username: username }, (err, user) => {
             if (err) {
                 return done(err);
@@ -17,7 +16,6 @@ const strategy = new LocalStrategy(
             if (!user.checkPassword(password)) {
                 return done(null, false, { message: "Incorrect password" });
             }
-            console.log(user);
             return done(null, user);
         });
     }

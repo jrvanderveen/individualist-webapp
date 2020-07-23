@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { AccordionButton } from "./index";
 
 export default styled.li`
+    list-style-type: ${(props) => (props.isRecipe ? "none" : "")};
     background-color: ${(props) => (props.active ? "#ccc" : "#f7f7f7")};
     box-shadow: ${(props) =>
         props.isShoppingList || props.isGrocerySection || props.isIngredient
@@ -9,8 +10,13 @@ export default styled.li`
             : "var(--box-shadow)"};
     color: #333;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     position: relative;
+    width: ${(props) => (props.isIngredient ? "90%" : props.isRecipe ? "100%" : "")};
+    line-height: ${(props) => (props.isRecipe ? "1.25" : "")};
+    min-height: ${(props) => (props.isRecipe ? "50px" : "")};
+    float: ${(props) => (props.isIngredient ? "right" : "")};
     padding: ${(props) => (props.isShoppingList ? "2.5px 5px 2.5px 5px" : props.isRecipe ? "0" : props.isShoppingListIngredient ? "0px" : "10px")};
     margin: ${(props) =>
         props.isShoppingList || props.isGrocerySection || (props.isIngredient && !props.isForm)
@@ -20,17 +26,13 @@ export default styled.li`
             : props.isRecipe
             ? "5px 0px"
             : "10px 0px"};
-    width: ${(props) => (props.isIngredient ? "90%" : props.isRecipe ? "100%" : "")};
-    float: ${(props) => (props.isIngredient ? "right" : "")};
-    border-right: ${(props) =>
-        props.isRecipe || props.isGrocerySectionHeader ? (props.ingredientCount > 0 ? "5px solid #2ecc71" : "5px solid #c0392b;") : ""};
-    list-style-type: ${(props) => (props.isRecipe ? "none" : "")};
 
     ${AccordionButton}:hover & {
         background-color: #ccc;
     }
-    line-height: ${(props) => (props.isRecipe ? "1.25" : "")};
-    min-height: ${(props) => (props.isRecipe ? "50px" : "")};
-    align-items: center;
-    /* word-break: break-all; */
+
+    border-right: ${(props) => (props.isRecipe ? (props.ingredientCount > 0 ? "5px solid #2ecc71" : "5px solid #c0392b;") : "")};
+
+    border-right: ${(props) =>
+        props.isGrocerySectionHeader ? (props.ingredientCount > 0 ? (props.completed ? "5px solid blue" : "5px solid #2ecc71") : "5px solid #c0392b;") : ""};
 `;

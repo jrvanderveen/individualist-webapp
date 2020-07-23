@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { HomeSvg } from "../../../components/SVG/homeSvg";
 import styled from "styled-components";
 
@@ -39,23 +38,6 @@ const Wrapper = styled.div`
         align-items: center;
     }
 `;
-const LinkWrapper = styled.div`
-    width: 100%;
-`;
-
-// // Styled Components
-// const Button = styled.button`
-
-//     text-align: center;
-//     ${(props) =>
-//         props.isLink
-//             ? `
-//         display: flex;
-//         align-items: center;
-
-//         `
-//             : ""};
-// `;
 
 /*
     SUMMARY:

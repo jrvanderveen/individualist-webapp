@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { GlobalContext } from "../../context/globalState";
+import React from "react";
+
 import styled from "styled-components";
 
 // Styled components
@@ -20,8 +20,6 @@ const Wrapper = styled.div`
 */
 
 export const Header = () => {
-    const { username } = useContext(GlobalContext);
-
     return (
         <Wrapper>
             <H1>INDIVIDUA&#8729;LIST</H1>
