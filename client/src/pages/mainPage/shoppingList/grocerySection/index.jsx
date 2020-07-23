@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { GlobalContext } from "../../../context/globalState";
+import React, { useState, useContext } from "react";
+import { GlobalContext } from "../../../../context/globalState";
 import { Ingredient } from "./ingredient";
-import { List, AccordionButton, Input, AccordionContent } from "../../../elements/index";
+import { List, AccordionButton, Input, AccordionContent } from "../../../../elements/index";
 import styled from "styled-components";
 
 // Styled Components
@@ -19,9 +19,19 @@ const Wrapper = styled.div`
         sectionName: grocery section name
         section: list of ingredients in grocery section
         clearSwitch: bool updated when user hits clear shopping list
-        test    
+
 */
-export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
+export const GrocerySection = ({ sectionName, section }) => {
+    const isSectionComplete = () => {
+        let complete = true;
+        section.forEach((ingredient) => {
+            if (!ingredient.lineThrough) {
+                complete = false;
+            }
+        });
+        return complete;
+    };
+
     // Context
     const { addIngredientToShoppingListSection } = useContext(GlobalContext);
 
@@ -29,11 +39,17 @@ export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
     const [newIngredient, setNewIngredient] = useState("");
     const [placeHolderText] = useState(`Enter ${sectionName}...`);
     const [showIngredients, setShowIngredients] = useState(true);
+    const [completedSection, setCompletedSection] = useState(isSectionComplete());
 
     // Functions
     // Open or close accordion content
     const toggleAccordion = () => {
         setShowIngredients(!showIngredients);
+    };
+
+    //handle line through
+    const ingredientSetLineThrough = () => {
+        setCompletedSection(isSectionComplete());
     };
 
     // Create new ingredient, update accordion content height, reset new ingredient
@@ -52,30 +68,47 @@ export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
         }
     };
 
-    // // When clearSwitch is updated if there are no ingredients reset height to only dipslay new ingredient form
-    // useEffect(() => {
-    //     if (section.length === 0) {
-    //         setHeightState("56px");
-    //     } else {
-    //         setHeightState(`${content.current.scrollHeight}px`);
-    //     }
-
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [clearSwitch]);
-
+    //sort section ingredients
+    const compare = (a, b) => {
+        if (a.lineThrough < b.lineThrough) {
+            return -1;
+        }
+        if (a.lineThrough > b.lineThrough) {
+            return 1;
+        }
+        if (a.lineThrough && b.lineThrough) {
+            return 0;
+        }
+        return compareString(a, b);
+    };
+    //helper
+    const compareString = (a, b) => {
+        if (a.name < b.name) {
+            return -1;
+        }
+        if (a.name > b.name) {
+            return 1;
+        }
+    };
     //
     return (
         <>
             <AccordionButton isShoppingList onClick={toggleAccordion}>
-                <List active={showIngredients} isGrocerySectionHeader key={sectionName} ingredientCount={section.length}>
+                <List active={showIngredients} isGrocerySectionHeader key={sectionName} ingredientCount={section.length} completed={completedSection}>
                     {sectionName}
                 </List>
             </AccordionButton>
             {showIngredients && (
                 <AccordionContent>
                     <ul>
-                        {section.map((ingredient, index) => (
-                            <Ingredient key={`${index}-${ingredient._id}`} ingredient={ingredient.name} />
+                        {section.sort(compare).map((ingredient, index) => (
+                            <Ingredient
+                                key={`${index}-${ingredient._id}`}
+                                ingredient={ingredient}
+                                index={index}
+                                sectionName={sectionName}
+                                ingredientSetLineThroughFunc={ingredientSetLineThrough}
+                            />
                         ))}
                         <List isShoppingListIngredient isForm>
                             <Input
