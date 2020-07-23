@@ -19,7 +19,7 @@ const Wrapper = styled.div`
         sectionName: grocery section name
         section: list of ingredients in grocery section
         clearSwitch: bool updated when user hits clear shopping list
-
+        test    
 */
 export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
     // Context
