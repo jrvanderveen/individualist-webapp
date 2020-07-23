@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../../../context/globalState";
 import { DropDownButton } from "../../../components/util/dropDownButton";
-import { DeleteButton, List, Input, Wrapper } from "../../../elements/index";
+import { List, Wrapper } from "../../../elements/index";
 import styled from "styled-components";
 
 // Styled Components

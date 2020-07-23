@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { GlobalContext } from "../../../context/globalState";
 import { Options } from "./options";
@@ -54,17 +54,10 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     // Context
     const { shoppingList } = useContext(GlobalContext);
 
-    //State
-    const [clearSwitch, setClearSwitch] = useState(false);
-
     // Variables
     const grocerySectionIngredientsMap = shoppingList.grocerySectionIngredientsMap;
 
     // Functions
-    // On hitting clear set switch to !switch
-    const setClearSwtichParrent = () => {
-        setClearSwitch(!clearSwitch);
-    };
 
     // Download shopping list in plain text from server
     async function downloadShoppingList() {
@@ -98,14 +91,14 @@ export const ShoppingListPopUp = ({ togglePopUpFunc }) => {
     return (
         <ShoppingListDiv>
             <ShoppingListContent>
-                <Options togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} setClearSwitchFunc={setClearSwtichParrent} />
+                <Options togglePopUpFunc={togglePopUpFunc} downloadShoppingListFunc={downloadShoppingList} />
 
                 <h3>Shopping List</h3>
                 <Ul>
                     {Object.entries(grocerySectionIngredientsMap).map(([name, section], index) =>
                         // toJSON is being inserted at somepoint not sure where
                         // prety sure its due to the fact that its a default dict
-                        name === "toJSON" ? null : <GrocerySection key={index} sectionName={name} section={section} clearSwitch={clearSwitch} />
+                        name === "toJSON" ? null : <GrocerySection key={index} sectionName={name} section={section} />
                     )}
                 </Ul>
             </ShoppingListContent>
