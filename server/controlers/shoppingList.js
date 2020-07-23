@@ -155,3 +155,25 @@ exports.createShoppingListFile = (req, res, next) => {
         });
     }
 };
+
+// @desc Update section ingredient to set or unset lineTrhough
+// @route post /api/v1.1/shoppingList/lineThrough
+// @access Private
+exports.setIngredientLineThrough = (req, res, next) => {
+    let { _id, sectionName, index, value } = req.body;
+    const updateString = `grocerySectionIngredientsMap.${sectionName}.${index}.lineThrough`;
+    console.log(updateString, _id, sectionName, index, value);
+    try {
+        ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { [updateString]: value } }).then(() => {
+            return res.status(200).json({
+                success: true,
+            });
+        });
+    } catch (err) {
+        console.log(`${err}`.red);
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};

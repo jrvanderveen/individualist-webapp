@@ -3,7 +3,8 @@ const router = express.Router();
 const { signUp, signIn, signOut, userState, signInGoogleRedirect } = require("../controlers/auth");
 const passport = require("passport");
 
-// Preserve this order
+// Login
+// /api/v1.1/login
 router.route("/state").post(userState);
 router.route("/signUp").post(signUp);
 router.route("/signIn").all(passport.authenticate("local")).post(signIn);

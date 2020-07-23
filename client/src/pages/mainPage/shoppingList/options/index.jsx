@@ -24,9 +24,8 @@ const ExitButton = styled.button`
     PARAMS: 
         togglePopUpFunc: Close shoppinglist popup
         downloadShoppingListFunc: download current ingredients in shoppinglist
-        setClearSwitchFunc: Clear shoppinglist ingredients
 */
-export const Options = ({ togglePopUpFunc, downloadShoppingListFunc, setClearSwitchFunc }) => {
+export const Options = ({ togglePopUpFunc, downloadShoppingListFunc }) => {
     // State
     const { clearShoppingList } = useContext(GlobalContext);
 
@@ -39,7 +38,6 @@ export const Options = ({ togglePopUpFunc, downloadShoppingListFunc, setClearSwi
             downloadShoppingListFunc();
         } else if (call === "clear") {
             clearShoppingList();
-            setClearSwitchFunc();
         }
     };
     return (

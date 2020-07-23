@@ -1,6 +1,5 @@
 const Recipe = require("../models/recipe");
 const GrocerySections = require("../models/grocerySections");
-const ObjectID = require("mongoose").Types.ObjectId;
 const axios = require("axios");
 
 // @desc Get all recipes
@@ -164,7 +163,6 @@ exports.addRecipeIngredient = async (req, res, next) => {
             });
         }
         ingredient = req.body.ingredient;
-        // ingredient._id = ObjectID();
         await Recipe.updateOne({ _id: req.body.recipeId }, { $push: { ingredients: ingredient } });
 
         return res.status(200).json({

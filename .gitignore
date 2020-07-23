@@ -26,3 +26,4 @@ yarn-error.log*
 /documents
 /server/SSL
 /client/src/config.js
+/server/tests

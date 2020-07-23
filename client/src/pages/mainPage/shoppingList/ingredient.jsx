@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { GlobalContext } from "../../../context/globalState";
 import { List, Wrapper } from "../../../elements/index";
 import styled from "styled-components";
 
@@ -19,14 +20,17 @@ const Span = styled.span`
     PARAMS: 
         ingredient: grocery section ingredient name
 */
-export const Ingredient = ({ ingredient }) => {
-    // State
-    const [active, setActive] = useState(false);
+export const Ingredient = ({ ingredient, index, sectionName }) => {
+    // Context
+    const { setIngredientLineThrough } = useContext(GlobalContext);
 
     return (
-        <List key={ingredient} isShoppingList>
-            <Span lineThrough={active}>{ingredient}</Span>
-            <button className="float-right btn btn-danger btn-sm" onClick={() => setActive(!active)}>
+        <List key={ingredient._id} isShoppingList>
+            <Span lineThrough={ingredient.lineThrough ? ingredient.lineThrough : false}>{ingredient.name}</Span>
+            <button
+                className="float-right btn btn-danger btn-sm"
+                onClick={() => setIngredientLineThrough(sectionName, index, ingredient.lineThrough ? !ingredient.lineThrough : true)}
+            >
                 X
             </button>
         </List>

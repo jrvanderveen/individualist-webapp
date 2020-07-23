@@ -412,6 +412,31 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    // Manually add ingredient to shopping list grocer section
+    // @PROTECTED
+    async function setIngredientLineThrough(sectionName, index, value) {
+        try {
+            let _id = state.shoppingList._id;
+            axios
+                .post("/api/v1.1/shoppingList/lineThrough", { _id, sectionName, index, value })
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data);
+                })
+                .catch(function (error) {
+                    throw error;
+                });
+            dispatch({
+                type: "SET_INGREDIENT_LINE_THROUGH_SHOPPING_LIST",
+                payload: [sectionName, index, value],
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
     // Non async function, force wait before rerendering shopping list
     // @PROTECTED
     function clearShoppingList() {
@@ -559,6 +584,7 @@ export const GlobalProvider = ({ children }) => {
                 getShoppingList,
                 setCreateShoppingListBool,
                 addRecipeToShoppingList,
+                setIngredientLineThrough,
                 saveAddedRecipes,
                 addIngredientToShoppingListSection,
                 clearShoppingList,

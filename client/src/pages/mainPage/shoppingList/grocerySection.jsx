@@ -21,7 +21,7 @@ const Wrapper = styled.div`
         clearSwitch: bool updated when user hits clear shopping list
 
 */
-export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
+export const GrocerySection = ({ sectionName, section }) => {
     // Context
     const { addIngredientToShoppingListSection } = useContext(GlobalContext);
 
@@ -52,17 +52,6 @@ export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
         }
     };
 
-    // // When clearSwitch is updated if there are no ingredients reset height to only dipslay new ingredient form
-    // useEffect(() => {
-    //     if (section.length === 0) {
-    //         setHeightState("56px");
-    //     } else {
-    //         setHeightState(`${content.current.scrollHeight}px`);
-    //     }
-
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [clearSwitch]);
-
     //
     return (
         <>
@@ -75,7 +64,7 @@ export const GrocerySection = ({ sectionName, section, clearSwitch }) => {
                 <AccordionContent>
                     <ul>
                         {section.map((ingredient, index) => (
-                            <Ingredient key={`${index}-${ingredient._id}`} ingredient={ingredient.name} />
+                            <Ingredient key={`${index}-${ingredient._id}`} ingredient={ingredient} index={index} sectionName={sectionName} />
                         ))}
                         <List isShoppingListIngredient isForm>
                             <Input
