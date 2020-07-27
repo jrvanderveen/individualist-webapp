@@ -107,7 +107,11 @@ export default (state, action) => {
             Object.entries(state.recipes).forEach(([_id, recipe]) => {
                 if (recipe.addToShoppingList === true) {
                     Object.entries(recipe.ingredients).forEach(([index, ingredient]) => {
-                        state.shoppingList.grocerySectionIngredientsMap[ingredient.grocerySection].push({ _id: ingredient._id, name: ingredient.name });
+                        state.shoppingList.grocerySectionIngredientsMap[ingredient.grocerySection].push({
+                            _id: ingredient._id,
+                            name: ingredient.name,
+                            lineThrough: false,
+                        });
                     });
                     // Unset to make clear ingredients were added and avoid duplicate button presses
                     recipe.addToShoppingList = false;
@@ -130,6 +134,12 @@ export default (state, action) => {
                 recipes: state.recipes,
             };
 
+        case "UPDATE_RECIPE_RATING":
+            state.recipes[action.payload._id].rating = action.payload.rating;
+            return {
+                ...state,
+                recipes: state.recipes,
+            };
         //////////////////////////////////////////////////////////////
         // SHOPPINGLIST
         // Add shoppinglist to state

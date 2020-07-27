@@ -20,7 +20,7 @@ const SettingsIcon = styled.svg`
 
 export const SettingsSvg = () => {
     return (
-        <SettingsIcon viewBox="0 0 500 500">
+        <SettingsIcon viewBox="0 0 435 410">
             {/* // Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  */}
             <path
                 d="M286.244,249.537l10.992-45.639c0.035-0.143,0.071-0.285,0.109-0.428c2.909-10.867,11.469-19.426,22.339-22.338

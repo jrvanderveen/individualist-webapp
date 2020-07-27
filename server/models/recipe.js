@@ -29,6 +29,10 @@ const RecipeSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    rating: {
+        type: Number,
+        default: 1,
+    },
     ingredients: {
         type: [IngredientSchema],
         default: [],

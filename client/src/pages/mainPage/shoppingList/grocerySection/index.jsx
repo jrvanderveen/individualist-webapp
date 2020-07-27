@@ -29,6 +29,7 @@ export const GrocerySection = ({ sectionName, section }) => {
                 complete = false;
             }
         });
+        console.log();
         return complete;
     };
 
@@ -58,6 +59,7 @@ export const GrocerySection = ({ sectionName, section }) => {
             return;
         }
         addIngredientToShoppingListSection(sectionName, newIngredient);
+        setCompletedSection(false);
         setNewIngredient("");
     };
 

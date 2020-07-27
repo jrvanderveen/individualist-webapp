@@ -4,13 +4,19 @@ import { GlobalContext } from "../../../context/globalState";
 import { Recipe } from "./recipe";
 import { SettingsSvg } from "../../../components/SVG/settingSvg";
 import styled from "styled-components";
-import { H3 } from "../../../elements/index";
 
 // Styled Components
 const Ul = styled.ul`
     padding-left: 3%;
 `;
-
+const HeaderWrapper = styled.div``;
+const H3 = styled.h3`
+    border-bottom: 1px solid #bbb;
+    margin: 20px 0 10px;
+`;
+const SVGWrapper = styled.div`
+    padding-bottom: 1px;
+`;
 /*
     SUMMARY:
         Get recipes from DB and map them to recipe components.
@@ -35,11 +41,15 @@ export const RecipeList = () => {
     }, []);
     return (
         <>
-            <Link to="/settings">
-                <SettingsSvg />
-            </Link>
+            <HeaderWrapper>
+                <Link to="/settings">
+                    <SVGWrapper>
+                        <SettingsSvg />
+                    </SVGWrapper>
+                </Link>
 
-            <H3>Recipes</H3>
+                <H3>Recipes</H3>
+            </HeaderWrapper>
             <Ul>
                 {Object.entries(recipes).map(([_id, recipe]) => (
                     <Recipe key={_id} recipe={recipe} />

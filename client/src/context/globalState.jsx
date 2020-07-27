@@ -286,6 +286,80 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    // Save edited recipe
+    // @PROTECTED
+    async function saveEditedRecipe(recipe) {
+        try {
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            axios
+                .post("/api/v1.1/recipes/edit", recipe, config)
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data);
+                })
+                .catch(function (error) {
+                    throw error;
+                });
+            dispatch({
+                type: "SAVE_EDITED_RECIPE",
+                payload: recipe,
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // Update recipe rating
+    // @PROTECTED
+    async function updateRecipeRating(_id, rating) {
+        try {
+            axios
+                .post("/api/v1.1/recipes/rate", { _id, rating })
+                .then((res) => {
+                    parseRedirectNoDispatch(res.data);
+                })
+                .catch(function (error) {
+                    throw error;
+                });
+            dispatch({
+                type: "UPDATE_RECIPE_RATING",
+                payload: { _id, rating },
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+    //////////////////////////////////////////////////////////////
+    // SHOPPINGLIST
+    // Get current shopping list and add to state
+    // @PROTECTED
+    async function getShoppingList() {
+        try {
+            await axios
+                .get("/api/v1.1/shoppingList")
+                .then((res) => {
+                    parseRedirectWithDispatch(res.data, res.data.data, "GET_SHOPPING_LIST");
+                })
+                .catch(function (error) {
+                    throw error;
+                });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
     // Add all selected recipes ingredients to shopping list
     // @PROTECTED
     async function saveAddedRecipes() {
@@ -315,57 +389,6 @@ export const GlobalProvider = ({ children }) => {
             });
     }
 
-    // Save edited recipe
-    // @PROTECTED
-    async function saveEditedRecipe(recipe) {
-        try {
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            };
-            axios
-                .post("/api/v1.1/recipes/edit", recipe, config)
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data, recipe, "SAVE_EDITED_RECIPE");
-                })
-                .catch(function (error) {
-                    throw error;
-                });
-            dispatch({
-                type: "SAVE_EDITED_RECIPE",
-                payload: recipe,
-            });
-        } catch (error) {
-            dispatch({
-                type: "RECIPE_ERROR",
-                payload: error,
-            });
-        }
-    }
-
-    //////////////////////////////////////////////////////////////
-    // SHOPPINGLIST
-    // Get current shopping list and add to state
-    // @PROTECTED
-    async function getShoppingList() {
-        try {
-            await axios
-                .get("/api/v1.1/shoppingList")
-                .then((res) => {
-                    parseRedirectWithDispatch(res.data, res.data.data, "GET_SHOPPING_LIST");
-                })
-                .catch(function (error) {
-                    throw error;
-                });
-        } catch (error) {
-            dispatch({
-                type: "RECIPE_ERROR",
-                payload: error,
-            });
-        }
-    }
-
     // This setting controls visibility of select recipe buttons
     function setCreateShoppingListBool(cancelOrClose) {
         try {
@@ -391,7 +414,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             let _id = state.shoppingList._id;
-            const ingredientObj = { name: ingredient, _id: ObjectID() };
+            const ingredientObj = { _id: ObjectID(), name: ingredient, lineThrough: false };
             axios
                 .post("/api/v1.1/shoppingList/update", { _id, sectionName, ingredientObj }, config)
                 .then((res) => {
@@ -579,6 +602,7 @@ export const GlobalProvider = ({ children }) => {
                 getRecipes,
                 deleteRecipe,
                 addRecipe,
+                updateRecipeRating,
                 deleteRecipeIngredient,
                 addRecipeIngredient,
                 getShoppingList,

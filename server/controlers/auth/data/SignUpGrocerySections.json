@@ -1,5 +1,5 @@
 {
     "userId": "",
     "default": "Other",
-    "sections": ["Other", "Produce", "Meat", "Add New Section On Settings Page"]
+    "sections": ["Other", "Produce", "Meat", "Frozen"]
 }

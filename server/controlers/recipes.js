@@ -197,3 +197,21 @@ exports.saveEditedRecipe = async (req, res, next) => {
         });
     }
 };
+
+// @desc Edit recipe
+// @route POST /api/v1.1/recipes/edit
+// @access Private
+exports.rate = async (req, res, next) => {
+    try {
+        const { _id, rating } = req.body;
+        await Recipe.updateOne({ _id: _id }, { $set: { rating: rating } });
+        return res.status(200).json({
+            success: true,
+        });
+    } catch {
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};

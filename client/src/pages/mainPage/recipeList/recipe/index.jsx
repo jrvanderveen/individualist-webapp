@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { GlobalContext } from "../../../context/globalState";
+import { GlobalContext } from "../../../../context/globalState";
 import { Ingredients } from "./ingredients";
-import { CheveronSvg } from "../../../components/SVG/cheveronSvg";
+import { CheveronSvg } from "../../../../components/SVG/cheveronSvg";
 import { SelectRecipeButton } from "./selectRecipeButton";
-import { List, AccordionButton, Link, AccordionContent, Input, Label } from "../../../elements/index";
+import { List, AccordionButton, Link, AccordionContent, Input, Label } from "../../../../elements/index";
+import StarRatings from "react-star-ratings";
 import styled from "styled-components";
 
 // Styled Components
@@ -54,6 +55,7 @@ const Wrapper = styled.div`
 const OptionsWrapper = styled.div`
     display: flex;
     width: 100%;
+    padding-right: 10px;
     justify-content: space-between;
 `;
 
@@ -69,12 +71,13 @@ const OptionsWrapper = styled.div`
 */
 export const Recipe = ({ recipe }) => {
     // Context
-    const { deleteRecipe, saveEditedRecipe } = useContext(GlobalContext);
+    const { deleteRecipe, saveEditedRecipe, updateRecipeRating } = useContext(GlobalContext);
 
     // State
     const [setRotate, setRotateState] = useState("");
     const [recipeObj, setRecipeObj] = useState({ active: false, recipe: recipe, editRecipe: {} });
     const [showIngredients, setShowIngredients] = useState(false);
+    const [rating, setRating] = useState(recipe.rating ? recipe.rating : 1);
 
     //Functions
     const toggleAccordion = () => {
@@ -110,6 +113,12 @@ export const Recipe = ({ recipe }) => {
         return url;
     };
     const website = qualifiedWebsiteFunc();
+
+    const handleRatingChange = (newRating) => {
+        setRating(newRating);
+        updateRecipeRating(recipe._id, newRating);
+    };
+
     // Display recipe options and links above recipe
     // display recipe attributes in button
     // accordion content: ingredients
@@ -123,6 +132,15 @@ export const Recipe = ({ recipe }) => {
                         <OptionsWrapper>
                             <StyledLink text="Website" href={website} target="_blank" />
                             <RightDiv>
+                                <StarRatings
+                                    rating={rating}
+                                    starRatedColor="blue"
+                                    changeRating={handleRatingChange}
+                                    numberOfStars={5}
+                                    starDimension="20px"
+                                    starSpacing="2.5px"
+                                />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Span onClick={() => deleteRecipe(recipeObj.recipe._id)}>Delete</Span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Span onClick={() => handleEditingClicks("edit")}>Edit</Span>

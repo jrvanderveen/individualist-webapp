@@ -3,44 +3,48 @@
         "userId": "",
         "name": "Check out the tutorial by clicking on the website link!",
         "servings": 1,
+        "rating": 1,
         "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
-            { "name": "Frozen Berries", "grocerySection": "Add New Section On Settings Page" }
+            { "name": "Frozen Berries", "grocerySection": "Frozen" }
         ]
     },
     {
         "userId": "",
         "name": "Edit Me!",
         "servings": 2,
+        "rating": 2,
         "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
-            { "name": "Frozen Berries", "grocerySection": "Add New Section On Settings Page" }
+            { "name": "Frozen Berries", "grocerySection": "Frozen" }
         ]
     },
     {
         "userId": "",
         "name": "Add me to your shopping list!",
         "servings": 3,
+        "rating": 3,
         "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
-            { "name": "Frozen Berries", "grocerySection": "Add New Section On Settings Page" }
+            { "name": "Frozen Berries", "grocerySection": "Frozen" }
         ]
     },
     {
         "userId": "",
-        "name": "Delete Me!",
-        "servings": 3,
+        "name": "Click on the gear icon to add grocery sections",
+        "servings": 4,
+        "rating": 4,
         "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
             { "name": "salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
-            { "name": "Frozen Berries", "grocerySection": "Add New Section On Settings Page" }
+            { "name": "Frozen Berries", "grocerySection": "Frozen" }
         ]
     }
 ]
