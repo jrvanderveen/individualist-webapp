@@ -3,7 +3,7 @@ const os = require("os");
 const ShoppingList = require("../models/shoppingList");
 
 // @desc Get shopping list
-// @route GET /api/v1.1/shoppingList/download
+// @route GET /api/shoppingList/download
 // @access Private
 exports.getShoppingList = async (req, res, next) => {
     try {
@@ -29,7 +29,7 @@ exports.getShoppingList = async (req, res, next) => {
 };
 
 // @desc Post add ingredients from recipe to shopping list
-// @route POST /api/v1.1/shoppingList
+// @route POST /api/shoppingList
 // @access Private
 exports.postNewShoppingList = async (req, res, next) => {
     try {
@@ -60,7 +60,7 @@ exports.postNewShoppingList = async (req, res, next) => {
 };
 
 // @desc Add section ingredient
-// @route POST /api/v1.1/shoppingList
+// @route POST /api/shoppingList
 // @access Private
 exports.addSectionIngredient = async (req, res, next) => {
     let { _id, sectionName, ingredientObj } = req.body;
@@ -99,7 +99,7 @@ exports.addSectionIngredient = async (req, res, next) => {
 };
 
 // @desc Clear all ingredients from list
-// @route DELTE /api/v1.1/shoppingList
+// @route DELTE /api/shoppingList
 // @access Private
 exports.clearShoppingList = async (req, res, next) => {
     let _id = req.body._id;
@@ -131,7 +131,7 @@ exports.clearShoppingList = async (req, res, next) => {
 };
 
 // @desc Return shopping list as attachment
-// @route GET /api/v1.1/shoppingList
+// @route GET /api/shoppingList
 // @access Private
 exports.createShoppingListFile = (req, res, next) => {
     try {
@@ -157,7 +157,7 @@ exports.createShoppingListFile = (req, res, next) => {
 };
 
 // @desc Update section ingredient to set or unset lineTrhough
-// @route post /api/v1.1/shoppingList/lineThrough
+// @route post /api/shoppingList/lineThrough
 // @access Private
 exports.setIngredientLineThrough = (req, res, next) => {
     let { _id, sectionName, index, value } = req.body;

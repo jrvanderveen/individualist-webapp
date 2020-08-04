@@ -4,7 +4,7 @@ const router = express.Router();
 const { getGrocerySections, addGrocerySection, deleteGrocerySection, setDefaultGrocerySection } = require("../controlers/settings");
 
 // Settings
-// /api/v1.1/settings
+// /api/settings
 router.route("/grocerySections").all(ensureAuthenticated).get(getGrocerySections);
 router.route("/grocerySections/add").all(ensureAuthenticated).post(addGrocerySection);
 router.route("/grocerySections/delete").all(ensureAuthenticated).post(deleteGrocerySection);

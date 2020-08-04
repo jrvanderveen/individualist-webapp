@@ -11,7 +11,7 @@ const {
 } = require("../controlers/shoppingList");
 
 // Shopping List
-// /api/v1.1/shoppingList
+// /api/shoppingList
 router.route("/download").all(ensureAuthenticated).get(createShoppingListFile);
 router.route("/update").all(ensureAuthenticated).post(addSectionIngredient);
 router.route("/lineThrough").all().post(setIngredientLineThrough);

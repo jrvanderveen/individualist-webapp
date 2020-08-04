@@ -1,9 +1,10 @@
 const Recipe = require("../models/recipe");
 const GrocerySections = require("../models/grocerySections");
 const axios = require("axios");
+const { getImages } = require("../controlers/S3/recipe/index");
 
 // @desc Get all recipes
-// @route GET /api/v1.1/recipes
+// @route GET /api/recipes
 // @access Private
 exports.getRecipes = async (req, res, next) => {
     console.log("GET RECIPES".yellow);
@@ -23,7 +24,7 @@ exports.getRecipes = async (req, res, next) => {
     }
 };
 // @desc Post new recipe
-// @route POST /api/v1.1/recipes
+// @route POST /api/recipes
 // @access Private
 // req.body = {name, servings, URL} no ingredients on create
 exports.addRecipe = async (req, res, next) => {
@@ -65,7 +66,7 @@ exports.addRecipe = async (req, res, next) => {
 };
 
 // @desc Recipes created from the individualist webscraper
-// @route POST /api/v1.1/recipes/addFull
+// @route POST /api/recipes/addFull
 // @access Private
 // req.body = {name, servings, URL, ingredients[]} no ingredients on create
 exports.addFullRecipe = async (req, res, next) => {
@@ -106,7 +107,7 @@ buildFullRecipe = async (recipeName, recipeServings, userId, data) => {
 };
 
 // @desc Delete recipe for given _id
-// @route DELETE /api/v1.1/recipes:id
+// @route DELETE /api/recipes:id
 // @access Private
 exports.deleteRecipe = async (req, res, next) => {
     try {
@@ -132,7 +133,7 @@ exports.deleteRecipe = async (req, res, next) => {
 };
 
 // @desc Delete recipe ingredient
-// @route DELETE /api/v1.1/recipes/:recipe_id/:ingredient_id
+// @route DELETE /api/recipes/:recipe_id/:ingredient_id
 // @access Private
 exports.deleteRecipeIngredient = async (req, res, next) => {
     try {
@@ -150,7 +151,7 @@ exports.deleteRecipeIngredient = async (req, res, next) => {
 };
 
 // @desc Add recipe ingredient
-// @route POST /api/v1.1/:_id
+// @route POST /api/:_id
 // @access Private
 exports.addRecipeIngredient = async (req, res, next) => {
     try {
@@ -181,7 +182,7 @@ exports.addRecipeIngredient = async (req, res, next) => {
 };
 
 // @desc Edit recipe
-// @route POST /api/v1.1/recipes/edit
+// @route POST /api/recipes/edit
 // @access Private
 exports.saveEditedRecipe = async (req, res, next) => {
     try {
@@ -199,7 +200,7 @@ exports.saveEditedRecipe = async (req, res, next) => {
 };
 
 // @desc Edit recipe
-// @route POST /api/v1.1/recipes/edit
+// @route POST /api/recipes/edit
 // @access Private
 exports.rate = async (req, res, next) => {
     try {
@@ -209,6 +210,32 @@ exports.rate = async (req, res, next) => {
             success: true,
         });
     } catch {
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};
+
+// @desc Get Recipe Details
+// @route GET /api/recipes/details
+// @access Private
+exports.getRecipeDetails = async (req, res, next) => {
+    try {
+        const getImageRes = await getImages("username", "recipeid");
+        if (!getImageRes.success) {
+            console.log(getImageRes.error);
+            return res.status(500).json({
+                success: false,
+                error: getImageRes.error,
+            });
+        }
+        // getImages(req.user._id, req.body._id);
+        return res.status(200).json({
+            ...getImageRes,
+        });
+    } catch (err) {
+        console.log(err);
         return res.status(500).json({
             success: false,
             error: "Server Error",

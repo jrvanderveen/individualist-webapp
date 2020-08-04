@@ -7,8 +7,7 @@ const strategy = new GoogleStrategy(
     {
         clientID: process.env.NODE_ENV === "production" ? process.env.GOOGLE_CLIENT_ID_PROD : process.env.GOOGLE_CLIENT_ID_DEV,
         clientSecret: process.env.NODE_ENV === "production" ? process.env.GOOGLE_CLIENT_SECRET_PROD : process.env.GOOGLE_CLIENT_SECRET_DEV,
-        callbackURL:
-            (process.env.NODE_ENV === "production" ? process.env.PROD_URL : "http://localhost:" + process.env.PORT) + "/api/v1.1/login/google/callback",
+        callbackURL: (process.env.NODE_ENV === "production" ? process.env.PROD_URL : "http://localhost:" + process.env.PORT) + "/api/login/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {
         User.findOne({ authId: profile.id }).then((user) => {

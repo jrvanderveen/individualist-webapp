@@ -5,7 +5,7 @@ const os = require("os");
 const mongoose = require("mongoose");
 
 // @desc Get list of grocery sections
-// @route GET /api/v1.1/settings/grocerySections
+// @route GET /api/settings/grocerySections
 // @access Private
 exports.getGrocerySections = async (req, res, next) => {
     try {
@@ -54,7 +54,7 @@ const createDefaultGrocerySections = async (userId) => {
 };
 
 // @desc Add grocery Section
-// @route POST /api/v1.1/settings/grocerySections/_id/section_name
+// @route POST /api/settings/grocerySections/_id/section_name
 // @access Private
 exports.addGrocerySection = async (req, res, next) => {
     try {
@@ -81,7 +81,7 @@ exports.addGrocerySection = async (req, res, next) => {
 };
 
 // @desc Delete grocery section
-// @route DELETE /api/v1.1/settings/grocerySections/_id/section_name
+// @route DELETE /api/settings/grocerySections/_id/section_name
 // @access Private
 exports.deleteGrocerySection = async (req, res, next) => {
     try {
@@ -113,7 +113,7 @@ exports.deleteGrocerySection = async (req, res, next) => {
 };
 
 // @desc Set default grocery section
-// @route POST /api/v1.1/settings/grocerySections/default
+// @route POST /api/settings/grocerySections/default
 // @access Private
 exports.setDefaultGrocerySection = async (req, res, next) => {
     console.log(req.body);

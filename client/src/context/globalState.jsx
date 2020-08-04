@@ -84,7 +84,7 @@ export const GlobalProvider = ({ children }) => {
     async function isUserSignedIn() {
         try {
             await axios
-                .post("/api/v1.1/login/state")
+                .post("/api/login/state")
                 .then((res) => {
                     dispatch({
                         type: "LOG_IN_STATE",
@@ -104,7 +104,7 @@ export const GlobalProvider = ({ children }) => {
     // Log user in
     async function signOut() {
         try {
-            await axios.get("/api/v1.1/login/signOut");
+            await axios.get("/api/login/signOut");
             dispatch({
                 type: "LOG_USER_OUT",
             });
@@ -120,7 +120,7 @@ export const GlobalProvider = ({ children }) => {
     // Log user in
     async function signIn(userObj) {
         try {
-            const res = await axios.post("/api/v1.1/login/signIn", userObj);
+            const res = await axios.post("/api/login/signIn", userObj);
             dispatch({
                 type: "LOG_USER_IN",
                 payload: res.data.username,
@@ -153,7 +153,7 @@ export const GlobalProvider = ({ children }) => {
     async function getRecipes() {
         try {
             await axios
-                .get("/api/v1.1/recipes")
+                .get("/api/recipes")
                 .then((res) => {
                     parseRedirectWithDispatch(res.data, res.data.data, "GET_RECIPES");
                 })
@@ -173,7 +173,7 @@ export const GlobalProvider = ({ children }) => {
     async function deleteRecipe(id) {
         try {
             axios
-                .post(`/api/v1.1/recipes/delete`, { _id: id })
+                .post(`/api/recipes/delete`, { _id: id })
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -202,7 +202,7 @@ export const GlobalProvider = ({ children }) => {
         };
         try {
             await axios
-                .post("/api/v1.1/recipes/add", recipe, config)
+                .post("/api/recipes/add", recipe, config)
                 .then((res) => {
                     parseRedirectWithDispatch(res.data, { recipe: res.data.data, scraper: res.data.scraper }, "ADD_RECIPE");
                 })
@@ -222,7 +222,7 @@ export const GlobalProvider = ({ children }) => {
     async function deleteRecipeIngredient(recipeId, ingredient) {
         try {
             axios
-                .post(`/api/v1.1/recipes/ingredient/delete`, { recipeId: recipeId, ingredientId: ingredient._id })
+                .post(`/api/recipes/ingredient/delete`, { recipeId: recipeId, ingredientId: ingredient._id })
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -252,7 +252,7 @@ export const GlobalProvider = ({ children }) => {
             };
             ingredient._id = new ObjectID();
             axios
-                .post(`/api/v1.1/recipes/ingredient/add`, { recipeId: recipeId, ingredient: ingredient }, config)
+                .post(`/api/recipes/ingredient/add`, { recipeId: recipeId, ingredient: ingredient }, config)
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -296,7 +296,7 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             axios
-                .post("/api/v1.1/recipes/edit", recipe, config)
+                .post("/api/recipes/edit", recipe, config)
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -320,7 +320,7 @@ export const GlobalProvider = ({ children }) => {
     async function updateRecipeRating(_id, rating) {
         try {
             axios
-                .post("/api/v1.1/recipes/rate", { _id, rating })
+                .post("/api/recipes/rate", { _id, rating })
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -345,7 +345,7 @@ export const GlobalProvider = ({ children }) => {
     async function getShoppingList() {
         try {
             await axios
-                .get("/api/v1.1/shoppingList")
+                .get("/api/shoppingList")
                 .then((res) => {
                     parseRedirectWithDispatch(res.data, res.data.data, "GET_SHOPPING_LIST");
                 })
@@ -380,7 +380,7 @@ export const GlobalProvider = ({ children }) => {
             },
         };
         axios
-            .post("/api/v1.1/shoppingList", state.shoppingList, config)
+            .post("/api/shoppingList", state.shoppingList, config)
             .then((res) => {
                 parseRedirectNoDispatch(res.data);
             })
@@ -416,7 +416,7 @@ export const GlobalProvider = ({ children }) => {
             let _id = state.shoppingList._id;
             const ingredientObj = { _id: ObjectID(), name: ingredient, lineThrough: false };
             axios
-                .post("/api/v1.1/shoppingList/update", { _id, sectionName, ingredientObj }, config)
+                .post("/api/shoppingList/update", { _id, sectionName, ingredientObj }, config)
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -441,7 +441,7 @@ export const GlobalProvider = ({ children }) => {
         try {
             let _id = state.shoppingList._id;
             axios
-                .post("/api/v1.1/shoppingList/lineThrough", { _id, sectionName, index, value })
+                .post("/api/shoppingList/lineThrough", { _id, sectionName, index, value })
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -466,7 +466,7 @@ export const GlobalProvider = ({ children }) => {
         try {
             let _id = state.shoppingList._id;
             axios
-                .post("/api/v1.1/shoppingList/clear", { _id: _id })
+                .post("/api/shoppingList/clear", { _id: _id })
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })
@@ -491,7 +491,7 @@ export const GlobalProvider = ({ children }) => {
     async function getGrocerySections() {
         try {
             await axios
-                .get("/api/v1.1/settings/grocerySections")
+                .get("/api/settings/grocerySections")
                 .then((res) => {
                     parseRedirectWithDispatch(res.data, res.data.data ? res.data.data[0] : null, "GET_GROCERY_SECTIONS");
                 })
@@ -511,7 +511,7 @@ export const GlobalProvider = ({ children }) => {
     async function addGrocerySection(_id, sectionName) {
         try {
             await axios
-                .post(`/api/v1.1/settings/grocerySections/add`, { _id: _id, sectionName: sectionName })
+                .post(`/api/settings/grocerySections/add`, { _id: _id, sectionName: sectionName })
                 .then((res) => {
                     parseRedirectWithDispatch(res.data, sectionName, "ADD_GROCERY_SECTION");
                 })
@@ -548,7 +548,7 @@ export const GlobalProvider = ({ children }) => {
 
         axios
             .post(
-                "/api/v1.1/settings/grocerySections/delete",
+                "/api/settings/grocerySections/delete",
                 { _id: _id, sectionName: sectionName, defaultSection: defaultSection, shoppingList: state.shoppingList },
                 config
             )
@@ -565,7 +565,7 @@ export const GlobalProvider = ({ children }) => {
     async function setDefaultGrocerySection(_id, sectionName) {
         try {
             axios
-                .post("/api/v1.1/settings/grocerySections/default/", { _id: _id, sectionName: sectionName })
+                .post("/api/settings/grocerySections/default/", { _id: _id, sectionName: sectionName })
                 .then((res) => {
                     parseRedirectNoDispatch(res.data);
                 })

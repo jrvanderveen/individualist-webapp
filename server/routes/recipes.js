@@ -10,10 +10,11 @@ const {
     addRecipeIngredient,
     saveEditedRecipe,
     rate,
+    getRecipeDetails,
 } = require("../controlers/recipes");
 
+// /api/recipes
 // RECIPE
-// /api/v1.1/recipes
 router.route("/").all(ensureAuthenticated).get(getRecipes);
 router.route("/add").all(ensureAuthenticated).get(getRecipes).post(addRecipe);
 router.route("/delete").all(ensureAuthenticated).post(deleteRecipe);
@@ -23,4 +24,6 @@ router.route("/rate").all(ensureAuthenticated).post(rate);
 //INGREDIENTS
 router.route("/ingredient/delete").all(ensureAuthenticated).post(deleteRecipeIngredient);
 router.route("/ingredient/add").all(ensureAuthenticated).post(addRecipeIngredient);
+//DETAILS
+router.route("/details").get(getRecipeDetails);
 module.exports = router;

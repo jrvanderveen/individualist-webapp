@@ -5,6 +5,7 @@ import { MainPage } from "./pages/mainPage";
 import { Login } from "./pages/login";
 import { NotFound } from "./pages/404";
 import { Settings } from "./pages/settings";
+import { RecipeDetails } from "./pages/recipeDetails";
 
 /*
     SUMMARY:
@@ -37,17 +38,17 @@ export const Routes = () => {
                 {!loggedIn ? (
                     <Switch>
                         <Route exact path="/login" component={Login} />
-                        <Route exact path="/" component={Login} />
-                        <Route exact path="/settings" component={Login} />
-                        <Route exact path="/404" component={Login} />
-                        <Redirect to="/404" />
+                        <Redirect to="/login" />
                     </Switch>
                 ) : (
                     <Switch>
-                        <Route exact path="/login" component={MainPage} />
+                        {/* Main Pages */}
                         <Route exact path="/" component={MainPage} />
+                        <Route exact path="/login" component={MainPage} />
                         <Route exact path="/settings" component={Settings} />
                         <Route exact path="/404" component={NotFound} />
+                        {/* Recipe Page */}
+                        <Route path="/recipe/:id" render={(props) => <RecipeDetails _id={props.match.params.id} />} />
                         <Redirect to="/404" />
                     </Switch>
                 )}

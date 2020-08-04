@@ -4,7 +4,7 @@ const { signUp, signIn, signOut, userState, signInGoogleRedirect } = require("..
 const passport = require("passport");
 
 // Login
-// /api/v1.1/login
+// /api/login
 router.route("/state").post(userState);
 router.route("/signUp").post(signUp);
 router.route("/signIn").all(passport.authenticate("local")).post(signIn);

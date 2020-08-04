@@ -7,8 +7,7 @@ const strategy = new FacebookStrategy(
     {
         clientID: process.env.NODE_ENV === "production" ? process.env.FACEBOOK_CLIENT_ID_PROD : process.env.FACEBOOK_CLIENT_ID_DEV,
         clientSecret: process.env.NODE_ENV === "production" ? process.env.FACEBOOK_CLIENT_SECRET_PROD : process.env.FACEBOOK_CLIENT_SECRET_DEV,
-        callbackURL:
-            (process.env.NODE_ENV === "production" ? process.env.PROD_URL : "http://localhost:" + process.env.PORT) + "/api/v1.1/login/facebook/callback",
+        callbackURL: (process.env.NODE_ENV === "production" ? process.env.PROD_URL : "http://localhost:" + process.env.PORT) + "/api/login/facebook/callback",
         profileFields: ["id", "emails", "displayName"],
     },
     function (accessToken, refreshToken, profile, done) {

@@ -1,7 +1,9 @@
 import React, { useContext, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { GlobalContext } from "../../../../context/globalState";
 import { Ingredients } from "./ingredients";
 import { CheveronSvg } from "../../../../components/SVG/cheveronSvg";
+import { LinkSvg } from "../../../../components/SVG/linkSvg";
 import { SelectRecipeButton } from "./selectRecipeButton";
 import { List, AccordionButton, Link, AccordionContent, Input, Label } from "../../../../elements/index";
 import StarRatings from "react-star-ratings";
@@ -34,6 +36,7 @@ const Li = styled.li`
 const StyledLink = styled(Link)`
     color: blue;
     font-size: 75%;
+    margin-right: 10px;
 `;
 
 const Span = styled.span`
@@ -45,6 +48,10 @@ const Span = styled.span`
 `;
 const RightDiv = styled.div`
     float: right;
+`;
+const LeftDiv = styled.div`
+    float: left;
+    display: flex;
 `;
 
 const Wrapper = styled.div`
@@ -78,6 +85,7 @@ export const Recipe = ({ recipe }) => {
     const [recipeObj, setRecipeObj] = useState({ active: false, recipe: recipe, editRecipe: {} });
     const [showIngredients, setShowIngredients] = useState(false);
     const [rating, setRating] = useState(recipe.rating ? recipe.rating : 1);
+    const recipePage = `/recipe/${recipe._id}`;
 
     //Functions
     const toggleAccordion = () => {
@@ -130,7 +138,12 @@ export const Recipe = ({ recipe }) => {
                     <>
                         <SelectRecipeButton active={recipeObj.recipe.addToShoppingList} recipe_id={recipeObj.recipe._id} />
                         <OptionsWrapper>
-                            <StyledLink text="Website" href={website} target="_blank" />
+                            <LeftDiv>
+                                <StyledLink text="Website" href={website} target="_blank" />
+                                <RouterLink to={recipePage}>
+                                    <LinkSvg />
+                                </RouterLink>
+                            </LeftDiv>
                             <RightDiv>
                                 <StarRatings
                                     rating={rating}

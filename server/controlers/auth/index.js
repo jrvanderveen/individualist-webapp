@@ -5,7 +5,7 @@ const Recipe = require("../../models/recipe");
 const fs = require("fs");
 
 // @desc On app start determine if user is authenticated
-// @route GET /api/v1.1/login/state
+// @route GET /api/login/state
 // @access Public
 exports.userState = async (req, res, next) => {
     const loggedIn = req.isAuthenticated();
@@ -24,7 +24,7 @@ exports.userState = async (req, res, next) => {
 };
 
 // @desc Sign user up for site and store session
-// @route GET /api/v1.1/login/signUp
+// @route GET /api/login/signUp
 // @access Public
 exports.signUp = async (req, res, next) => {
     console.log("Sign Up");
@@ -125,7 +125,7 @@ function jsonReader(filePath, cb) {
 }
 
 // @desc Sign user into MongoStore and create passport session cookie
-// @route GET /api/v1.1/login/signIn
+// @route GET /api/login/signIn
 // @access Public
 exports.signIn = async (req, res, next) => {
     res.send({
@@ -135,7 +135,7 @@ exports.signIn = async (req, res, next) => {
 };
 
 // @desc Sign user out
-// @route GET /api/v1.1/login/signOut
+// @route GET /api/login/signOut
 // @access Public
 exports.signOut = async (req, res, next) => {
     console.log("Sign Out");
@@ -148,7 +148,7 @@ exports.signOut = async (req, res, next) => {
 };
 
 // @desc Sign user in with google auth
-// @route GET /api/v1.1/login/signIn/google
+// @route GET /api/login/signIn/google
 // @access Public
 exports.signInGoogleRedirect = async (req, res, next) => {
     res.redirect(process.env.NODE_ENV === "production" ? "/" : "http://localhost:3000");

@@ -65,10 +65,10 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     const login = require("./server/routes/login");
 
     // Direct Routes
-    app.use("/api/v1.1/recipes", recipes);
-    app.use("/api/v1.1/shoppingList", shoppingList);
-    app.use("/api/v1.1/settings", settings);
-    app.use("/api/v1.1/login", login);
+    app.use("/api/recipes", recipes);
+    app.use("/api/shoppingList", shoppingList);
+    app.use("/api/settings", settings);
+    app.use("/api/login", login);
 
     // If production build serve index.html from static path on startup
     if (process.env.NODE_ENV === "production") {

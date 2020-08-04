@@ -39,7 +39,7 @@ export const SignUp = ({ setLogInStateFunc }) => {
 
     async function signUp(signUpObj) {
         axios
-            .post("/api/v1.1/login/signup", signUpObj)
+            .post("/api/login/signup", signUpObj)
             .then((res) => {
                 if (!res.data.error) {
                     setLogInStateFunc("login");
