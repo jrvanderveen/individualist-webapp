@@ -128,6 +128,7 @@ function jsonReader(filePath, cb) {
 // @route GET /api/login/signIn
 // @access Public
 exports.signIn = async (req, res, next) => {
+    console.log("here");
     res.send({
         username: req.user.username,
         success: true,

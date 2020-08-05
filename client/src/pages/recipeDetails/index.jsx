@@ -1,6 +1,14 @@
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { GlobalContext } from "../../context/globalState";
+import ImageGallery from "react-image-gallery";
+import styled from "styled-components";
+
+// Styled components
+const GalaryWrapper = styled.div`
+    width: 70vw;
+    height: 70vh;
+`;
 
 /*
     SUMMARY:
@@ -31,8 +39,15 @@ export const RecipeDetails = ({ _id }) => {
         const errors = [];
         try {
             axios.post("/api/recipes/details", { _id, _id }).then((res) => {
-                console.log({ ...recipes[_id], images: res.data.images });
-                setRecipeDetails({ ...recipes[_id], images: res.data.images });
+                let images = [];
+                res.data.images.forEach((image) => {
+                    images.push({ original: image, thumbnail: null });
+                    images.push({ original: image, thumbnail: null });
+                    images.push({ original: image, thumbnail: null });
+                    images.push({ original: image, thumbnail: null });
+                });
+                console.log(images);
+                setRecipeDetails({ ...recipes[_id], images: images });
             });
         } catch (error) {
             errors.push(error);
@@ -45,7 +60,11 @@ export const RecipeDetails = ({ _id }) => {
             {recipe ? (
                 <>
                     <h1>{recipe.name}</h1>
-                    {recipeDetails.images ? recipeDetails.images.map((image) => <a href={image}> {image} </a>) : null}
+                    {recipeDetails.images ? (
+                        <GalaryWrapper>
+                            <ImageGallery items={recipeDetails.images} />
+                        </GalaryWrapper>
+                    ) : null}
                 </>
             ) : null}
             {/* <h1>{recipe ? recipe.name : "test"}</h1> */}
