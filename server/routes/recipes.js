@@ -25,5 +25,5 @@ router.route("/rate").all(ensureAuthenticated).post(rate);
 router.route("/ingredient/delete").all(ensureAuthenticated).post(deleteRecipeIngredient);
 router.route("/ingredient/add").all(ensureAuthenticated).post(addRecipeIngredient);
 //DETAILS
-router.route("/details").get(getRecipeDetails);
+router.route("/details").post(getRecipeDetails);
 module.exports = router;

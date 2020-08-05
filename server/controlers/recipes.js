@@ -222,7 +222,7 @@ exports.rate = async (req, res, next) => {
 // @access Private
 exports.getRecipeDetails = async (req, res, next) => {
     try {
-        const getImageRes = await getImages("username", "recipeid");
+        const getImageRes = await getImages(req.user._id, req.body._id);
         if (!getImageRes.success) {
             console.log(getImageRes.error);
             return res.status(500).json({
@@ -230,7 +230,6 @@ exports.getRecipeDetails = async (req, res, next) => {
                 error: getImageRes.error,
             });
         }
-        // getImages(req.user._id, req.body._id);
         return res.status(200).json({
             ...getImageRes,
         });

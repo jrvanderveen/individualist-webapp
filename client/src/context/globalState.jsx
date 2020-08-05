@@ -141,9 +141,7 @@ export const GlobalProvider = ({ children }) => {
     //  Update to use just one request
     async function onStartUp() {
         // Preserve order
-        await getGrocerySections();
-        await getRecipes();
-        await getShoppingList();
+        await getGrocerySections().then(getRecipes().then(getShoppingList()));
     }
 
     //////////////////////////////////////////////////////////////
