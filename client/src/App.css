@@ -150,6 +150,12 @@
     outline: none;
 }
 
+.image-gallery-add-photo {
+    font-size: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
 .image-gallery-fullscreen-button,
 .image-gallery-play-button {
     bottom: 0;
@@ -169,6 +175,9 @@
     .image-gallery-play-button .image-gallery-svg {
         height: 24px;
         width: 24px;
+    }
+    .image-gallery-add-photo {
+        font-size: 1.75rem;
     }
 }
 @media (max-width: 480px) {

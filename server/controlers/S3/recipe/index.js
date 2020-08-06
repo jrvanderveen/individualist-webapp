@@ -15,10 +15,10 @@ exports.getImages = async (userId, recipeId) => {
     };
     const images = [];
 
-    const res = await createAlbumIfNotExists(album);
-    if (!res.success) {
-        return { success: false, error: res.error };
-    } else if (res.created === true) {
+    const createAlbumRes = await createAlbumIfNotExists(album);
+    if (!createAlbumRes.success) {
+        return { success: false, error: createAlbumRes.error };
+    } else if (createAlbumRes.created === true) {
         return { success: true, images: [] };
     }
     try {
@@ -53,6 +53,27 @@ const createAlbumIfNotExists = async (album) => {
                 return { success: false, error: "Server Error: " + err.message };
             }
         }
+        return { success: false, error: "Server Error: " + err.message };
+    }
+};
+
+exports.uploadFile = async (filePath, name, userId, recipeId) => {
+    // Read content from the file
+    const fileContent = fs.readFileSync(filePath);
+    const album = `${userId}/${recipeId}/`;
+    // Setting up S3 upload parameters
+    const params = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: `${album + Date.now() + "_" + name}`,
+        Body: fileContent,
+    };
+
+    // Uploading files to the bucket
+    try {
+        const uploadRes = await s3.upload(params).promise();
+        return { success: true, imageURL: uploadRes.Location };
+    } catch (err) {
+        console.log(err);
         return { success: false, error: "Server Error: " + err.message };
     }
 };

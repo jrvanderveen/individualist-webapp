@@ -1,7 +1,7 @@
 const Recipe = require("../models/recipe");
 const GrocerySections = require("../models/grocerySections");
 const axios = require("axios");
-const { getImages } = require("../controlers/S3/recipe/index");
+const { getImages, uploadFile } = require("../controlers/S3/recipe/index");
 
 // @desc Get all recipes
 // @route GET /api/recipes
@@ -235,6 +235,34 @@ exports.getRecipeDetails = async (req, res, next) => {
         });
     } catch (err) {
         console.log(err);
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};
+
+// @desc Upload recipe image
+// @route POST /api/recipes/details/uploadImage
+// @access Private
+exports.uploadRecipeImage = async (req, res, next) => {
+    try {
+        const acceptedFileTypes = { ".jpe": true, ".jpg": true, ".jpeg": true, ".png": true, ".ico": true };
+        const {
+            file,
+            body: { name },
+            body: { recipeId },
+        } = req;
+
+        if (!(file.detectedFileExtension in acceptedFileTypes)) {
+            return res.status(500).json({
+                success: false,
+                error: "Invalid file type: " + `${file.detectedFileExtension ? file.detectedFileExtension : "Unknown"}`,
+            });
+        }
+        const uploadRes = await uploadFile(file.path, name, req.user._id, recipeId);
+        return res.status(200).json(uploadRes);
+    } catch (err) {
         return res.status(500).json({
             success: false,
             error: "Server Error",

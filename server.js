@@ -13,6 +13,8 @@ const mongoUtil = require("./server/config/db");
 const https = require("https");
 var http = require("http");
 const fs = require("fs");
+const cors = require("cors");
+
 // Set env path
 
 //HTTPS options
@@ -30,6 +32,7 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
 
     // Express
     const app = express();
+    app.use(cors());
 
     app.use(express.json());
     if (process.env.NODE_ENV === "development") {
