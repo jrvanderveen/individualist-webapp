@@ -140,6 +140,21 @@ export default (state, action) => {
                 ...state,
                 recipes: state.recipes,
             };
+        case "ADD_RECIPE_IMAGE":
+            const errors = null;
+            if (!action.payload.resdata.success) {
+                errors = action.payload.resdata.error;
+            } else {
+                state.recipes[action.payload.recipeId].recipeDetails.images.unshift({
+                    original: action.payload.resdata.imageURL,
+                    thumbnail: action.payload.resdata.imageURL,
+                });
+            }
+            return {
+                ...state,
+                recipes: state.recipes,
+                errors: errors,
+            };
         //////////////////////////////////////////////////////////////
         // SHOPPINGLIST
         // Add shoppinglist to state

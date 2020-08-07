@@ -32,6 +32,14 @@ const initialState = {
                         name,
                         grocerySection,
                         _id
+                    recipeDetails: 
+                        prepTime
+                        cookTime
+                        dificulty
+                        notes
+                        Instructions
+                        images
+                        createdAt                       
                     //not saved to db
                     addToShoppingList, bool
         */
@@ -141,7 +149,9 @@ export const GlobalProvider = ({ children }) => {
     //  Update to use just one request
     async function onStartUp() {
         // Preserve order
-        await getGrocerySections().then(getRecipes().then(getShoppingList()));
+        await getGrocerySections();
+        await getRecipes();
+        await getShoppingList();
     }
 
     //////////////////////////////////////////////////////////////
@@ -336,6 +346,43 @@ export const GlobalProvider = ({ children }) => {
             });
         }
     }
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+
+    // Update recipe rating
+    // @PROTECTED
+    async function uploadRecipeImage(fd, recipeId) {
+        try {
+            const uploadRes = await axios.post("/api/recipes/details/uploadImage", fd).then((res) => {
+                parseRedirectWithDispatch(res.data, { resdata: res.data, recipeId: recipeId }, "ADD_RECIPE_IMAGE");
+            });
+            return "";
+        } catch (error) {
+            if (error.response.data.error.startsWith("Invalid file type")) {
+                return error.response.data.error;
+            } else {
+                // if(error.response.data)
+                dispatch({
+                    type: "RECIPE_ERROR",
+                    payload: error,
+                });
+            }
+        }
+        return "";
+    }
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+
     //////////////////////////////////////////////////////////////
     // SHOPPINGLIST
     // Get current shopping list and add to state
@@ -588,6 +635,7 @@ export const GlobalProvider = ({ children }) => {
                 loggedIn: state.loggedIn,
                 username: state.username,
                 recipes: state.recipes,
+                recipesDetails: state.recipesDetails,
                 shoppingList: state.shoppingList,
                 creatingShoppingList: state.creatingShoppingList,
                 grocerySections: state.grocerySections,
@@ -601,6 +649,7 @@ export const GlobalProvider = ({ children }) => {
                 deleteRecipe,
                 addRecipe,
                 updateRecipeRating,
+                uploadRecipeImage,
                 deleteRecipeIngredient,
                 addRecipeIngredient,
                 getShoppingList,

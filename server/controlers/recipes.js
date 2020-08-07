@@ -217,30 +217,30 @@ exports.rate = async (req, res, next) => {
     }
 };
 
-// @desc Get Recipe Details
-// @route GET /api/recipes/details
-// @access Private
-exports.getRecipeDetails = async (req, res, next) => {
-    try {
-        const getImageRes = await getImages(req.user._id, req.body._id);
-        if (!getImageRes.success) {
-            console.log(getImageRes.error);
-            return res.status(500).json({
-                success: false,
-                error: getImageRes.error,
-            });
-        }
-        return res.status(200).json({
-            ...getImageRes,
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            success: false,
-            error: "Server Error",
-        });
-    }
-};
+// // @desc Get Recipe Details
+// // @route GET /api/recipes/details
+// // @access Private
+// exports.getRecipeDetails = async (req, res, next) => {
+//     try {
+//         const getImageRes = await getImages(req.user._id, req.body._id);
+//         if (!getImageRes.success) {
+//             console.log(getImageRes.error);
+//             return res.status(500).json({
+//                 success: false,
+//                 error: getImageRes.error,
+//             });
+//         }
+//         return res.status(200).json({
+//             ...getImageRes,
+//         });
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).json({
+//             success: false,
+//             error: "Server Error",
+//         });
+//     }
+// };
 
 // @desc Upload recipe image
 // @route POST /api/recipes/details/uploadImage
@@ -257,12 +257,19 @@ exports.uploadRecipeImage = async (req, res, next) => {
         if (!(file.detectedFileExtension in acceptedFileTypes)) {
             return res.status(500).json({
                 success: false,
-                error: "Invalid file type: " + `${file.detectedFileExtension ? file.detectedFileExtension : "Unknown"}`,
+                error: "Invalid file type: " + `${file.clientReportedFileExtension ? file.clientReportedFileExtension : "Unknown"}`,
             });
         }
         const uploadRes = await uploadFile(file.path, name, req.user._id, recipeId);
+        if (!uploadRes.success) {
+            res.status(500).json(uploadRes);
+        }
+        //Push url to recipe doc
+        const newImage = { original: uploadRes.imageURL, thumbnail: uploadRes.imageURL };
+        await Recipe.updateOne({ _id: recipeId }, { $push: { "recipeDetails.images": { $each: [newImage], $position: 0 } } });
         return res.status(200).json(uploadRes);
     } catch (err) {
+        console.log(err);
         return res.status(500).json({
             success: false,
             error: "Server Error",

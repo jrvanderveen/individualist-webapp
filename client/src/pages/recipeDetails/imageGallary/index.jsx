@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ImageGallery from "react-image-gallery";
 import axios from "axios";
+import { GlobalContext } from "../../../context/globalState";
 import styled from "styled-components";
 
 // Styled components
@@ -27,7 +28,10 @@ const Button = styled.button`
         images
 
 */
-export const ImageGalleryComponent = ({ addImageFunc, images, recipeId }) => {
+export const ImageGalleryComponent = ({ images, recipeId }) => {
+    //Context
+    const { uploadRecipeImage } = useContext(GlobalContext);
+
     // State
     const [inputImage, setInputImage] = useState(null);
     const [errors, setErrors] = useState([]);
@@ -38,14 +42,14 @@ export const ImageGalleryComponent = ({ addImageFunc, images, recipeId }) => {
         fd.append("name", e.target.files[0].name);
         fd.append("recipeId", recipeId);
         fd.append("file", e.target.files[0]);
-        axios
-            .post("/api/recipes/details/uploadImage", fd)
-            .then((res) => {
-                addImageFunc(res.data.imageURL);
-            })
-            .catch((err) => {
-                setErrors([err.response.data.error]);
-            });
+        uploadRecipeImage(fd, recipeId).then((res) => {
+            console.log(res);
+            if (res !== "") {
+                setErrors([res]);
+            } else {
+                setErrors([]);
+            }
+        });
     };
 
     const renderCustomControls = (props) => {

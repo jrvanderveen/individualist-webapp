@@ -12,6 +12,37 @@ const IngredientSchema = new mongoose.Schema({
     },
 });
 
+const RecipeDetailSchema = new mongoose.Schema({
+    prepTime: {
+        type: Number,
+        default: 0,
+    },
+    cookTime: {
+        type: Number,
+        default: 0,
+    },
+    dificulty: {
+        type: String,
+        default: "Medium",
+    },
+    notes: {
+        type: Array,
+        default: [],
+    },
+    Instructions: {
+        type: String,
+        default: "",
+    },
+    images: {
+        type: Array,
+        default: [],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+});
+
 const RecipeSchema = new mongoose.Schema({
     userId: {
         type: ObjectID,
@@ -37,6 +68,10 @@ const RecipeSchema = new mongoose.Schema({
         type: [IngredientSchema],
         default: [],
         required: false,
+    },
+    recipeDetails: {
+        type: RecipeDetailSchema,
+        default: {},
     },
     createdAt: {
         type: Date,

@@ -12,7 +12,7 @@ const {
     addRecipeIngredient,
     saveEditedRecipe,
     rate,
-    getRecipeDetails,
+    // getRecipeDetails,
     uploadRecipeImage,
 } = require("../controlers/recipes");
 
@@ -28,6 +28,6 @@ router.route("/rate").all(ensureAuthenticated).post(rate);
 router.route("/ingredient/delete").all(ensureAuthenticated).post(deleteRecipeIngredient);
 router.route("/ingredient/add").all(ensureAuthenticated).post(addRecipeIngredient);
 //DETAILS
-router.route("/details").post(getRecipeDetails);
+// router.route("/details").post(getRecipeDetails);
 router.route("/details/uploadImage").all(upload.single("file")).post(uploadRecipeImage);
 module.exports = router;

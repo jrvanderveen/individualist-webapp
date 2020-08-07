@@ -31,54 +31,23 @@ export const RecipeDetails = ({ _id }) => {
 
     //State
     const [recipe, setRecipe] = useState(recipes[_id]);
-    const [recipeDetails, setRecipeDetails] = useState({});
-    //functions
 
+    const defaultImages = [{ original: placeHolderImage, thumbnail: placeHolderImage }];
+    //functions
     useEffect(() => {
         if (Object.entries(recipes).length === 0) {
-            onStartUp().then((res) => {});
+            onStartUp();
         }
         setRecipe(recipes[_id]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipes]);
-
-    useEffect(() => {
-        const errors = [];
-        try {
-            axios.post("/api/recipes/details", { _id: _id }).then((res) => {
-                let images = [];
-                res.data.images.forEach((image) => {
-                    images.push({ original: image, thumbnail: image });
-                });
-                if (images.length > 0) {
-                    setRecipeDetails({ ...recipes[_id], images: images });
-                } else {
-                    setRecipeDetails({ ...recipes[_id], images: [{ original: placeHolderImage, thumbnail: placeHolderImage }] });
-                }
-            });
-        } catch (error) {
-            errors.push(error);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const addImageFunc = (URL) => {
-        console.log("here");
-        const images = recipeDetails.images;
-        if (images.length > 0 && images[0].original === placeHolderImage) {
-            images.splice(0, 1);
-        }
-        images.unshift({ original: URL, thumbnail: URL });
-        setRecipeDetails({ ...recipeDetails, images: images });
-    };
-
     return (
         <>
             {recipe ? (
                 <>
                     <Div>
                         <Header name={recipe.name} />
-                        {recipeDetails.images ? <ImageGalleryComponent addImageFunc={addImageFunc} images={recipeDetails.images} recipeId={_id} /> : null}
+                        <ImageGalleryComponent images={recipe.recipeDetails.images.length > 0 ? recipe.recipeDetails.images : defaultImages} recipeId={_id} />
                     </Div>
                 </>
             ) : null}
