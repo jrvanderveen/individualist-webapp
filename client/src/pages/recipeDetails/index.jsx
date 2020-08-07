@@ -4,6 +4,7 @@ import { GlobalContext } from "../../context/globalState";
 import styled from "styled-components";
 import { ImageGalleryComponent } from "./imageGallary";
 import { Header } from "./header";
+import { Times } from "./body/times";
 
 // Styled components
 const Div = styled.div`
@@ -46,8 +47,14 @@ export const RecipeDetails = ({ _id }) => {
             {recipe ? (
                 <>
                     <Div>
-                        <Header name={recipe.name} />
+                        <Header name={recipe.name} rating={recipe.rating} />
                         <ImageGalleryComponent images={recipe.recipeDetails.images.length > 0 ? recipe.recipeDetails.images : defaultImages} recipeId={_id} />
+                        <Times
+                            prepTime={recipe.recipeDetails.prepTime}
+                            cookTime={recipe.recipeDetails.cookTime}
+                            servings={recipe.servings}
+                            dificulty={recipe.recipeDetails.dificulty}
+                        />
                     </Div>
                 </>
             ) : null}
