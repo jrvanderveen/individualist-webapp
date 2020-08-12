@@ -1,7 +1,7 @@
 const Recipe = require("../models/recipe");
 const GrocerySections = require("../models/grocerySections");
 const axios = require("axios");
-const { getImages, uploadFile } = require("../controlers/S3/recipe/index");
+const { uploadFile, emptyS3ImageDirectory } = require("../controlers/S3/recipe/index");
 
 // @desc Get all recipes
 // @route GET /api/recipes
@@ -31,12 +31,13 @@ exports.addRecipe = async (req, res, next) => {
     try {
         req.body.userId = req.user._id;
         let recipeObj = req.body;
-        let scraperResult = "success";
+        let scraperResult;
         if (req.body.URL) {
-            let scraperRes = await axios.post(process.env.SCAPER_ENDPOINT + "/api/v1/scraper/recipe", {
+            let scraperRes = await axios.post(process.env.SCAPER_ENDPOINT + "/api/v1/scraper/fullRecipe", {
                 url: req.body.URL,
             });
             if (!scraperRes.data.error) {
+                scraperResult = "success";
                 recipeObj = await buildFullRecipe(req.body.name, req.body.servings, req.body.userId, scraperRes.data);
             } else {
                 scraperResult = scraperRes.data.error;
@@ -95,12 +96,17 @@ buildFullRecipe = async (recipeName, recipeServings, userId, data) => {
     data.ingredients.forEach((ingredient) => {
         ingredientsObj.push({ name: ingredient, grocerySection: userSections["default"] });
     });
+    const recipeDetails = {
+        Instructions: data.instructions,
+        images: data.URL.length > 0 ? [{ original: data.image, thumbnail: data.image }] : [],
+    };
     const recipeObj = {
         userId: userId,
         name: recipeName,
         servings: recipeServings,
         URL: data.URL ? data.URL : "http://",
         ingredients: ingredientsObj,
+        recipeDetails: recipeDetails,
     };
 
     return recipeObj;
@@ -110,12 +116,21 @@ buildFullRecipe = async (recipeName, recipeServings, userId, data) => {
 // @route DELETE /api/recipes:id
 // @access Private
 exports.deleteRecipe = async (req, res, next) => {
+    const userId = req.user._id;
+    const recipeId = req.body._id;
     try {
-        const recipe = await Recipe.findById(req.body._id);
+        const recipe = await Recipe.findById(recipeId);
         if (!recipe) {
             return res.status(404).json({
                 success: false,
                 error: "No recipe found",
+            });
+        }
+        const deleteImageRes = await emptyS3ImageDirectory(userId, recipeId);
+        if (!deleteImageRes.success) {
+            return res.status(500).json({
+                success: false,
+                error: deleteImageRes.error,
             });
         }
         await recipe.remove();
@@ -154,8 +169,9 @@ exports.deleteRecipeIngredient = async (req, res, next) => {
 // @route POST /api/:_id
 // @access Private
 exports.addRecipeIngredient = async (req, res, next) => {
+    const recipeId = req.body.recipeId;
     try {
-        const recipe = await Recipe.findById(req.body.recipeId);
+        const recipe = await Recipe.findById(recipeId);
 
         if (!recipe) {
             return res.status(404).json({
@@ -164,13 +180,13 @@ exports.addRecipeIngredient = async (req, res, next) => {
             });
         }
         ingredient = req.body.ingredient;
-        await Recipe.updateOne({ _id: req.body.recipeId }, { $push: { ingredients: ingredient } });
+        await Recipe.updateOne({ _id: recipeId }, { $push: { ingredients: ingredient } });
 
         return res.status(200).json({
             success: true,
             data: {
                 ingredient: ingredient,
-                recipe: req.body.recipeId,
+                recipe: recipeId,
             },
         });
     } catch {
@@ -216,31 +232,6 @@ exports.rate = async (req, res, next) => {
         });
     }
 };
-
-// // @desc Get Recipe Details
-// // @route GET /api/recipes/details
-// // @access Private
-// exports.getRecipeDetails = async (req, res, next) => {
-//     try {
-//         const getImageRes = await getImages(req.user._id, req.body._id);
-//         if (!getImageRes.success) {
-//             console.log(getImageRes.error);
-//             return res.status(500).json({
-//                 success: false,
-//                 error: getImageRes.error,
-//             });
-//         }
-//         return res.status(200).json({
-//             ...getImageRes,
-//         });
-//     } catch (err) {
-//         console.log(err);
-//         return res.status(500).json({
-//             success: false,
-//             error: "Server Error",
-//         });
-//     }
-// };
 
 // @desc Upload recipe image
 // @route POST /api/recipes/details/uploadImage

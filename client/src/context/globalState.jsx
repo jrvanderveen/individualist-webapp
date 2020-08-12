@@ -635,7 +635,6 @@ export const GlobalProvider = ({ children }) => {
                 loggedIn: state.loggedIn,
                 username: state.username,
                 recipes: state.recipes,
-                recipesDetails: state.recipesDetails,
                 shoppingList: state.shoppingList,
                 creatingShoppingList: state.creatingShoppingList,
                 grocerySections: state.grocerySections,

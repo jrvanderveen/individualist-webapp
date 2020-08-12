@@ -12,7 +12,6 @@ const {
     addRecipeIngredient,
     saveEditedRecipe,
     rate,
-    // getRecipeDetails,
     uploadRecipeImage,
 } = require("../controlers/recipes");
 
