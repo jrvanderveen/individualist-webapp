@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import ImageGallery from "react-image-gallery";
-import axios from "axios";
 import { GlobalContext } from "../../../context/globalState";
 import styled from "styled-components";
 
@@ -52,7 +51,7 @@ export const ImageGalleryComponent = ({ images, recipeId }) => {
         });
     };
 
-    const renderCustomControls = (props) => {
+    const renderCustomControls = () => {
         return (
             <Button className="image-gallery-icon image-gallery-play-button" onClick={() => inputImage.click()}>
                 <input ref={(input) => setInputImage(input)} name="img" type="file" accept="image/*" onChange={(e) => uploadSelectedFile(e)} hidden />

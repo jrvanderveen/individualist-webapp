@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from "react";
-import axios from "axios";
 import { GlobalContext } from "../../context/globalState";
 import styled from "styled-components";
 import { ImageGalleryComponent } from "./imageGallary";
@@ -8,7 +7,6 @@ import { Body } from "./body";
 
 // Styled components
 const Div = styled.div`
-    padding-top: 30px;
     width: 100%;
     height: 100%;
     display: flex;

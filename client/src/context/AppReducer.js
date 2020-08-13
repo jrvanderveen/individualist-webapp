@@ -140,11 +140,30 @@ export default (state, action) => {
                 ...state,
                 recipes: state.recipes,
             };
+
+        case "UPDATE_RECIPE_DETAILS_TIMES":
+            state.recipes[action.payload._id].recipeDetails.prepTime = action.payload.data.prepTime;
+            state.recipes[action.payload._id].recipeDetails.cookTime = action.payload.data.cookTime;
+            state.recipes[action.payload._id].recipeDetails.dificulty = action.payload.data.dificulty;
+            state.recipes[action.payload._id].servings = action.payload.data.servings;
+            return {
+                ...state,
+                recipes: state.recipes,
+            };
+        case "UPDATE_RECIPE_DETAILS_NOTES":
+            state.recipes[action.payload._id].recipeDetails.notes = action.payload.notes;
+            return {
+                ...state,
+                recipes: state.recipes,
+            };
+        case "UPDATE_RECIPE_DETAILS_INSTRUCTIONS":
+            state.recipes[action.payload._id].recipeDetails.Instructions = action.payload.instructions;
+            return {
+                ...state,
+                recipes: state.recipes,
+            };
         case "ADD_RECIPE_IMAGE":
-            const errors = null;
-            if (!action.payload.resdata.success) {
-                errors = action.payload.resdata.error;
-            } else {
+            if (action.payload.resdata.success) {
                 state.recipes[action.payload.recipeId].recipeDetails.images.unshift({
                     original: action.payload.resdata.imageURL,
                     thumbnail: action.payload.resdata.imageURL,
@@ -153,7 +172,6 @@ export default (state, action) => {
             return {
                 ...state,
                 recipes: state.recipes,
-                errors: errors,
             };
         //////////////////////////////////////////////////////////////
         // SHOPPINGLIST

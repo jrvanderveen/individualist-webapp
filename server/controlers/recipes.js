@@ -139,7 +139,7 @@ exports.deleteRecipe = async (req, res, next) => {
             success: true,
             data: {},
         });
-    } catch {
+    } catch (err) {
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -261,6 +261,72 @@ exports.uploadRecipeImage = async (req, res, next) => {
         return res.status(200).json(uploadRes);
     } catch (err) {
         console.log(err);
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};
+
+// @desc Edit recipe details times
+// @route POST /api/recipes/detail/times
+// @access Private
+exports.updateRecipeDetailsTimes = async (req, res, next) => {
+    try {
+        const {
+            _id,
+            data: { cookTime },
+            data: { prepTime },
+            data: { dificulty },
+            data: { servings },
+        } = req.body;
+
+        await Recipe.updateOne(
+            { _id: _id },
+            { $set: { "recipeDetails.cookTime": cookTime, "recipeDetails.prepTime": prepTime, "recipeDetails.dificulty": dificulty, servings: servings } }
+        );
+
+        return res.status(200).json({
+            success: true,
+        });
+    } catch {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};
+
+// @desc Edit recipe details notes
+// @route POST /api/recipes/detail/notes
+// @access Private
+exports.updateRecipeDetailsNotes = async (req, res, next) => {
+    try {
+        const { _id, notes } = req.body;
+        await Recipe.updateOne({ _id: _id }, { $set: { "recipeDetails.notes": notes } });
+        return res.status(200).json({
+            success: true,
+        });
+    } catch {
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};
+
+// @desc Edit recipe details instructions
+// @route POST /api/recipes/detail/instructions
+// @access Private
+exports.updateRecipeDetailsInstructions = async (req, res, next) => {
+    try {
+        const { _id, instructions } = req.body;
+        await Recipe.updateOne({ _id: _id }, { $set: { "recipeDetails.Instructions": instructions } });
+        return res.status(200).json({
+            success: true,
+        });
+    } catch {
         return res.status(500).json({
             success: false,
             error: "Server Error",

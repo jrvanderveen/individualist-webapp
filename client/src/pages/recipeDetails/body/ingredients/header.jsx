@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import StarRatings from "react-star-ratings";
 
 // Styled components
 const H3 = styled.h3`

@@ -13,6 +13,9 @@ const {
     saveEditedRecipe,
     rate,
     uploadRecipeImage,
+    updateRecipeDetailsTimes,
+    updateRecipeDetailsNotes,
+    updateRecipeDetailsInstructions,
 } = require("../controlers/recipes");
 
 // /api/recipes
@@ -28,5 +31,9 @@ router.route("/ingredient/delete").all(ensureAuthenticated).post(deleteRecipeIng
 router.route("/ingredient/add").all(ensureAuthenticated).post(addRecipeIngredient);
 //DETAILS
 // router.route("/details").post(getRecipeDetails);
-router.route("/details/uploadImage").all(upload.single("file")).post(uploadRecipeImage);
+router.route("/details/uploadImage").all(ensureAuthenticated).all(upload.single("file")).post(uploadRecipeImage);
+router.route("/details/times").all(ensureAuthenticated).post(updateRecipeDetailsTimes);
+router.route("/details/notes").all(ensureAuthenticated).post(updateRecipeDetailsNotes);
+router.route("/details/instructions").all(ensureAuthenticated).post(updateRecipeDetailsInstructions);
+
 module.exports = router;

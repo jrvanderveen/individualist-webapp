@@ -160,14 +160,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function getRecipes() {
         try {
-            await axios
-                .get("/api/recipes")
-                .then((res) => {
-                    parseRedirectWithDispatch(res.data, res.data.data, "GET_RECIPES");
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            await axios.get("/api/recipes").then((res) => {
+                parseRedirectWithDispatch(res.data, res.data.data, "GET_RECIPES");
+            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -180,14 +175,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function deleteRecipe(id) {
         try {
-            axios
-                .post(`/api/recipes/delete`, { _id: id })
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post(`/api/recipes/delete`, { _id: id }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "DELETE_RECIPE",
                 payload: id,
@@ -209,14 +199,9 @@ export const GlobalProvider = ({ children }) => {
             },
         };
         try {
-            await axios
-                .post("/api/recipes/add", recipe, config)
-                .then((res) => {
-                    parseRedirectWithDispatch(res.data, { recipe: res.data.data, scraper: res.data.scraper }, "ADD_RECIPE");
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            await axios.post("/api/recipes/add", recipe, config).then((res) => {
+                parseRedirectWithDispatch(res.data, { recipe: res.data.data, scraper: res.data.scraper }, "ADD_RECIPE");
+            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -229,14 +214,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function deleteRecipeIngredient(recipeId, ingredient) {
         try {
-            axios
-                .post(`/api/recipes/ingredient/delete`, { recipeId: recipeId, ingredientId: ingredient._id })
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post(`/api/recipes/ingredient/delete`, { recipeId: recipeId, ingredientId: ingredient._id }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "DELETE_RECIPE_INGREDIENT",
                 payload: [recipeId, ingredient],
@@ -259,14 +239,9 @@ export const GlobalProvider = ({ children }) => {
                 },
             };
             ingredient._id = new ObjectID();
-            axios
-                .post(`/api/recipes/ingredient/add`, { recipeId: recipeId, ingredient: ingredient }, config)
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post(`/api/recipes/ingredient/add`, { recipeId: recipeId, ingredient: ingredient }, config).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "ADD_RECIPE_INGREDIENT",
                 payload: [recipeId, ingredient],
@@ -303,14 +278,9 @@ export const GlobalProvider = ({ children }) => {
                     "Content-Type": "application/json",
                 },
             };
-            axios
-                .post("/api/recipes/edit", recipe, config)
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post("/api/recipes/edit", recipe, config).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "SAVE_EDITED_RECIPE",
                 payload: recipe,
@@ -327,14 +297,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function updateRecipeRating(_id, rating) {
         try {
-            axios
-                .post("/api/recipes/rate", { _id, rating })
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post("/api/recipes/rate", { _id, rating }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "UPDATE_RECIPE_RATING",
                 payload: { _id, rating },
@@ -346,19 +311,68 @@ export const GlobalProvider = ({ children }) => {
             });
         }
     }
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
+
+    // Update recipe details notes
+    // @PROTECTED
+    async function updateRecipeDetailTimes(_id, data) {
+        try {
+            axios.post("/api/recipes/details/times", { _id, data }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
+            dispatch({
+                type: "UPDATE_RECIPE_DETAILS_TIMES",
+                payload: { _id, data },
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // Update recipe details notes
+    // @PROTECTED
+    async function updateRecipeDetailsNotes(_id, notes) {
+        try {
+            axios.post("/api/recipes/details/notes", { _id, notes }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
+            dispatch({
+                type: "UPDATE_RECIPE_DETAILS_NOTES",
+                payload: { _id, notes },
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
+    // Update recipe details isntructions
+    // @PROTECTED
+    async function updateRecipeDetailsInstructions(_id, instructions) {
+        try {
+            axios.post("/api/recipes/details/instructions", { _id, instructions }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
+            dispatch({
+                type: "UPDATE_RECIPE_DETAILS_INSTRUCTIONS",
+                payload: { _id, instructions },
+            });
+        } catch (error) {
+            dispatch({
+                type: "RECIPE_ERROR",
+                payload: error,
+            });
+        }
+    }
 
     // Update recipe rating
     // @PROTECTED
     async function uploadRecipeImage(fd, recipeId) {
         try {
-            const uploadRes = await axios.post("/api/recipes/details/uploadImage", fd).then((res) => {
+            await axios.post("/api/recipes/details/uploadImage", fd).then((res) => {
                 parseRedirectWithDispatch(res.data, { resdata: res.data, recipeId: recipeId }, "ADD_RECIPE_IMAGE");
             });
             return "";
@@ -375,13 +389,6 @@ export const GlobalProvider = ({ children }) => {
         }
         return "";
     }
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////
     // SHOPPINGLIST
@@ -389,14 +396,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function getShoppingList() {
         try {
-            await axios
-                .get("/api/shoppingList")
-                .then((res) => {
-                    parseRedirectWithDispatch(res.data, res.data.data, "GET_SHOPPING_LIST");
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            await axios.get("/api/shoppingList").then((res) => {
+                parseRedirectWithDispatch(res.data, res.data.data, "GET_SHOPPING_LIST");
+            });
         } catch (error) {
             dispatch({
                 type: "RECIPE_ERROR",
@@ -460,14 +462,9 @@ export const GlobalProvider = ({ children }) => {
             };
             let _id = state.shoppingList._id;
             const ingredientObj = { _id: ObjectID(), name: ingredient, lineThrough: false };
-            axios
-                .post("/api/shoppingList/update", { _id, sectionName, ingredientObj }, config)
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post("/api/shoppingList/update", { _id, sectionName, ingredientObj }, config).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "ADD_INGREDIENT_TO_SHOPPING_LIST_SECTION",
                 payload: [sectionName, ingredientObj],
@@ -485,14 +482,9 @@ export const GlobalProvider = ({ children }) => {
     async function setIngredientLineThrough(sectionName, index, value) {
         try {
             let _id = state.shoppingList._id;
-            axios
-                .post("/api/shoppingList/lineThrough", { _id, sectionName, index, value })
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post("/api/shoppingList/lineThrough", { _id, sectionName, index, value }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "SET_INGREDIENT_LINE_THROUGH_SHOPPING_LIST",
                 payload: [sectionName, index, value],
@@ -510,14 +502,9 @@ export const GlobalProvider = ({ children }) => {
     function clearShoppingList() {
         try {
             let _id = state.shoppingList._id;
-            axios
-                .post("/api/shoppingList/clear", { _id: _id })
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post("/api/shoppingList/clear", { _id: _id }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "CLEAR_SHOPPING_LIST",
             });
@@ -535,14 +522,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function getGrocerySections() {
         try {
-            await axios
-                .get("/api/settings/grocerySections")
-                .then((res) => {
-                    parseRedirectWithDispatch(res.data, res.data.data ? res.data.data[0] : null, "GET_GROCERY_SECTIONS");
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            await axios.get("/api/settings/grocerySections").then((res) => {
+                parseRedirectWithDispatch(res.data, res.data.data ? res.data.data[0] : null, "GET_GROCERY_SECTIONS");
+            });
         } catch (error) {
             dispatch({
                 type: "SETTINGS_ERROR",
@@ -555,14 +537,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function addGrocerySection(_id, sectionName) {
         try {
-            await axios
-                .post(`/api/settings/grocerySections/add`, { _id: _id, sectionName: sectionName })
-                .then((res) => {
-                    parseRedirectWithDispatch(res.data, sectionName, "ADD_GROCERY_SECTION");
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            await axios.post(`/api/settings/grocerySections/add`, { _id: _id, sectionName: sectionName }).then((res) => {
+                parseRedirectWithDispatch(res.data, sectionName, "ADD_GROCERY_SECTION");
+            });
         } catch (error) {
             dispatch({
                 type: "SETTINGS_ERROR",
@@ -609,14 +586,9 @@ export const GlobalProvider = ({ children }) => {
     // @PROTECTED
     async function setDefaultGrocerySection(_id, sectionName) {
         try {
-            axios
-                .post("/api/settings/grocerySections/default/", { _id: _id, sectionName: sectionName })
-                .then((res) => {
-                    parseRedirectNoDispatch(res.data);
-                })
-                .catch(function (error) {
-                    throw error;
-                });
+            axios.post("/api/settings/grocerySections/default/", { _id: _id, sectionName: sectionName }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
             dispatch({
                 type: "SET_GROCERY_SECTION_DEFAULT",
                 payload: sectionName,
@@ -648,6 +620,9 @@ export const GlobalProvider = ({ children }) => {
                 deleteRecipe,
                 addRecipe,
                 updateRecipeRating,
+                updateRecipeDetailTimes,
+                updateRecipeDetailsNotes,
+                updateRecipeDetailsInstructions,
                 uploadRecipeImage,
                 deleteRecipeIngredient,
                 addRecipeIngredient,

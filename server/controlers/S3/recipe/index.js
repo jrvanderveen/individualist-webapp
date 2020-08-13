@@ -34,24 +34,25 @@ exports.emptyS3ImageDirectory = async (userId, recipeId) => {
     };
     try {
         const listedObjects = await s3.listObjectsV2(params).promise();
-        if (listedObjects.Contents.length === 0) return;
+        if (listedObjects.Contents.length > 0) {
+            const deleteParams = {
+                Bucket: process.env.BUCKET_NAME,
+                Delete: { Objects: [] },
+            };
 
-        const deleteParams = {
-            Bucket: process.env.BUCKET_NAME,
-            Delete: { Objects: [] },
-        };
+            listedObjects.Contents.forEach(({ Key }) => {
+                deleteParams.Delete.Objects.push({ Key });
+            });
 
-        listedObjects.Contents.forEach(({ Key }) => {
-            deleteParams.Delete.Objects.push({ Key });
-        });
-
-        await s3.deleteObjects(deleteParams).promise();
-
+            await s3.deleteObjects(deleteParams).promise();
+        }
         if (listedObjects.IsTruncated) await emptyS3Directory(process.env.BUCKET_NAME, album);
+
         return {
             success: true,
         };
     } catch (err) {
+        console.log(err);
         return {
             success: false,
             error: err.message,
