@@ -20,12 +20,12 @@ const Span = styled.span`
     PARAMS: 
         ingredient: grocery section ingredient name
 */
-export const Ingredient = ({ ingredient, index, sectionName, ingredientSetLineThroughFunc }) => {
+export const Ingredient = ({ ingredient, sectionName, ingredientSetLineThroughFunc }) => {
     // Context
     const { setIngredientLineThrough } = useContext(GlobalContext);
 
     const handleLineThroughClick = () => {
-        setIngredientLineThrough(sectionName, index, ingredient.lineThrough ? !ingredient.lineThrough : true).then(() => {
+        setIngredientLineThrough(sectionName, ingredient._id, ingredient.lineThrough ? !ingredient.lineThrough : true).then(() => {
             ingredientSetLineThroughFunc();
         });
     };

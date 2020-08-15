@@ -107,7 +107,6 @@ export const GrocerySection = ({ sectionName, section }) => {
                             <Ingredient
                                 key={`${index}-${ingredient._id}`}
                                 ingredient={ingredient}
-                                index={index}
                                 sectionName={sectionName}
                                 ingredientSetLineThroughFunc={ingredientSetLineThrough}
                             />

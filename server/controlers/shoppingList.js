@@ -35,7 +35,6 @@ exports.postNewShoppingList = async (req, res, next) => {
     try {
         // if id is passed in then replace otherwise create
         let shoppingList;
-        console.log(req.body);
         shoppingList = await ShoppingList.replaceOne({ _id: req.body._id }, req.body, { upsert: true });
 
         return res.status(201).json({
@@ -137,7 +136,6 @@ exports.createShoppingListFile = (req, res, next) => {
     try {
         const shoppingList = JSON.parse(req.query.grocerySectionIngredientsMap);
         let contentString = "";
-        console.log("string", contentString);
         Object.entries(shoppingList).forEach(([section, ingredients]) => {
             contentString = contentString + section + os.EOL;
             ingredients.forEach((ingredient) => {
@@ -160,11 +158,12 @@ exports.createShoppingListFile = (req, res, next) => {
 // @route post /api/shoppingList/lineThrough
 // @access Private
 exports.setIngredientLineThrough = (req, res, next) => {
-    let { _id, sectionName, index, value } = req.body;
-    const updateString = `grocerySectionIngredientsMap.${sectionName}.${index}.lineThrough`;
-    console.log(updateString, _id, sectionName, index, value);
+    let { _id, sectionName, ingredientId, value } = req.body;
+    const updateString = `grocerySectionIngredientsMap.${sectionName}.$[elem].lineThrough`;
+    console.log(ingredientId);
     try {
-        ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { [updateString]: value } }).then(() => {
+        ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { [updateString]: value } }, { arrayFilters: [{ "elem._id": ingredientId }] }).then((result) => {
+            console.log(result);
             return res.status(200).json({
                 success: true,
             });

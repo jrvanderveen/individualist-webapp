@@ -479,15 +479,15 @@ export const GlobalProvider = ({ children }) => {
 
     // Manually add ingredient to shopping list grocer section
     // @PROTECTED
-    async function setIngredientLineThrough(sectionName, index, value) {
+    async function setIngredientLineThrough(sectionName, ingredientId, value) {
         try {
             let _id = state.shoppingList._id;
-            axios.post("/api/shoppingList/lineThrough", { _id, sectionName, index, value }).then((res) => {
+            axios.post("/api/shoppingList/lineThrough", { _id, sectionName, ingredientId, value }).then((res) => {
                 parseRedirectNoDispatch(res.data);
             });
             dispatch({
                 type: "SET_INGREDIENT_LINE_THROUGH_SHOPPING_LIST",
-                payload: [sectionName, index, value],
+                payload: [sectionName, ingredientId, value],
             });
         } catch (error) {
             dispatch({

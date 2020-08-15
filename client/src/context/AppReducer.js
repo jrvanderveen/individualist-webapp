@@ -226,7 +226,11 @@ export default (state, action) => {
         // Set line through property for shopping list ingredient
         // action.payload = [sectionName, index, value]
         case "SET_INGREDIENT_LINE_THROUGH_SHOPPING_LIST":
-            state.shoppingList.grocerySectionIngredientsMap[action.payload[0]][action.payload[1]].lineThrough = action.payload[2];
+            state.shoppingList.grocerySectionIngredientsMap[action.payload[0]].forEach((ingredient) => {
+                if (ingredient._id === action.payload[1]) {
+                    ingredient.lineThrough = action.payload[2];
+                }
+            });
             return {
                 ...state,
                 grocerySectionIngredientsMap: state.shoppingList.grocerySectionIngredientsMap,
