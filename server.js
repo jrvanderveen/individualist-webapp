@@ -35,7 +35,7 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     app.use(cors());
 
     app.use(express.json());
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === "development" || process.env.LOGGING_LEVEL === "verbose") {
         app.use(morgan("dev"));
     }
     app.use(express.urlencoded({ extended: true }));
