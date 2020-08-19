@@ -27,3 +27,4 @@ yarn-error.log*
 /server/SSL
 /client/src/config.js
 /server/tests
+/.vscode
