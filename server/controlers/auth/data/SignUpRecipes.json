@@ -1,50 +1,35 @@
 [
     {
         "userId": "",
-        "name": "Check out the tutorial by clicking on the website link!",
+        "name": "Recipe For Success: Click Me",
         "servings": 1,
-        "rating": 1,
+        "rating": 5,
         "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
         "ingredients": [
-            { "name": "salt", "grocerySection": "Other" },
+            { "name": "Check out the tutorial by clicking on the website link", "grocerySection": "Other" },
+            { "name": "Click on the gear icon to add grocery sections", "grocerySection": "Other" },
+            { "name": "Click edit to change my grocery section", "grocerySection": "Other" },
+            { "name": "Delete this ingredient", "grocerySection": "Other" },
+            { "name": "Click on the 'More' link for more recipe options", "grocerySection": "Other" },
+            { "name": "Add me to your shopping list", "grocerySection": "Other" },
+            { "name": "Add a new recipe from a popular site like allrecipes for automatic recipe creation", "grocerySection": "Other" },
+            { "name": "Example Ingredients below", "grocerySection": "Other" },
+            { "name": "Salt", "grocerySection": "Other" },
             { "name": "Kale", "grocerySection": "Produce" },
             { "name": "Frozen Berries", "grocerySection": "Frozen" }
-        ]
-    },
-    {
-        "userId": "",
-        "name": "Edit Me!",
-        "servings": 2,
-        "rating": 2,
-        "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
-        "ingredients": [
-            { "name": "salt", "grocerySection": "Other" },
-            { "name": "Kale", "grocerySection": "Produce" },
-            { "name": "Frozen Berries", "grocerySection": "Frozen" }
-        ]
-    },
-    {
-        "userId": "",
-        "name": "Add me to your shopping list!",
-        "servings": 3,
-        "rating": 3,
-        "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
-        "ingredients": [
-            { "name": "salt", "grocerySection": "Other" },
-            { "name": "Kale", "grocerySection": "Produce" },
-            { "name": "Frozen Berries", "grocerySection": "Frozen" }
-        ]
-    },
-    {
-        "userId": "",
-        "name": "Click on the gear icon to add grocery sections",
-        "servings": 4,
-        "rating": 4,
-        "URL": "https://github.com/jrvanderveen/individualist-webapp/blob/master/demo/test.gif",
-        "ingredients": [
-            { "name": "salt", "grocerySection": "Other" },
-            { "name": "Kale", "grocerySection": "Produce" },
-            { "name": "Frozen Berries", "grocerySection": "Frozen" }
-        ]
+        ],
+        "recipeDetails": {
+            "prepTime": 20,
+            "cookTime": 30,
+            "dificulty": "Medium",
+            "notes": "Click edit to add some notes",
+            "Instructions": "Click edit to add some instructions",
+            "images": [
+                {
+                    "original": "https://cdn.pixabay.com/photo/2017/01/30/13/49/pancakes-2020863_960_720.jpg",
+                    "thumbnail": "https://cdn.pixabay.com/photo/2017/01/30/13/49/pancakes-2020863_960_720.jpg"
+                }
+            ]
+        }
     }
 ]
