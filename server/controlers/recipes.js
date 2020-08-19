@@ -7,7 +7,6 @@ const { uploadFile, emptyS3ImageDirectory } = require("../controlers/S3/recipe/i
 // @route GET /api/recipes
 // @access Private
 exports.getRecipes = async (req, res, next) => {
-    console.log("GET RECIPES".yellow);
     try {
         const recipes = await Recipe.find({ userId: req.user._id });
         return res.status(200).json({
@@ -71,7 +70,6 @@ exports.addRecipe = async (req, res, next) => {
 // @access Private
 // req.body = {name, servings, URL, ingredients[]} no ingredients on create
 exports.addFullRecipe = async (req, res, next) => {
-    console.log("addFullRecipe");
     try {
         recipeObj = await buildFullRecipe(req.body.name ? req.body.name : "Name Me!", req.body.servings ? req.body.servings : 1, req.user._id, scraperRes.data);
         const recipe = await Recipe.create(recipeObj);
@@ -80,7 +78,7 @@ exports.addFullRecipe = async (req, res, next) => {
             data: recipe,
         });
     } catch (err) {
-        console.log(err);
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -140,6 +138,7 @@ exports.deleteRecipe = async (req, res, next) => {
             data: {},
         });
     } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -157,7 +156,8 @@ exports.deleteRecipeIngredient = async (req, res, next) => {
             success: true,
             data: {},
         });
-    } catch {
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -189,7 +189,8 @@ exports.addRecipeIngredient = async (req, res, next) => {
                 recipe: recipeId,
             },
         });
-    } catch {
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -207,7 +208,8 @@ exports.saveEditedRecipe = async (req, res, next) => {
         return res.status(200).json({
             success: true,
         });
-    } catch {
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -225,7 +227,8 @@ exports.rate = async (req, res, next) => {
         return res.status(200).json({
             success: true,
         });
-    } catch {
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -289,8 +292,8 @@ exports.updateRecipeDetailsTimes = async (req, res, next) => {
         return res.status(200).json({
             success: true,
         });
-    } catch {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -308,7 +311,8 @@ exports.updateRecipeDetailsNotes = async (req, res, next) => {
         return res.status(200).json({
             success: true,
         });
-    } catch {
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -326,7 +330,8 @@ exports.updateRecipeDetailsInstructions = async (req, res, next) => {
         return res.status(200).json({
             success: true,
         });
-    } catch {
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",

@@ -45,7 +45,7 @@ const createDefaultGrocerySections = async (userId) => {
 
         return { success: true, grocerySectionsDoc: grocerySectionsDoc };
     } catch (err) {
-        console.log(`ERROR: Creating default grocery section document`.red);
+        console.log(`ERROR: Creating default grocery section document: ${err}`.red);
         return {
             success: false,
             error: err,
@@ -72,7 +72,7 @@ exports.addGrocerySection = async (req, res, next) => {
             success: true,
         });
     } catch (err) {
-        console.log(err);
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -86,7 +86,6 @@ exports.addGrocerySection = async (req, res, next) => {
 exports.deleteGrocerySection = async (req, res, next) => {
     try {
         const { _id, sectionName, defaultSection, shoppingList } = req.body;
-        console.log(_id, sectionName, defaultSection, shoppingList);
         await GrocerySections.updateOne({ _id: _id }, { $pull: { sections: sectionName } });
 
         await Recipe.updateMany(
@@ -104,7 +103,7 @@ exports.deleteGrocerySection = async (req, res, next) => {
             data: {},
         });
     } catch (err) {
-        console.log(err);
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -116,7 +115,6 @@ exports.deleteGrocerySection = async (req, res, next) => {
 // @route POST /api/settings/grocerySections/default
 // @access Private
 exports.setDefaultGrocerySection = async (req, res, next) => {
-    console.log(req.body);
     try {
         const grocerySection = await GrocerySections.findById(req.body._id);
 
@@ -132,7 +130,7 @@ exports.setDefaultGrocerySection = async (req, res, next) => {
             success: true,
         });
     } catch (err) {
-        console.log(err);
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",

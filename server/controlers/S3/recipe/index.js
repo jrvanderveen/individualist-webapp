@@ -21,7 +21,7 @@ exports.uploadFile = async (filePath, name, userId, recipeId) => {
         const uploadRes = await s3.upload(params).promise();
         return { success: true, imageURL: uploadRes.Location };
     } catch (err) {
-        console.log(err);
+        console.log(`${err}`.red);
         return { success: false, error: "Server Error: " + err.message };
     }
 };
@@ -52,7 +52,7 @@ exports.emptyS3ImageDirectory = async (userId, recipeId) => {
             success: true,
         };
     } catch (err) {
-        console.log(err);
+        console.log(`${err}`.red);
         return {
             success: false,
             error: err.message,

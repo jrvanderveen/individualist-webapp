@@ -52,9 +52,9 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     app.use(passport.session());
 
     // Passport Middleware
-    if (process.env.LOGING_LEVEL === "verbose") {
+    if (process.env.LOGGING_LEVEL === "verbose") {
         app.use((req, res, next) => {
-            if (process.env.LOGING_LEVEL === "verbose") {
+            if (process.env.LOGGING_LEVEL === "verbose") {
                 console.log("req.session", req.session);
             }
             return next();

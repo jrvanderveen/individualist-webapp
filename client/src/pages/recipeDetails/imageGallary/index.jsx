@@ -42,7 +42,6 @@ export const ImageGalleryComponent = ({ images, recipeId }) => {
         fd.append("recipeId", recipeId);
         fd.append("file", e.target.files[0]);
         uploadRecipeImage(fd, recipeId).then((res) => {
-            console.log(res);
             if (res !== "") {
                 setErrors([res]);
             } else {

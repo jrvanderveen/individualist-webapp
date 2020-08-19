@@ -88,8 +88,8 @@ exports.addSectionIngredient = async (req, res, next) => {
                 ingredient: ingredientObj,
             },
         });
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -120,8 +120,8 @@ exports.clearShoppingList = async (req, res, next) => {
         return res.status(200).json({
             success: true,
         });
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -160,10 +160,8 @@ exports.createShoppingListFile = (req, res, next) => {
 exports.setIngredientLineThrough = (req, res, next) => {
     let { _id, sectionName, ingredientId, value } = req.body;
     const updateString = `grocerySectionIngredientsMap.${sectionName}.$[elem].lineThrough`;
-    console.log(ingredientId);
     try {
         ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { [updateString]: value } }, { arrayFilters: [{ "elem._id": ingredientId }] }).then((result) => {
-            console.log(result);
             return res.status(200).json({
                 success: true,
             });

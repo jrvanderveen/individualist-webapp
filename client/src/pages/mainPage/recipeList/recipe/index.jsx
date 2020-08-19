@@ -38,6 +38,10 @@ const StyledLink = styled(Link)`
     font-size: 75%;
     margin-right: 10px;
 `;
+const DetailsDiv = styled.div`
+    color: blue;
+    font-size: 75%;
+`;
 
 const Span = styled.span`
     color: blue;
@@ -141,7 +145,7 @@ export const Recipe = ({ recipe }) => {
                             <LeftDiv>
                                 <StyledLink text="Website" href={website} target="_blank" />
                                 <RouterLink to={recipePage}>
-                                    <LinkSvg />
+                                    <DetailsDiv>More</DetailsDiv>
                                 </RouterLink>
                             </LeftDiv>
                             <RightDiv>

@@ -72,7 +72,7 @@ PORT=443
 MONGO_URI=Your Mongo URI
 # verbose = everything on
 # limited = only basic server logging
-LOGING_LEVEL=limited
+LOGGING_LEVEL=limited
 SESSION_SECRET=seceret hash string
 #You can either comment out the webscraper post attempt or add your own and set this
 SCAPER_ENDPOINT=web scraper server + port

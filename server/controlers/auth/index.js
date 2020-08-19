@@ -16,6 +16,7 @@ exports.userState = async (req, res, next) => {
             username: username,
         });
     } catch (err) {
+        console.log(`${err}`.red);
         return res.status(500).json({
             success: false,
             error: "Server Error",
@@ -27,7 +28,6 @@ exports.userState = async (req, res, next) => {
 // @route GET /api/login/signUp
 // @access Public
 exports.signUp = async (req, res, next) => {
-    console.log("Sign Up");
     const { username, email, password, repeatPassword } = req.body;
     User.findOne({ username: username }).then((user) => {
         if (user) {
@@ -74,11 +74,10 @@ exports.createNewUser = async (localUser, authUser) => {
 };
 // Helper method to create default user documents
 exports.setUserDefaults = (userId) => {
-    console.log("Set up new user");
     try {
         jsonReader("./server/controlers/auth/data/SignUpGrocerySections.json", (err, grocerySections) => {
             if (err) {
-                console.log(err);
+                console.log(`${err}`.red);
                 return;
             }
             grocerySections["userId"] = userId;
@@ -87,7 +86,7 @@ exports.setUserDefaults = (userId) => {
 
         jsonReader("./server/controlers/auth/data/SignUpShoppinglist.json", (err, shoppingList) => {
             if (err) {
-                console.log(err);
+                console.log(`${err}`.red);
                 return;
             }
             shoppingList["userId"] = userId;
@@ -96,7 +95,7 @@ exports.setUserDefaults = (userId) => {
 
         jsonReader("./server/controlers/auth/data/SignUpRecipes.json", (err, recipes) => {
             if (err) {
-                console.log(err);
+                console.log(`${err}`.red);
                 return;
             }
             recipes.forEach((recipe) => {
@@ -105,7 +104,7 @@ exports.setUserDefaults = (userId) => {
             Recipe.insertMany(recipes);
         });
     } catch (err) {
-        console.log(`ERROR: Creating user default documents`.red);
+        console.log(`ERROR: Creating user default documents: ${err}`.red);
     }
 };
 
@@ -128,7 +127,6 @@ function jsonReader(filePath, cb) {
 // @route GET /api/login/signIn
 // @access Public
 exports.signIn = async (req, res, next) => {
-    console.log("here");
     res.send({
         username: req.user.username,
         success: true,
@@ -139,7 +137,6 @@ exports.signIn = async (req, res, next) => {
 // @route GET /api/login/signOut
 // @access Public
 exports.signOut = async (req, res, next) => {
-    console.log("Sign Out");
     if (req.user) {
         req.logout();
         res.send({ msg: "logging out" });

@@ -62,7 +62,6 @@ export const NotesAndInstructions = ({ _id, notes, instructions }) => {
         } else {
             setEditText(notes);
         }
-        console.log("SCroll to bottom");
     };
 
     const handleClick = (val) => {

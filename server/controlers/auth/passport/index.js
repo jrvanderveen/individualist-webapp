@@ -6,7 +6,7 @@ const User = require("../../../models/user");
 
 // called on login, saves the id to session req.session.passport.user = {id:'..'}
 passport.serializeUser((user, done) => {
-    if (process.env.LOGING_LEVEL === "verbose") {
+    if (process.env.LOGGING_LEVEL === "verbose") {
         console.log("*** serializeUser called, user: ".yellow, user);
         console.log(user); // the whole raw user object!
         console.log("---------");
@@ -16,9 +16,9 @@ passport.serializeUser((user, done) => {
 
 // user object attaches to the request as req.user
 passport.deserializeUser((id, done) => {
-    if (process.env.LOGING_LEVEL === "verbose") console.log("DeserializeUser called".yellow, id);
+    if (process.env.LOGGING_LEVEL === "verbose") console.log("DeserializeUser called".yellow, id);
     User.findOne({ _id: id }, "username", (err, user) => {
-        if (process.env.LOGING_LEVEL === "verbose") {
+        if (process.env.LOGGING_LEVEL === "verbose") {
             console.log("*** Deserialize user, user:");
             console.log(user);
             console.log("--------------");

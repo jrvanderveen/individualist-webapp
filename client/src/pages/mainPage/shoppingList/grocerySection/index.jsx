@@ -29,7 +29,6 @@ export const GrocerySection = ({ sectionName, section }) => {
                 complete = false;
             }
         });
-        console.log();
         return complete;
     };
 

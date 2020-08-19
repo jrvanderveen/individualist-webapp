@@ -88,7 +88,6 @@ export const Times = (props) => {
             setEdit(true);
         } else {
             if (val === "save") {
-                console.log("save");
                 updateRecipeDetailTimes(_id, { prepTime: editPrepTime, cookTime: editCookTime, servings: editServings, dificulty: editDificulty });
             }
             setEdit(false);

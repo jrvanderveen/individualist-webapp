@@ -88,9 +88,6 @@ export const Ingredient = ({ recipeId, ingredient, index, recipeObj, setRecipeOb
         <Wrapper>
             <List isIngredient>
                 {recipeObj.active ? null : (
-                    // <DeleteButtonWrapper isIngredient onClick={handleOnClick} wrapper={Wrapper}>
-                    //     x
-                    // </DeleteButtonWrapper>
                     <DeleteButtonWrapper isIngredient wrapper={Wrapper}>
                         <button className="float-right btn btn-danger btn-sm" onClick={handleOnClick}>
                             &times;
@@ -120,9 +117,7 @@ export const Ingredient = ({ recipeId, ingredient, index, recipeObj, setRecipeOb
                     </IngredientAtributeWrapper>
                 ) : (
                     <IngredientAtributeWrapper>
-                        <IngredientLabel>
-                            {index + 1}:&nbsp;&nbsp;{ingredient.name}
-                        </IngredientLabel>
+                        <IngredientLabel>{ingredient.name}</IngredientLabel>
                         <SectionDiv>
                             <button type="button" className="btn btn-sm btn-info">
                                 {ingredient.grocerySection}
@@ -132,49 +127,5 @@ export const Ingredient = ({ recipeId, ingredient, index, recipeObj, setRecipeOb
                 )}
             </List>
         </Wrapper>
-
-        // <Wrapper>
-        //     <List isIngredient>
-        //         {recipeObj.active ? null : (
-        //             <DeleteButton isIngredient onClick={handleOnClick} wrapper={Wrapper}>
-        //                 x
-        //             </DeleteButton>
-        //         )}
-        //         {recipeObj.active ? (
-        //             <>
-        //                 <div className="input-group">
-        //                     <input
-        //                         type="text"
-        //                         className="form-control"
-        //                         placeholder="Enter Ingredient..."
-        //                         value={recipeObj.editRecipe.ingredients[index].name || ""}
-        //                         onChange={(e) => handleInputChange(e)}
-        //                     />
-
-        //                     <div className="input-group-append">
-        //                         <SectionDiv>
-        //                             <DropDownButton
-        //                                 defaultSection={ingredient.grocerySection}
-        //                                 sections={grocerySections.sections}
-        //                                 recipeObj={recipeObj}
-        //                                 setRecipeObjFunc={setRecipeObjFunc}
-        //                                 index={index}
-        //                             />
-        //                         </SectionDiv>
-        //                     </div>
-        //                 </div>
-        //             </>
-        //         ) : (
-        //             <>
-        //                 {index + 1}:&nbsp;&nbsp;<IngredientLabel>{ingredient.name}</IngredientLabel>
-        //                 <SectionDiv>
-        //                     <button type="button" className="btn btn-info" disabled>
-        //                         {ingredient.grocerySection}
-        //                     </button>
-        //                 </SectionDiv>
-        //             </>
-        //         )}
-        //     </List>
-        // </Wrapper>
     );
 };

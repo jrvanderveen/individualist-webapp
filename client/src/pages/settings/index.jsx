@@ -29,7 +29,6 @@ export const Settings = ({ history }) => {
     // If reder check if we need to get grocerySections.
     //      if visiting the settings page and returning no update needed
     useEffect(() => {
-        console.log(history);
         if (Object.entries(grocerySections.sections).length === 0) {
             onStartUp();
         }
