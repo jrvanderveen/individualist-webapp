@@ -117,7 +117,7 @@ exports.deleteRecipe = async (req, res, next) => {
     const userId = req.user._id;
     const recipeId = req.body._id;
     try {
-        const recipe = await Recipe.findById(recipeId);
+        const recipe = await Recipe.findOne({ _id: recipeId, userId: userId });
         if (!recipe) {
             return res.status(404).json({
                 success: false,
@@ -151,7 +151,7 @@ exports.deleteRecipe = async (req, res, next) => {
 // @access Private
 exports.deleteRecipeIngredient = async (req, res, next) => {
     try {
-        await Recipe.updateOne({ _id: req.body.recipeId }, { $pull: { ingredients: { _id: req.body.ingredientId } } });
+        await Recipe.updateOne({ _id: req.body.recipeId, userId: req.user._id }, { $pull: { ingredients: { _id: req.body.ingredientId } } });
         return res.status(200).json({
             success: true,
             data: {},
@@ -171,7 +171,7 @@ exports.deleteRecipeIngredient = async (req, res, next) => {
 exports.addRecipeIngredient = async (req, res, next) => {
     const recipeId = req.body.recipeId;
     try {
-        const recipe = await Recipe.findById(recipeId);
+        const recipe = await Recipe.findOne({ _id: recipeId, userId: req.user._id });
 
         if (!recipe) {
             return res.status(404).json({
@@ -180,7 +180,7 @@ exports.addRecipeIngredient = async (req, res, next) => {
             });
         }
         ingredient = req.body.ingredient;
-        await Recipe.updateOne({ _id: recipeId }, { $push: { ingredients: ingredient } });
+        await Recipe.updateOne({ _id: recipeId, userId: req.user._id }, { $push: { ingredients: ingredient } });
 
         return res.status(200).json({
             success: true,
@@ -203,7 +203,7 @@ exports.addRecipeIngredient = async (req, res, next) => {
 // @access Private
 exports.saveEditedRecipe = async (req, res, next) => {
     try {
-        await Recipe.replaceOne({ _id: req.body._id }, req.body, { upsert: true });
+        await Recipe.replaceOne({ _id: req.body._id, userId: req.user._id }, req.body, { upsert: true });
 
         return res.status(200).json({
             success: true,
@@ -223,7 +223,7 @@ exports.saveEditedRecipe = async (req, res, next) => {
 exports.rate = async (req, res, next) => {
     try {
         const { _id, rating } = req.body;
-        await Recipe.updateOne({ _id: _id }, { $set: { rating: rating } });
+        await Recipe.updateOne({ _id: _id, userId: req.user._id }, { $set: { rating: rating } });
         return res.status(200).json({
             success: true,
         });
@@ -260,7 +260,7 @@ exports.uploadRecipeImage = async (req, res, next) => {
         }
         //Push url to recipe doc
         const newImage = { original: uploadRes.imageURL, thumbnail: uploadRes.imageURL };
-        await Recipe.updateOne({ _id: recipeId }, { $push: { "recipeDetails.images": { $each: [newImage], $position: 0 } } });
+        await Recipe.updateOne({ _id: recipeId, userId: req.user._id }, { $push: { "recipeDetails.images": { $each: [newImage], $position: 0 } } });
         return res.status(200).json(uploadRes);
     } catch (err) {
         console.log(err);
@@ -285,7 +285,7 @@ exports.updateRecipeDetailsTimes = async (req, res, next) => {
         } = req.body;
 
         await Recipe.updateOne(
-            { _id: _id },
+            { _id: _id, userId: req.user._id },
             { $set: { "recipeDetails.cookTime": cookTime, "recipeDetails.prepTime": prepTime, "recipeDetails.dificulty": dificulty, servings: servings } }
         );
 
@@ -307,7 +307,7 @@ exports.updateRecipeDetailsTimes = async (req, res, next) => {
 exports.updateRecipeDetailsNotes = async (req, res, next) => {
     try {
         const { _id, notes } = req.body;
-        await Recipe.updateOne({ _id: _id }, { $set: { "recipeDetails.notes": notes } });
+        await Recipe.updateOne({ _id: _id, userId: req.user._id }, { $set: { "recipeDetails.notes": notes } });
         return res.status(200).json({
             success: true,
         });
@@ -326,7 +326,7 @@ exports.updateRecipeDetailsNotes = async (req, res, next) => {
 exports.updateRecipeDetailsInstructions = async (req, res, next) => {
     try {
         const { _id, instructions } = req.body;
-        await Recipe.updateOne({ _id: _id }, { $set: { "recipeDetails.Instructions": instructions } });
+        await Recipe.updateOne({ _id: _id, userId: req.user._id }, { $set: { "recipeDetails.Instructions": instructions } });
         return res.status(200).json({
             success: true,
         });

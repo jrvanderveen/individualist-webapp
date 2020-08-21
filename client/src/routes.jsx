@@ -48,7 +48,7 @@ export const Routes = () => {
                         <Route exact path="/settings" component={Settings} />
                         <Route exact path="/404" component={NotFound} />
                         {/* Recipe Page */}
-                        <Route path="/recipe/:id" render={(props) => <RecipeDetails _id={props.match.params.id} />} />
+                        <Route path="/recipe/:id" render={(props) => <RecipeDetails _id={props.match.params.id} history={props.history} />} />
                         <Redirect to="/404" />
                     </Switch>
                 )}

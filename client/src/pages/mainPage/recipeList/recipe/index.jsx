@@ -3,7 +3,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { GlobalContext } from "../../../../context/globalState";
 import { Ingredients } from "./ingredients";
 import { CheveronSvg } from "../../../../components/SVG/cheveronSvg";
-import { LinkSvg } from "../../../../components/SVG/linkSvg";
 import { SelectRecipeButton } from "./selectRecipeButton";
 import { List, AccordionButton, Link, AccordionContent, Input, Label } from "../../../../elements/index";
 import StarRatings from "react-star-ratings";

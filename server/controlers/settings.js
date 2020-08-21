@@ -58,7 +58,7 @@ const createDefaultGrocerySections = async (userId) => {
 // @access Private
 exports.addGrocerySection = async (req, res, next) => {
     try {
-        const grocerySection = await GrocerySections.findById(req.body._id);
+        const grocerySection = await GrocerySections.findOne({ _id: req.body._id, userId: req.user._id });
 
         if (!grocerySection) {
             return res.status(404).json({
@@ -66,7 +66,7 @@ exports.addGrocerySection = async (req, res, next) => {
                 error: "No grocery section found",
             });
         }
-        await GrocerySections.updateOne({ _id: req.body._id }, { $push: { sections: req.body.sectionName } });
+        await GrocerySections.updateOne({ _id: req.body._id, userId: req.user._id }, { $push: { sections: req.body.sectionName } });
 
         return res.status(200).json({
             success: true,
@@ -86,7 +86,7 @@ exports.addGrocerySection = async (req, res, next) => {
 exports.deleteGrocerySection = async (req, res, next) => {
     try {
         const { _id, sectionName, defaultSection, shoppingList } = req.body;
-        await GrocerySections.updateOne({ _id: _id }, { $pull: { sections: sectionName } });
+        await GrocerySections.updateOne({ _id: _id, userId: req.user._id }, { $pull: { sections: sectionName } });
 
         await Recipe.updateMany(
             {},
@@ -96,7 +96,7 @@ exports.deleteGrocerySection = async (req, res, next) => {
                 arrayFilters: [{ "ingredient.grocerySection": sectionName }],
             }
         );
-        await ShoppingList.replaceOne({ _id: shoppingList._id }, shoppingList, { upsert: true });
+        await ShoppingList.replaceOne({ _id: shoppingList._id, userId: req.user._id }, shoppingList, { upsert: true });
 
         return res.status(200).json({
             success: true,
@@ -116,7 +116,7 @@ exports.deleteGrocerySection = async (req, res, next) => {
 // @access Private
 exports.setDefaultGrocerySection = async (req, res, next) => {
     try {
-        const grocerySection = await GrocerySections.findById(req.body._id);
+        const grocerySection = await GrocerySections.findOne({ _id: req.body._id, userId: req.user._id });
 
         if (!grocerySection) {
             return res.status(404).json({
@@ -124,7 +124,7 @@ exports.setDefaultGrocerySection = async (req, res, next) => {
                 error: "No grocery section found",
             });
         }
-        await GrocerySections.updateOne({ _id: req.body._id }, { $set: { default: req.body.sectionName } });
+        await GrocerySections.updateOne({ _id: req.body._id, userId: req.user._id }, { $set: { default: req.body.sectionName } });
 
         return res.status(200).json({
             success: true,

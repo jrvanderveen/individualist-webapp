@@ -24,7 +24,7 @@ const Div = styled.div`
         _id: recipe ID
 
 */
-export const RecipeDetails = ({ _id }) => {
+export const RecipeDetails = ({ _id, history }) => {
     //Context
     const { recipes, onStartUp } = useContext(GlobalContext);
     const placeHolderImage = "https://via.placeholder.com/250X250.png?text=Add+Recipe+Image";
@@ -37,8 +37,14 @@ export const RecipeDetails = ({ _id }) => {
     useEffect(() => {
         if (Object.entries(recipes).length === 0) {
             onStartUp();
+        } else {
+            if (recipes[_id]) {
+                setRecipe(recipes[_id]);
+            } else {
+                history.push("/404");
+            }
         }
-        setRecipe(recipes[_id]);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipes]);
     return (

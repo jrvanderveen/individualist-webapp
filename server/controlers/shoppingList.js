@@ -35,7 +35,7 @@ exports.postNewShoppingList = async (req, res, next) => {
     try {
         // if id is passed in then replace otherwise create
         let shoppingList;
-        shoppingList = await ShoppingList.replaceOne({ _id: req.body._id }, req.body, { upsert: true });
+        shoppingList = await ShoppingList.replaceOne({ _id: req.body._id, userId: req.user._id }, req.body, { upsert: true });
 
         return res.status(201).json({
             success: true,
@@ -64,7 +64,7 @@ exports.postNewShoppingList = async (req, res, next) => {
 exports.addSectionIngredient = async (req, res, next) => {
     let { _id, sectionName, ingredientObj } = req.body;
     try {
-        const shoppingList = await ShoppingList.findById({ _id: ObjectID(_id) });
+        const shoppingList = await ShoppingList.findById({ _id: ObjectID(_id), userId: req.user._id });
         if (!shoppingList) {
             return res.status(404).json({
                 success: false,
@@ -80,7 +80,7 @@ exports.addSectionIngredient = async (req, res, next) => {
         }
         map[sectionName].push(ingredientObj);
 
-        await ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { grocerySectionIngredientsMap: map } });
+        await ShoppingList.updateOne({ _id: ObjectID(_id), userId: req.user._id }, { $set: { grocerySectionIngredientsMap: map } });
 
         return res.status(200).json({
             success: true,
@@ -103,7 +103,7 @@ exports.addSectionIngredient = async (req, res, next) => {
 exports.clearShoppingList = async (req, res, next) => {
     let _id = req.body._id;
     try {
-        let shoppingList = await ShoppingList.findById({ _id: ObjectID(_id) });
+        let shoppingList = await ShoppingList.findById({ _id: ObjectID(_id), userId: req.user._id });
         if (!shoppingList) {
             return res.status(404).json({
                 success: false,
@@ -115,7 +115,7 @@ exports.clearShoppingList = async (req, res, next) => {
             grocerySectionIngredientsMap[key] = [];
         });
 
-        await ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { grocerySectionIngredientsMap: grocerySectionIngredientsMap } });
+        await ShoppingList.updateOne({ _id: ObjectID(_id), userId: req.user._id }, { $set: { grocerySectionIngredientsMap: grocerySectionIngredientsMap } });
 
         return res.status(200).json({
             success: true,
@@ -161,7 +161,11 @@ exports.setIngredientLineThrough = (req, res, next) => {
     let { _id, sectionName, ingredientId, value } = req.body;
     const updateString = `grocerySectionIngredientsMap.${sectionName}.$[elem].lineThrough`;
     try {
-        ShoppingList.updateOne({ _id: ObjectID(_id) }, { $set: { [updateString]: value } }, { arrayFilters: [{ "elem._id": ingredientId }] }).then((result) => {
+        ShoppingList.updateOne(
+            { _id: ObjectID(_id), userId: req.user._id },
+            { $set: { [updateString]: value } },
+            { arrayFilters: [{ "elem._id": ingredientId }] }
+        ).then((result) => {
             return res.status(200).json({
                 success: true,
             });
