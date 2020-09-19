@@ -17,15 +17,6 @@ const cors = require("cors");
 
 // Set env path
 
-//HTTPS options
-const options = {
-    key: fs.readFileSync("./server/SSL/server.key.pem"),
-    ca: [fs.readFileSync("./server/SSL/intermediate.crt.pem")],
-    cert: fs.readFileSync("./server/SSL/server.crt.pem"),
-    requestCert: false,
-    rejectUnauthorized: false,
-};
-
 // DB Connect
 mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     if (err) console.log(err);
@@ -82,6 +73,14 @@ mongoUtil.connectDB(process.env.MONGO_URI, function (err, client) {
     // Set server listening port
     const PORT = process.env.PORT || 50001;
     if (process.env.NODE_ENV === "production") {
+        //HTTPS options
+        const options = {
+            key: fs.readFileSync("./server/SSL/server.key.pem"),
+            ca: [fs.readFileSync("./server/SSL/intermediate.crt.pem")],
+            cert: fs.readFileSync("./server/SSL/server.crt.pem"),
+            requestCert: false,
+            rejectUnauthorized: false,
+        };
         https.createServer(options, app).listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
         // Redirect from http port 80 to https
         var http = require("http");
