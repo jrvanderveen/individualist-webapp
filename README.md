@@ -32,4 +32,24 @@ Create a list of grocery sections ex: Produce, Vegetables, Frozen, Other ... Whe
 
 # Contributing
 
-Want to help? Great! Checkout the [project](https://github.com/jrvanderveen/cooking-with-code/projects/1) and find something you'd like to tackle.  If some thing looks interesting shoot me an email at wasjrvanderveen@gmail.com and we can a dev environment set up.
+Want to help? Great! Checkout the [project](https://github.com/jrvanderveen/cooking-with-code/projects/1) and find something you'd like to tackle.  If some thing looks interesting follow these steps to get setup.
+
+	1A. git clone https://github.com/jrvanderveen/individualist-webapp.git
+	1B. Create mongodb atlas account
+
+	2A. npm install
+	2B. cd client - npm install
+
+
+	3A.cd server/config - open config_tmp.env, setup environmanet variables, and rename to config.env
+		Note: Some configuration of this file is optional like facebook/google auth and the AWS S3 bucket
+
+
+	3B. optional: can create your own SSL certificates
+
+	4.cd client/src - create file config.js
+		export const getENV = () => {
+			return "development";
+		}
+
+	5.  cd back to server - npm run dev
