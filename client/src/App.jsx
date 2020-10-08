@@ -17,9 +17,12 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         overflow-wrap: break-all;
         white-space: normal;
+        outline: none;
+
     } 
     .error {
     color: #c0392b;
+    
 }
 `;
 

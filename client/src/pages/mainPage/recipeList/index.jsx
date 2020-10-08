@@ -1,11 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../../context/globalState";
 import { Recipe } from "./recipe";
+import { SearchBar } from "./searchBar";
 import { SettingsSvg } from "../../../components/SVG/settingSvg";
 import styled from "styled-components";
 
 // Styled Components
+const SearchBarWrapper = styled.div`
+    padding-left: 3%;
+`;
 const Ul = styled.ul`
     padding-left: 3%;
 `;
@@ -26,8 +30,10 @@ const SVGWrapper = styled.div`
 
 */
 export const RecipeList = () => {
-    // State
+    // Context
     const { recipes, onStartUp } = useContext(GlobalContext);
+    // State
+    const [searchText, setSearchText] = useState("");
 
     // Functions
     // If reder check if we need to get recipes.
@@ -50,10 +56,11 @@ export const RecipeList = () => {
 
                 <H3>Recipes</H3>
             </HeaderWrapper>
+            <SearchBarWrapper>
+                <SearchBar searchText={searchText} setSearchTextFunc={setSearchText} />
+            </SearchBarWrapper>
             <Ul>
-                {Object.entries(recipes).map(([_id, recipe]) => (
-                    <Recipe key={_id} recipe={recipe} />
-                ))}
+                {Object.entries(recipes).map(([_id, recipe]) => (recipe.name.toLowerCase().includes(searchText) ? <Recipe key={_id} recipe={recipe} /> : null))}
             </Ul>
         </>
     );
