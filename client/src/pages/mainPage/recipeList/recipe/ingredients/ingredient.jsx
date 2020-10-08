@@ -86,7 +86,7 @@ export const Ingredient = ({ recipeId, ingredient, index, recipeObj, setRecipeOb
     // If in eding mode display editRecipe values
     return (
         <Wrapper>
-            <List isIngredient>
+            <List isIngredient isMainPage>
                 {recipeObj.active ? null : (
                     <DeleteButtonWrapper isIngredient wrapper={Wrapper}>
                         <button className="float-right btn btn-danger btn-sm" onClick={handleOnClick}>

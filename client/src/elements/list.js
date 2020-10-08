@@ -26,7 +26,7 @@ export default styled.li`
             : props.isRecipe
             ? "5px 0px"
             : "10px 0px"};
-
+    margin-left: ${(props) => (props.isIngredient && props.isMainPage ? "20%" : "")};
     ${AccordionButton}:hover & {
         background-color: #ccc;
     }

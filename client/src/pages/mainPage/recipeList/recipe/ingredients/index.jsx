@@ -71,7 +71,7 @@ export const Ingredients = ({ recipeObj, setRecipeObjFunc }) => {
                 );
             })}
             {recipeObj.active ? null : (
-                <List isIngredient isForm>
+                <List isIngredient isForm isMainPage>
                     <Form onSubmit={onSubmit}>
                         <RowDiv>
                             <ColDiv left>
