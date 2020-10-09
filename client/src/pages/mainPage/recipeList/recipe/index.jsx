@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { GlobalContext } from "../../../../context/globalState";
 import { Ingredients } from "./ingredients";
+import { DeleteRecipePopUp } from "./deleteRecipePopUp";
 import { CheveronSvg } from "../../../../components/SVG/cheveronSvg";
 import { SelectRecipeButton } from "./selectRecipeButton";
 import { List, AccordionButton, Link, AccordionContent, Input, Label } from "../../../../elements/index";
@@ -81,13 +82,17 @@ const OptionsWrapper = styled.div`
 */
 export const Recipe = ({ recipe }) => {
     // Context
-    const { deleteRecipe, saveEditedRecipe, updateRecipeRating } = useContext(GlobalContext);
+    const { saveEditedRecipe, updateRecipeRating } = useContext(GlobalContext);
 
     // State
     const [setRotate, setRotateState] = useState("");
     const [recipeObj, setRecipeObj] = useState({ active: false, recipe: recipe, editRecipe: {} });
     const [showIngredients, setShowIngredients] = useState(false);
     const [rating, setRating] = useState(recipe.rating ? recipe.rating : 1);
+    const [showPopUp, setShowPopUp] = useState(false);
+    const togglePopUp = () => {
+        setShowPopUp(!showPopUp);
+    };
     const recipePage = `/recipe/${recipe._id}`;
 
     //Functions
@@ -136,6 +141,7 @@ export const Recipe = ({ recipe }) => {
     // If in eding mode display editRecipe values
     return (
         <>
+            {showPopUp === true ? <DeleteRecipePopUp togglePopUpFunc={togglePopUp} recipeId={recipeObj.recipe._id} /> : null}
             <Wrapper isRecipe>
                 {!recipeObj.active ? (
                     <>
@@ -157,7 +163,7 @@ export const Recipe = ({ recipe }) => {
                                     starSpacing="2.5px"
                                 />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Span onClick={() => deleteRecipe(recipeObj.recipe._id)}>Delete</Span>
+                                <Span onClick={() => togglePopUp()}>Delete</Span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Span onClick={() => handleEditingClicks("edit")}>Edit</Span>
                             </RightDiv>
