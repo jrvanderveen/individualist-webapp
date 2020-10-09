@@ -4,11 +4,14 @@ import { GlobalContext } from "../../../context/globalState";
 import { Recipe } from "./recipe";
 import { SearchBar } from "./searchBar";
 import { SettingsSvg } from "../../../components/SVG/settingSvg";
+import { FilterSvg } from "../../../components/SVG/filterSvg";
 import styled from "styled-components";
 
 // Styled Components
 const SearchBarWrapper = styled.div`
     padding-left: 3%;
+    display: flex;
+    align-items: center;
 `;
 const Ul = styled.ul`
     padding-left: 3%;
@@ -58,6 +61,7 @@ export const RecipeList = () => {
             </HeaderWrapper>
             <SearchBarWrapper>
                 <SearchBar searchText={searchText} setSearchTextFunc={setSearchText} />
+                <FilterSvg />
             </SearchBarWrapper>
             <Ul>
                 {Object.entries(recipes).map(([_id, recipe]) => (recipe.name.toLowerCase().includes(searchText) ? <Recipe key={_id} recipe={recipe} /> : null))}
