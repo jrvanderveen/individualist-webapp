@@ -5,10 +5,11 @@ import { Recipe } from "./recipe";
 import { SearchBar } from "./searchBar";
 import { SettingsSvg } from "../../../components/SVG/settingSvg";
 import { FilterSvg } from "../../../components/SVG/filterSvg";
+import {FilterPopUp} from "./filterPopUp"
 import styled from "styled-components";
 
 // Styled Components
-const SearchBarWrapper = styled.div`
+const SearchWrapper = styled.div`
     padding-left: 3%;
     display: flex;
     align-items: center;
@@ -21,8 +22,12 @@ const H3 = styled.h3`
     border-bottom: 1px solid #bbb;
     margin: 20px 0 10px;
 `;
-const SVGWrapper = styled.div`
+const SvgWrapper = styled.div`
     padding-bottom: 1px;
+`;
+const SvgButton = styled.button`
+    padding: 0px;
+    border:0px;
 `;
 /*
     SUMMARY:
@@ -37,6 +42,10 @@ export const RecipeList = () => {
     const { recipes, onStartUp } = useContext(GlobalContext);
     // State
     const [searchText, setSearchText] = useState("");
+    const [showPopUp, setShowPopUp] = useState(false);
+    const togglePopUp = () => {
+        setShowPopUp(!showPopUp);
+    };
 
     // Functions
     // If reder check if we need to get recipes.
@@ -50,21 +59,26 @@ export const RecipeList = () => {
     }, []);
     return (
         <>
+            {showPopUp === true ? <FilterPopUp togglePopUpFunc={togglePopUp} /> : null}
             <HeaderWrapper>
                 <Link to="/settings">
-                    <SVGWrapper>
+                    <SvgWrapper>
                         <SettingsSvg />
-                    </SVGWrapper>
+                    </SvgWrapper>
                 </Link>
 
                 <H3>Recipes</H3>
             </HeaderWrapper>
-            <SearchBarWrapper>
+            <SearchWrapper>
                 <SearchBar searchText={searchText} setSearchTextFunc={setSearchText} />
-                <FilterSvg />
-            </SearchBarWrapper>
+                <SvgButton onClick={togglePopUp}>
+                    <FilterSvg />
+                </SvgButton>
+            </SearchWrapper>
             <Ul>
-                {Object.entries(recipes).map(([_id, recipe]) => (recipe.name.toLowerCase().includes(searchText) ? <Recipe key={_id} recipe={recipe} /> : null))}
+                {Object.entries(recipes).map(([_id, recipe]) =>
+                    recipe.name.toLowerCase().includes(searchText.toLowerCase()) ? <Recipe key={_id} recipe={recipe} /> : null
+                )}
             </Ul>
         </>
     );
