@@ -5,7 +5,7 @@ export default styled.li`
     list-style-type: ${(props) => (props.isRecipe ? "none" : "")};
     background-color: ${(props) => (props.active ? "#ccc" : "#f7f7f7")};
     box-shadow: ${(props) =>
-        props.isShoppingList || props.isGrocerySection || props.isIngredient
+        props.isShoppingList || props.isGrocerySection || props.isMealType || props.isIngredient
             ? "0 1px 3px rgba(0, 0, 0, .5), 0 1px 2px rgba(0, 0, 0, .5)"
             : "var(--box-shadow)"};
     color: #333;
@@ -19,7 +19,7 @@ export default styled.li`
     float: ${(props) => (props.isIngredient ? "right" : "")};
     padding: ${(props) => (props.isShoppingList ? "2.5px 5px 2.5px 5px" : props.isRecipe ? "0" : props.isShoppingListIngredient ? "0px" : "10px")};
     margin: ${(props) =>
-        props.isShoppingList || props.isGrocerySection || (props.isIngredient && !props.isForm)
+        props.isShoppingList || props.isGrocerySection || props.isMealType || (props.isIngredient && !props.isForm)
             ? ""
             : props.isShoppingListIngredient
             ? "5px 0px"

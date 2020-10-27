@@ -13,9 +13,24 @@ const H1 = styled.h1`
         width: 90vw;
     }
 `;
+const H5 = styled.h5`
+    text-align: center;
+    width: 50vw;
+    color: grey;
+    @media (max-width: 768px) {
+        width: 90vw;
+    }
+`;
 const HeaderAndBackDiv = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const TitelWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
 `;
@@ -26,14 +41,17 @@ const HeaderAndBackDiv = styled.div`
     
 */
 
-export const Header = ({ name, rating }) => {
+export const Header = ({ name, rating, mealType }) => {
     return (
         <>
             <HeaderAndBackDiv>
                 <RouterLink to={"/"}>
                     <BackButtonSvg />
                 </RouterLink>
-                <H1>{name}</H1>
+                <TitelWrapper>
+                    <H1>{name}</H1>
+                    <H5>({mealType})</H5>
+                </TitelWrapper>
             </HeaderAndBackDiv>
             <StarRatings rating={rating} starRatedColor="blue" numberOfStars={5} starDimension="20px" starSpacing="2.5px" />
         </>

@@ -21,13 +21,14 @@ const Ul = styled.ul`
 `;
 
 const Li = styled.li`
-    display: inline-block;
+    display: ${(props) => props.igCountSmall ? "None" : "inline-block"};
     width: ${(props) => (props.large ? "45%" : "27.5%")};
     text-align: ${(props) => (props.large ? "center" : "right")};
     @media (max-width: 768px) {
         width: ${(props) => (props.large ? "60%" : "40%")};
         text-align: center;
         float: ${(props) => (props.large ? "left" : "right")};
+        display: ${(props) => props.igCountLarge ? "None" : "inline-block"};
     }
     padding: 5px 0px 5px 0px;
     cursor: pointer;
@@ -201,8 +202,12 @@ export const Recipe = ({ recipe }) => {
                                     <Li med key="servings">
                                         Servings: {recipeObj.recipe.servings}
                                     </Li>
-                                    <Li med key="ingredientCount">
+                                    <Li med igCountLarge key="ingredientCountLarge">
                                         Ingredients: {recipeObj.recipe.ingredients.length} &nbsp;&nbsp;
+                                        <CheveronSvg rotate={setRotate} />
+                                    </Li>
+                                    <Li med igCountSmall key="ingredientCountSmall">
+                                        Ings: {recipeObj.recipe.ingredients.length} &nbsp;&nbsp;
                                         <CheveronSvg rotate={setRotate} />
                                     </Li>
                                 </>

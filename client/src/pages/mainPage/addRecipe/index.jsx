@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
-import { GlobalContext } from "../../context/globalState";
-import { H3, Input, Label, Button } from "../../elements/index";
+import { GlobalContext } from "../../../context/globalState";
+import { H3, Input, Label, Button } from "../../../elements/index";
+import { MealTypesDropDown } from "./mealTypes"
 import styled from "styled-components";
 
 // Styled Components
@@ -17,12 +18,13 @@ const HiddenInput = styled.input`
 */
 export const AddRecipe = () => {
     // Context
-    const { addRecipe, recipes, postMessage } = useContext(GlobalContext);
+    const { addRecipe, recipes, mealTypes, postMessage } = useContext(GlobalContext);
 
     // State
     const [name, setRecipeName] = useState("");
     const [servings, setServings] = useState(1);
     const [URL, setRecipeURL] = useState("");
+    const [currMealType, setCurrMealType] = useState(mealTypes.default);
     const [errors, setErrors] = useState([]);
 
     // Functions
@@ -49,6 +51,7 @@ export const AddRecipe = () => {
             name,
             servings,
             URL: url,
+            mealType: currMealType,
             ingredients: [],
         };
         addRecipe(newRecipe);
@@ -85,6 +88,14 @@ export const AddRecipe = () => {
                         value={URL}
                         onChange={(e) => setRecipeURL(e.target.value)}
                         placeholder="Automatically adds ingredients from popular sites"
+                    />
+                </div>
+                <div>
+                    <Label>Meal Type</Label>
+                    <MealTypesDropDown
+                        defaultType={mealTypes.default}
+                        types={mealTypes.types}
+                        onChange={setCurrMealType}
                     />
                 </div>
                 <Button isAddRecipeButton>Add Recipe</Button>

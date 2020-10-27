@@ -21,6 +21,7 @@ export default (state, action) => {
                 loggedIn: false,
                 username: "",
                 grocerySections: {},
+                mealTypes: {},
                 recipes: {},
                 shoppingList: {
                     _id: -1,
@@ -303,6 +304,54 @@ export default (state, action) => {
                 grocerySections: state.grocerySections,
             };
 
+        //////////////////////////////////////////////////////////////
+        // MEAL TYPES
+        // Get meal types
+        // Save meal types to state
+        case "GET_MEAL_TYPES":
+            return {
+                ...state,
+                mealTypes: action.payload,
+            };
+
+        // Add new meal type
+        // action.payload = meal type name
+        case "ADD_MEAL_TYPE":
+            state.mealTypes.types.push(action.payload);
+
+            return {
+                ...state,
+                mealTypes: state.mealTypes,
+            };
+
+        // delete meal type
+        // If recipes fall under the deleted meal type set their meal type as default
+        // action.payload = meal type name
+        case "DELETE_MEAL_TYPE":
+            let defaultType = state.mealTypes.default;
+            let typeName = action.payload;
+
+            let typeIndex = state.mealTypes.types.indexOf(typeName);
+            if (typeIndex !== -1) state.mealTypes.types.splice(typeIndex, 1);
+            Object.entries(state.recipes).forEach(([_id, recipe]) => {
+                if (recipe.mealType === typeName) {
+                    recipe.mealType = defaultType;
+                }
+            });
+            return {
+                ...state,
+                recipes: state.recipes,
+                mealTypes: state.mealTypes,
+            };
+
+        // Set meal type default
+        // action.payload = meal type name
+        case "SET_MEAL_TYPE_DEFAULT":
+            state.mealTypes.default = action.payload;
+            return {
+                ...state,
+                mealTypes: state.mealTypes,
+            };
         //ERRORS
         case "LOGIN_ERROR":
             console.log("Login " + action.payload);

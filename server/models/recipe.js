@@ -64,6 +64,10 @@ const RecipeSchema = new mongoose.Schema({
         type: Number,
         default: 1,
     },
+    mealType: {
+        type: String,
+        required: true,
+    },
     ingredients: {
         type: [IngredientSchema],
         default: [],

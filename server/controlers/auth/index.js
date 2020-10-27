@@ -1,5 +1,6 @@
 const User = require("../../models/user");
 const GrocerySections = require("../../models/grocerySections");
+const MealTypes = require("../../models/mealTypes");
 const ShoppingList = require("../../models/shoppingList");
 const Recipe = require("../../models/recipe");
 const fs = require("fs");
@@ -83,7 +84,14 @@ exports.setUserDefaults = (userId) => {
             grocerySections["userId"] = userId;
             GrocerySections.create(grocerySections);
         });
-
+        jsonReader("./server/controlers/auth/data/SignUpMealTypes.json", (err, mealTypes) => {
+            if (err) {
+                console.log(`${err}`.red);
+                return;
+            }
+            mealTypes["userId"] = userId;
+            MealTypes.create(mealTypes);
+        });
         jsonReader("./server/controlers/auth/data/SignUpShoppinglist.json", (err, shoppingList) => {
             if (err) {
                 console.log(`${err}`.red);

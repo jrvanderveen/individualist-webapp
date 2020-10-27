@@ -52,7 +52,7 @@ export const RecipeDetails = ({ _id, history }) => {
             {recipe ? (
                 <>
                     <Div>
-                        <Header name={recipe.name} rating={recipe.rating} />
+                        <Header name={recipe.name} rating={recipe.rating} mealType={recipe.mealType}/>
                         <ImageGalleryComponent images={recipe.recipeDetails.images.length > 0 ? recipe.recipeDetails.images : defaultImages} recipeId={_id} />
                         <Body recipe={recipe} />
                     </Div>

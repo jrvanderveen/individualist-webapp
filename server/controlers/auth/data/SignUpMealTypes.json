@@ -1,0 +1,5 @@
+{
+    "userId": "",
+    "default": "Dinner",
+    "sections": ["Breakfast", "Lunch", "Dinner"]
+}

@@ -17,7 +17,14 @@ const initialState = {
         default: "",
         sections: [],
     },
-
+    mealTypes: {
+        /* PERSISTS
+            default, string
+            types, array of strings
+        */
+        default: "",
+        types: [],
+    },
     recipes: {
         /*PERSISTS
             RecipeObjectId: string
@@ -150,6 +157,7 @@ export const GlobalProvider = ({ children }) => {
     async function onStartUp() {
         // Preserve order
         await getGrocerySections();
+        await getMealTypes();
         await getRecipes();
         await getShoppingList();
     }
@@ -601,6 +609,91 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    //////////////////////////////////////////////////////////////
+    // MEAL TYPES
+    // Get list of all current meal types and add to state
+    // @PROTECTED
+    async function getMealTypes() {
+        try {
+            await axios.get("/api/settings/mealTypes").then((res) => {
+                parseRedirectWithDispatch(res.data, res.data.data ? res.data.data[0] : null, "GET_MEAL_TYPES");
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // Add new meal type
+    // @PROTECTED
+    async function addMealType(_id, mealTypeName) {
+        try {
+            await axios.post(`/api/settings/mealTypes/add`, { _id: _id, mealTypeName: mealTypeName }).then((res) => {
+                parseRedirectWithDispatch(res.data, mealTypeName, "ADD_MEAL_TYPE");
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+
+    // Delete meal type
+    // @PROTECTED
+    async function deleteMealType(_id, mealTypeName, defaultMealType) {
+        try {
+            dispatch({
+                type: "DELETE_MEAL_TYPE",
+                payload: mealTypeName,
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
+        axios
+            .post(
+                "/api/settings/mealTypes/delete",
+                { _id: _id, mealTypeName: mealTypeName, defaultMealType: defaultMealType},
+                config
+            )
+            .then((res) => {
+                parseRedirectNoDispatch(res.data);
+            })
+            .catch(function (error) {
+                throw error;
+            });
+    }
+
+    // Set the default mealType
+    // @PROTECTED
+    async function setDefaultMealType(_id, mealTypeName) {
+        try {
+            axios.post("/api/settings/mealTypes/default/", { _id: _id, mealTypeName: mealTypeName }).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
+            dispatch({
+                type: "SET_MEAL_TYPE_DEFAULT",
+                payload: mealTypeName,
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+
     return (
         <GlobalContext.Provider
             value={{
@@ -610,6 +703,7 @@ export const GlobalProvider = ({ children }) => {
                 shoppingList: state.shoppingList,
                 creatingShoppingList: state.creatingShoppingList,
                 grocerySections: state.grocerySections,
+                mealTypes: state.mealTypes,
                 error: state.error,
                 postMessage: state.postMessage,
                 signOut,
@@ -637,6 +731,10 @@ export const GlobalProvider = ({ children }) => {
                 addGrocerySection,
                 deleteGrocerySection,
                 setDefaultGrocerySection,
+                getMealTypes,
+                addMealType,
+                deleteMealType,
+                setDefaultMealType,
                 saveEditedRecipe,
             }}
         >

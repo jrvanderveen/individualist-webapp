@@ -37,7 +37,7 @@ exports.addRecipe = async (req, res, next) => {
             });
             if (!scraperRes.data.error) {
                 scraperResult = "success";
-                recipeObj = await buildFullRecipe(req.body.name, req.body.servings, req.body.userId, scraperRes.data);
+                recipeObj = await buildFullRecipe(req.body.name, req.body.servings, req.body.userId, req.body.mealType, scraperRes.data);
             } else {
                 scraperResult = scraperRes.data.error;
             }
@@ -71,7 +71,13 @@ exports.addRecipe = async (req, res, next) => {
 // req.body = {name, servings, URL, ingredients[]} no ingredients on create
 exports.addFullRecipe = async (req, res, next) => {
     try {
-        recipeObj = await buildFullRecipe(req.body.name ? req.body.name : "Name Me!", req.body.servings ? req.body.servings : 1, req.user._id, scraperRes.data);
+        recipeObj = await buildFullRecipe(
+            req.body.name ? req.body.name : "Name Me!",
+            req.body.servings ? req.body.servings : 1,
+            req.user._id,
+            req.body.mealType,
+            scraperRes.data
+        );
         const recipe = await Recipe.create(recipeObj);
         return res.status(201).json({
             success: true,
@@ -87,7 +93,7 @@ exports.addFullRecipe = async (req, res, next) => {
 };
 
 // Helper function for add recipe and add full recipe
-buildFullRecipe = async (recipeName, recipeServings, userId, data) => {
+buildFullRecipe = async (recipeName, recipeServings, userId, recipeMealType, data) => {
     //Expecptions cought in parrent function
     const ingredientsObj = [];
     const userSections = await GrocerySections.findOne({ userId: userId });
@@ -103,6 +109,7 @@ buildFullRecipe = async (recipeName, recipeServings, userId, data) => {
         name: recipeName,
         servings: recipeServings,
         URL: data.URL ? data.URL : "http://",
+        mealType: recipeMealType,
         ingredients: ingredientsObj,
         recipeDetails: recipeDetails,
     };
