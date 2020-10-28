@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../../context/globalState";
 import { Recipe } from "./recipe";
+import { MealTypesDropDown } from "./mealType"
 import { SearchBar } from "./searchBar";
 import { SettingsSvg } from "../../../components/SVG/settingSvg";
 import { FilterSvg } from "../../../components/SVG/filterSvg";
@@ -10,6 +11,12 @@ import styled from "styled-components";
 
 // Styled Components
 const SearchWrapper = styled.div`
+    padding-left: 3%;
+    display: flex;
+    align-items: center;
+`;
+const MealTypeOptiondsWrapper = styled.div`
+    margin-bottom: 10px;
     padding-left: 3%;
     display: flex;
     align-items: center;
@@ -25,6 +32,7 @@ const H3 = styled.h3`
 const SvgWrapper = styled.div`
     padding-bottom: 1px;
 `;
+
 const SvgButton = styled.button`
     padding: 0px;
     border:0px;
@@ -39,13 +47,15 @@ const SvgButton = styled.button`
 */
 export const RecipeList = () => {
     // Context
-    const { recipes, onStartUp } = useContext(GlobalContext);
+    const { recipes, onStartUp, mealTypes } = useContext(GlobalContext);
     // State
     const [searchText, setSearchText] = useState("");
     const [showPopUp, setShowPopUp] = useState(false);
     const togglePopUp = () => {
         setShowPopUp(!showPopUp);
     };
+    const all = "ALL"
+    const [currMealType, setCurrMealType] = useState(all)
 
     // Functions
     // If reder check if we need to get recipes.
@@ -66,9 +76,17 @@ export const RecipeList = () => {
                         <SettingsSvg />
                     </SvgWrapper>
                 </Link>
-
                 <H3>Recipes</H3>
             </HeaderWrapper>
+            <MealTypeOptiondsWrapper>
+                
+                <MealTypesDropDown
+                            defaultType={all}
+                            types={[...mealTypes.types, all]}
+                            onChange={setCurrMealType}
+                        />
+                <h5 style={{marginLeft: "10px"}}>Display Meal Type</h5>
+            </MealTypeOptiondsWrapper>
             <SearchWrapper>
                 <SearchBar searchText={searchText} setSearchTextFunc={setSearchText} />
                 <SvgButton onClick={togglePopUp}>
@@ -77,9 +95,12 @@ export const RecipeList = () => {
             </SearchWrapper>
             <Ul>
                 {Object.entries(recipes).map(([_id, recipe]) =>
-                    recipe.name.toLowerCase().includes(searchText.toLowerCase()) ? <Recipe key={_id} recipe={recipe} /> : null
+                    currMealType === all ?
+                    (recipe.name.toLowerCase().includes(searchText.toLowerCase()) ? <Recipe key={_id} recipe={recipe} /> : null) : 
+                    recipe.mealType === currMealType ?
+                    (recipe.name.toLowerCase().includes(searchText.toLowerCase()) ? <Recipe key={_id} recipe={recipe} /> : null) : null 
                 )}
             </Ul>
-        </>
+        </> 
     );
 };
