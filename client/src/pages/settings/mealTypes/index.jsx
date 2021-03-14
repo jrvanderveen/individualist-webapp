@@ -48,7 +48,7 @@ export const MealTypes = () => {
         });
         setErrors(errs);
         if (foundMatch) return;
-        addMealType(mealTypes._id, mealType);
+        addMealType(mealType);
         setMealType("");
     };
 
@@ -72,7 +72,6 @@ export const MealTypes = () => {
                     <MealType
                         key={type}
                         typeLabel={type}
-                        _id={mealTypes._id}
                         isDefault={type === mealTypes.default}
                         defaultType={mealTypes.default}
                         setErrorsFunc={setErrors}

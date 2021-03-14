@@ -19,7 +19,6 @@ const HiddenInput = styled.input`
 export const AddRecipe = () => {
     // Context
     const { addRecipe, recipes, mealTypes, postMessage } = useContext(GlobalContext);
-
     // State
     const [name, setRecipeName] = useState("");
     const [servings, setServings] = useState(1);
@@ -93,8 +92,8 @@ export const AddRecipe = () => {
                 <div>
                     <Label>Meal Type</Label>
                     <MealTypesDropDown
-                        defaultType={mealTypes.default}
-                        types={mealTypes.types}
+                        defaultType={mealTypes.types ? mealTypes.default : ""}
+                        types={mealTypes.types ? mealTypes.types : ["test"]}
                         onChange={setCurrMealType}
                     />
                 </div>

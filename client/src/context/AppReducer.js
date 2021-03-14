@@ -9,7 +9,8 @@ export default (state, action) => {
             return {
                 ...state,
                 loggedIn: action.payload.success,
-                username: action.payload.username,
+                username: action.payload.userObj.username,
+                mealTypes: action.payload.userObj.mealTypes,
             };
 
         // Log user out

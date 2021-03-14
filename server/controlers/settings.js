@@ -1,5 +1,5 @@
 const GrocerySections = require("../models/grocerySections");
-const MealTypes = require("../models/mealTypes");
+const User = require("../models/user");
 const Recipe = require("../models/recipe");
 const ShoppingList = require("../models/shoppingList");
 const os = require("os");
@@ -140,72 +140,22 @@ exports.setDefaultGrocerySection = async (req, res, next) => {
         });
     }
 };
-//////////////////////////////////////////////////////////////////////////////////////
-// MEAL TYPES
-// @desc Get list of meal types
-// @route GET /api/settings/mealTypes
-// @access Private
-exports.getMealTypes = async (req, res, next) => {
-    try {
-        var mealTypes = await MealTypes.find({ userId: req.user._id });
-        if (mealTypes.length === 0) {
-            var createStatus = await createDefaultMealTypes(req.user._id);
-            if (createStatus.success) {
-                mealTypes = [createStatus.mealTypesDoc];
-            } else {
-                throw new Error(createStatus.error);
-            }
-        }
-
-        return res.status(200).json({
-            success: true,
-            count: mealTypes.length,
-            data: mealTypes,
-        });
-    } catch (err) {
-        console.log(`${err}`.red);
-        return res.status(500).json({
-            success: false,
-            error: "Server Error",
-        });
-    }
-};
-
-// Helper method to create default meal type document
-const createDefaultMealTypes = async (userId) => {
-    try {
-        const mealTypeObject = {
-            userId: userId,
-            default: "Dinner",
-            types: ["Breakfast", "Lunch", "Dinner"],
-        };
-        const mealTypesDoc = await MealTypes.create(mealTypeObject);
-
-        return { success: true, mealTypesDoc: mealTypesDoc };
-    } catch (err) {
-        console.log(`ERROR: Creating default meal type document: ${err}`.red);
-        return {
-            success: false,
-            error: err,
-        };
-    }
-};
 
 // @desc Add meal Type
 // @route POST /api/settings/mealTypes/add
 // @access Private
 exports.addMealType = async (req, res, next) => {
     try {
-        console.log(req.body);
-        const mealType = await MealTypes.findOne({ _id: req.body._id, userId: req.user._id });
+        const user = await User.findOne({ _id: req.user._id });
 
-        if (!mealType) {
+        if (!user["mealTypes"] || !user["mealTypes"]["types"]) {
             return res.status(404).json({
                 success: false,
                 error: "No meal types found",
             });
         }
-        await MealTypes.updateOne({ _id: req.body._id, userId: req.user._id }, { $push: { types: req.body.mealTypeName } });
+        user["mealTypes"]["types"].push(req.body.mealTypeName);
+        await User.updateOne({ _id: req.user._id }, { $set: user });
 
         return res.status(200).json({
             success: true,
@@ -224,7 +174,7 @@ exports.addMealType = async (req, res, next) => {
 // @access Private
 exports.deleteMealType = async (req, res, next) => {
     try {
-        const { _id, mealTypeName, defaultMealType } = req.body;
+        const { mealTypeName, defaultMealType } = req.body;
         await Recipe.updateMany(
             { mealType: mealTypeName },
             { $set: { mealType: defaultMealType } },
@@ -232,7 +182,17 @@ exports.deleteMealType = async (req, res, next) => {
                 multi: true,
             }
         );
-        await MealTypes.updateOne({ _id: _id, userId: req.user._id }, { $pull: { types: mealTypeName } });
+
+        const user = await User.findOne({ _id: req.user._id });
+
+        if (!user["mealTypes"] || !user["mealTypes"]["types"]) {
+            return res.status(404).json({
+                success: false,
+                error: "No meal types found",
+            });
+        }
+        user["mealTypes"]["types"].pull(req.body.mealTypeName);
+        await User.updateOne({ _id: req.user._id }, { $set: user });
 
         return res.status(200).json({
             success: true,
@@ -252,15 +212,17 @@ exports.deleteMealType = async (req, res, next) => {
 // @access Private
 exports.setDefaultMealType = async (req, res, next) => {
     try {
-        const mealType = await MealTypes.findOne({ _id: req.body._id, userId: req.user._id });
+        const user = await User.findOne({ _id: req.user._id });
 
-        if (!mealType) {
+        if (!user["mealTypes"]) {
             return res.status(404).json({
                 success: false,
-                error: "No meal type found",
+                error: "No meal types found",
             });
         }
-        await MealTypes.updateOne({ _id: req.body._id, userId: req.user._id }, { $set: { default: req.body.typeName } });
+
+        user.mealTypes.default = req.body.mealTypeName;
+        await User.updateOne({ _id: req.user._id }, { $set: user });
 
         return res.status(200).json({
             success: true,

@@ -6,7 +6,6 @@ const {
     addGrocerySection,
     deleteGrocerySection,
     setDefaultGrocerySection,
-    getMealTypes,
     addMealType,
     deleteMealType,
     setDefaultMealType,
@@ -23,7 +22,6 @@ router.route("/grocerySections/delete").all(ensureAuthenticated).post(deleteGroc
 router.route("/grocerySections/default").all(ensureAuthenticated).post(setDefaultGrocerySection);
 
 // Meal Types
-router.route("/mealTypes").all(ensureAuthenticated).get(getMealTypes);
 router.route("/mealTypes/add").all(ensureAuthenticated).post(addMealType);
 router.route("/mealTypes/delete").all(ensureAuthenticated).post(deleteMealType);
 

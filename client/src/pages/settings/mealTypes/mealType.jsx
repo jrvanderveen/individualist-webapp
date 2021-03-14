@@ -28,13 +28,12 @@ const H5 = styled.h5`
 
     PARAMS: 
         typeLabel: meal type name
-        _id: mealTypes._id
         isDefault: is default meal type
         setErrorsFunc: errors to display if failed new meal type validation
         defaultType: default meal type name
 
 */
-export const MealType = ({ typeLabel, _id, isDefault, setErrorsFunc, defaultType }) => {
+export const MealType = ({ typeLabel, isDefault, setErrorsFunc, defaultType }) => {
     const { deleteMealType, setDefaultMealType } = useContext(GlobalContext);
 
     const handleOnChange = () => {
@@ -42,7 +41,7 @@ export const MealType = ({ typeLabel, _id, isDefault, setErrorsFunc, defaultType
         if (isDefault) {
             return;
         }
-        setDefaultMealType(_id, typeLabel);
+        setDefaultMealType(typeLabel);
     };
 
     const handleOnClick = () => {
@@ -51,7 +50,7 @@ export const MealType = ({ typeLabel, _id, isDefault, setErrorsFunc, defaultType
             return;
         }
         setErrorsFunc([]);
-        deleteMealType(_id, typeLabel, defaultType);
+        deleteMealType(typeLabel, defaultType);
     };
 
     return (

@@ -3,6 +3,17 @@ const bcrypt = require("bcryptjs");
 const Schema = mongoose.Schema;
 mongoose.promise = Promise;
 
+const MealTypesSchema = new mongoose.Schema({
+    default: {
+        type: String,
+        default: "Other",
+    },
+    types: {
+        type: Array,
+        default: ["Other"],
+    },
+});
+
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -22,6 +33,10 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        required: true,
+    },
+    mealTypes: {
+        type: MealTypesSchema,
         required: true,
     },
     createdAt: {

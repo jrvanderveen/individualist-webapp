@@ -16,7 +16,7 @@ const SearchWrapper = styled.div`
     align-items: center;
 `;
 const MealTypeOptiondsWrapper = styled.div`
-    margin-bottom: 10px;
+    margin-top: 10px;
     padding-left: 3%;
     display: flex;
     align-items: center;
@@ -67,6 +67,7 @@ export const RecipeList = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     return (
         <>
             {showPopUp === true ? <FilterPopUp togglePopUpFunc={togglePopUp} /> : null}
@@ -78,21 +79,21 @@ export const RecipeList = () => {
                 </Link>
                 <H3>Recipes</H3>
             </HeaderWrapper>
-            <MealTypeOptiondsWrapper>
-                
-                <MealTypesDropDown
-                            defaultType={all}
-                            types={[...mealTypes.types, all]}
-                            onChange={setCurrMealType}
-                        />
-                <h5 style={{marginLeft: "10px"}}>Display Meal Type</h5>
-            </MealTypeOptiondsWrapper>
             <SearchWrapper>
                 <SearchBar searchText={searchText} setSearchTextFunc={setSearchText} />
                 <SvgButton onClick={togglePopUp}>
                     <FilterSvg />
                 </SvgButton>
             </SearchWrapper>
+            <MealTypeOptiondsWrapper>
+                
+                <MealTypesDropDown
+                            defaultType={all}
+                            types={mealTypes.types ? [...mealTypes.types, all] : [all]}
+                            onChange={setCurrMealType}
+                        />
+                <h5 style={{marginLeft: "10px"}}>Meals</h5>
+            </MealTypeOptiondsWrapper>
             <Ul>
                 {Object.entries(recipes).map(([_id, recipe]) =>
                     currMealType === all ?

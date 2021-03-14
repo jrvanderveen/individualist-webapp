@@ -138,7 +138,7 @@ export const GlobalProvider = ({ children }) => {
             const res = await axios.post("/api/login/signIn", userObj);
             dispatch({
                 type: "LOG_USER_IN",
-                payload: res.data.username,
+                payload: res.data.userObj,
             });
             return res.data.success;
         } catch (error) {
@@ -628,9 +628,9 @@ export const GlobalProvider = ({ children }) => {
 
     // Add new meal type
     // @PROTECTED
-    async function addMealType(_id, mealTypeName) {
+    async function addMealType( mealTypeName) {
         try {
-            await axios.post(`/api/settings/mealTypes/add`, { _id: _id, mealTypeName: mealTypeName }).then((res) => {
+            await axios.post(`/api/settings/mealTypes/add`, {mealTypeName} ).then((res) => {
                 parseRedirectWithDispatch(res.data, mealTypeName, "ADD_MEAL_TYPE");
             });
         } catch (error) {
@@ -643,7 +643,7 @@ export const GlobalProvider = ({ children }) => {
 
     // Delete meal type
     // @PROTECTED
-    async function deleteMealType(_id, mealTypeName, defaultMealType) {
+    async function deleteMealType(mealTypeName, defaultMealType) {
         try {
             dispatch({
                 type: "DELETE_MEAL_TYPE",
@@ -664,7 +664,7 @@ export const GlobalProvider = ({ children }) => {
         axios
             .post(
                 "/api/settings/mealTypes/delete",
-                { _id: _id, mealTypeName: mealTypeName, defaultMealType: defaultMealType},
+                { mealTypeName: mealTypeName, defaultMealType: defaultMealType},
                 config
             )
             .then((res) => {
@@ -677,9 +677,9 @@ export const GlobalProvider = ({ children }) => {
 
     // Set the default mealType
     // @PROTECTED
-    async function setDefaultMealType(_id, mealTypeName) {
+    async function setDefaultMealType( mealTypeName) {
         try {
-            axios.post("/api/settings/mealTypes/default/", { _id: _id, mealTypeName: mealTypeName }).then((res) => {
+            axios.post("/api/settings/mealTypes/default/", {mealTypeName}).then((res) => {
                 parseRedirectNoDispatch(res.data);
             });
             dispatch({

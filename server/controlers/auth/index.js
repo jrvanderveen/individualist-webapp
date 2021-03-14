@@ -1,20 +1,28 @@
 const User = require("../../models/user");
 const GrocerySections = require("../../models/grocerySections");
-const MealTypes = require("../../models/mealTypes");
 const ShoppingList = require("../../models/shoppingList");
 const Recipe = require("../../models/recipe");
 const fs = require("fs");
+
+const userDefaults = { mealTypes: { types: ["Breakfast", "Lunch", "Dinner", "Snack"], default: "Dinner" } };
 
 // @desc On app start determine if user is authenticated
 // @route GET /api/login/state
 // @access Public
 exports.userState = async (req, res, next) => {
-    const loggedIn = req.isAuthenticated();
-    const username = loggedIn ? req.user.username : "";
+    let loggedIn = false;
+    let userObj = {};
+    if (req.isAuthenticated()) {
+        loggedIn = true;
+        const user = await User.findOne({ _id: req.user._id });
+        userObj["username"] = user["username"];
+        userObj["mealTypes"] = user["mealTypes"];
+    }
+
     try {
         return res.status(200).json({
             success: loggedIn,
-            username: username,
+            userObj,
         });
     } catch (err) {
         console.log(`${err}`.red);
@@ -38,7 +46,7 @@ exports.signUp = async (req, res, next) => {
             });
         } else {
             try {
-                this.createNewUser({ username, email, password, repeatPassword }, null).then((data) => {
+                this.createNewUser({ username, email, password, repeatPassword, ...userDefaults }, null).then((data) => {
                     res.json(data);
                 });
             } catch {
@@ -135,8 +143,9 @@ function jsonReader(filePath, cb) {
 // @route GET /api/login/signIn
 // @access Public
 exports.signIn = async (req, res, next) => {
+    userObj = { username: req.user.username, mealTypes: req.user.mealTypes };
     res.send({
-        username: req.user.username,
+        userObj,
         success: true,
     });
 };
