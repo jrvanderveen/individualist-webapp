@@ -61,12 +61,14 @@ exports.signUp = async (req, res, next) => {
 // Helper method to create new user
 exports.createNewUser = async (localUser, authUser) => {
     let newUser = {};
+    console.log(localUser);
     if (localUser) {
         newUser = new User({
             username: localUser.username,
             email: localUser.email,
             authType: "local",
             password: localUser.password,
+            mealTypes: localUser.mealTypes,
         });
     } else {
         newUser = new User({

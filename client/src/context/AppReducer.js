@@ -34,11 +34,12 @@ export default (state, action) => {
             };
         // Log user in by saving user name and setting logged in = true
         case "LOG_USER_IN":
-            state.loggedIn = true;
+            console.log(action.payload);
             return {
                 ...state,
-                loggedIn: state.loggedIn,
-                username: action.payload,
+                loggedIn: true,
+                username: action.payload.username,
+                mealTypes: action.payload.mealTypes,
             };
 
         //////////////////////////////////////////////////////////////
