@@ -5,8 +5,8 @@ import { Recipe } from "./recipe";
 import { MealTypesDropDown } from "./mealType"
 import { SearchBar } from "./searchBar";
 import { SettingsSvg } from "../../../components/SVG/settingSvg";
-import { FilterSvg } from "../../../components/SVG/filterSvg";
-import {FilterPopUp} from "./filterPopUp"
+// import { FilterSvg } from "../../../components/SVG/filterSvg";
+// import {FilterPopUp} from "./filterPopUp"
 import styled from "styled-components";
 
 // Styled Components
@@ -14,12 +14,19 @@ const SearchWrapper = styled.div`
     padding-left: 3%;
     display: flex;
     align-items: center;
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: start;
+    }    
 `;
 const MealTypeOptiondsWrapper = styled.div`
     margin-top: 10px;
     padding-left: 3%;
     display: flex;
     align-items: center;
+    @media (max-width: 768px) {
+        padding-left: 0;
+    }        
 `;
 const Ul = styled.ul`
     padding-left: 3%;
@@ -33,10 +40,10 @@ const SvgWrapper = styled.div`
     padding-bottom: 1px;
 `;
 
-const SvgButton = styled.button`
-    padding: 0px;
-    border:0px;
-`;
+// const SvgButton = styled.button`
+//     padding: 0px;
+//     border:0px;
+// `;
 /*
     SUMMARY:
         Get recipes from DB and map them to recipe components.
@@ -50,10 +57,10 @@ export const RecipeList = () => {
     const { recipes, onStartUp, mealTypes } = useContext(GlobalContext);
     // State
     const [searchText, setSearchText] = useState("");
-    const [showPopUp, setShowPopUp] = useState(false);
-    const togglePopUp = () => {
-        setShowPopUp(!showPopUp);
-    };
+    // const [showPopUp, setShowPopUp] = useState(false);
+    // const togglePopUp = () => {
+    //     setShowPopUp(!showPopUp);
+    // };
     const all = "ALL"
     const [currMealType, setCurrMealType] = useState(all)
 
@@ -70,7 +77,7 @@ export const RecipeList = () => {
 
     return (
         <>
-            {showPopUp === true ? <FilterPopUp togglePopUpFunc={togglePopUp} /> : null}
+            {/* {showPopUp === true ? <FilterPopUp togglePopUpFunc={togglePopUp} /> : null} */}
             <HeaderWrapper>
                 <Link to="/settings">
                     <SvgWrapper>
@@ -81,19 +88,18 @@ export const RecipeList = () => {
             </HeaderWrapper>
             <SearchWrapper>
                 <SearchBar searchText={searchText} setSearchTextFunc={setSearchText} />
-                <SvgButton onClick={togglePopUp}>
-                    <FilterSvg />
-                </SvgButton>
-            </SearchWrapper>
-            <MealTypeOptiondsWrapper>
-                
-                <MealTypesDropDown
+                <MealTypeOptiondsWrapper>
+                    <MealTypesDropDown
                             defaultType={all}
                             types={mealTypes.types ? [...mealTypes.types, all] : [all]}
                             onChange={setCurrMealType}
-                        />
-                <h5 style={{marginLeft: "10px"}}>Meals</h5>
-            </MealTypeOptiondsWrapper>
+                    />
+                </MealTypeOptiondsWrapper>    
+
+                {/* <SvgButton onClick={togglePopUp}>
+                    <FilterSvg />
+                </SvgButton> */}
+            </SearchWrapper>
             <Ul>
                 {Object.entries(recipes).map(([_id, recipe]) =>
                     currMealType === all ?

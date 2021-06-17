@@ -91,7 +91,7 @@ exports.deleteGrocerySection = async (req, res, next) => {
         const { _id, sectionName, defaultSection, shoppingList } = req.body;
 
         await Recipe.updateMany(
-            {},
+            { userId: req.user._id },
             { $set: { "ingredients.$[ingredient].grocerySection": defaultSection } },
             {
                 multi: true,
@@ -176,7 +176,7 @@ exports.deleteMealType = async (req, res, next) => {
     try {
         const { mealTypeName, defaultMealType } = req.body;
         await Recipe.updateMany(
-            { mealType: mealTypeName },
+            { _id: req.user._id, mealType: mealTypeName },
             { $set: { mealType: defaultMealType } },
             {
                 multi: true,

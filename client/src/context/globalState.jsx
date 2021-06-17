@@ -157,7 +157,7 @@ export const GlobalProvider = ({ children }) => {
     async function onStartUp() {
         // Preserve order
         await getGrocerySections();
-        await getMealTypes();
+        // await getMealTypes();
         await getRecipes();
         await getShoppingList();
     }
@@ -613,18 +613,18 @@ export const GlobalProvider = ({ children }) => {
     // MEAL TYPES
     // Get list of all current meal types and add to state
     // @PROTECTED
-    async function getMealTypes() {
-        try {
-            await axios.get("/api/settings/mealTypes").then((res) => {
-                parseRedirectWithDispatch(res.data, res.data.data ? res.data.data[0] : null, "GET_MEAL_TYPES");
-            });
-        } catch (error) {
-            dispatch({
-                type: "SETTINGS_ERROR",
-                payload: error,
-            });
-        }
-    }
+    // async function getMealTypes() {
+    //     try {
+    //         await axios.get("/api/settings/mealTypes").then((res) => {
+    //             parseRedirectWithDispatch(res.data, res.data.data ? res.data.data[0] : null, "GET_MEAL_TYPES");
+    //         });
+    //     } catch (error) {
+    //         dispatch({
+    //             type: "SETTINGS_ERROR",
+    //             payload: error,
+    //         });
+    //     }
+    // }
 
     // Add new meal type
     // @PROTECTED
@@ -694,6 +694,29 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+
+    // Set the mealType for recipe
+    // @PROTECTED
+    async function setRecipeMealType( mealTypeName, recipeId) {
+        try {
+            axios.post("/api/recipes/mealType", {mealTypeName, recipeId}).then((res) => {
+                parseRedirectNoDispatch(res.data);
+            });
+            dispatch({
+                type: "SET_RECIPE_MEAL_TYPE",
+                payload: {
+                            mealTypeName: mealTypeName, 
+                            recipeId: recipeId
+                },
+            });
+        } catch (error) {
+            dispatch({
+                type: "SETTINGS_ERROR",
+                payload: error,
+            });
+        }
+    }
+
     return (
         <GlobalContext.Provider
             value={{
@@ -731,10 +754,11 @@ export const GlobalProvider = ({ children }) => {
                 addGrocerySection,
                 deleteGrocerySection,
                 setDefaultGrocerySection,
-                getMealTypes,
+                // getMealTypes,
                 addMealType,
                 deleteMealType,
                 setDefaultMealType,
+                setRecipeMealType,
                 saveEditedRecipe,
             }}
         >

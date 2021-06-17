@@ -5,6 +5,7 @@ import { Ingredients } from "./ingredients";
 import { DeleteRecipePopUp } from "./deleteRecipePopUp";
 import { CheveronSvg } from "../../../../components/SVG/cheveronSvg";
 import { SelectRecipeButton } from "./selectRecipeButton";
+import { MealTypesDropDown } from "../../../../components/common/mealType"
 import { List, AccordionButton, Link, AccordionContent, Input, Label } from "../../../../elements/index";
 import StarRatings from "react-star-ratings";
 import styled from "styled-components";
@@ -71,6 +72,11 @@ const OptionsWrapper = styled.div`
     justify-content: space-between;
 `;
 
+const MealTypesDropDownDiv = styled.div`
+    float: left;
+    margin-right: 10px;
+`;
+
 /*
     SUMMARY:
         Display non ingredient recipe attributes.  Allow delete recipe  
@@ -83,7 +89,7 @@ const OptionsWrapper = styled.div`
 */
 export const Recipe = ({ recipe }) => {
     // Context
-    const { saveEditedRecipe, updateRecipeRating } = useContext(GlobalContext);
+    const { saveEditedRecipe, updateRecipeRating, mealTypes, setRecipeMealType } = useContext(GlobalContext);
 
     // State
     const [setRotate, setRotateState] = useState("");
@@ -122,6 +128,12 @@ export const Recipe = ({ recipe }) => {
         }
     };
 
+    const handleChangeMealType = (type) => {
+        console.log(type)
+        setRecipeMealType(type, recipe._id);
+
+    }
+
     const qualifiedWebsiteFunc = () => {
         let url = recipeObj.recipe.URL;
         if (!/^https?:\/\//i.test(url)) {
@@ -155,6 +167,14 @@ export const Recipe = ({ recipe }) => {
                                 </RouterLink>
                             </LeftDiv>
                             <RightDiv>
+                                <MealTypesDropDownDiv>
+                                    <MealTypesDropDown
+                                            defaultType={recipeObj.recipe.mealType}
+                                            types={mealTypes.types ? [...mealTypes.types] : [""]}
+                                            onChange={handleChangeMealType}
+                                            size="sm"
+                                    />
+                                </MealTypesDropDownDiv>
                                 <StarRatings
                                     rating={rating}
                                     starRatedColor="blue"

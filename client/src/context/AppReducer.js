@@ -353,6 +353,15 @@ export default (state, action) => {
                 ...state,
                 mealTypes: state.mealTypes,
             };
+        // Set recipe meal type
+        // action.payload = {mealtypename, recipeId}
+        case "SET_RECIPE_MEAL_TYPE":
+            state.recipes[action.payload.recipeId].mealType = action.payload.mealTypeName;
+            return {
+                ...state,
+                recipes: state.recipes,
+            };
+
         //ERRORS
         case "LOGIN_ERROR":
             console.log("Login " + action.payload);

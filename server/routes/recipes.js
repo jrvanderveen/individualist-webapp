@@ -16,6 +16,7 @@ const {
     updateRecipeDetailsTimes,
     updateRecipeDetailsNotes,
     updateRecipeDetailsInstructions,
+    updateRecipeMealType,
 } = require("../controlers/recipes");
 
 // /api/recipes
@@ -35,5 +36,7 @@ router.route("/details/uploadImage").all(ensureAuthenticated).all(upload.single(
 router.route("/details/times").all(ensureAuthenticated).post(updateRecipeDetailsTimes);
 router.route("/details/notes").all(ensureAuthenticated).post(updateRecipeDetailsNotes);
 router.route("/details/instructions").all(ensureAuthenticated).post(updateRecipeDetailsInstructions);
+//MealType
+router.route("/mealType").all(ensureAuthenticated).post(updateRecipeMealType);
 
 module.exports = router;

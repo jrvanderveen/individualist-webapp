@@ -345,3 +345,22 @@ exports.updateRecipeDetailsInstructions = async (req, res, next) => {
         });
     }
 };
+
+// @desc Edit recipe meal type
+// @route POST /api/recipes/mealType
+// @access Private
+exports.updateRecipeMealType = async (req, res, next) => {
+    try {
+        const { recipeId, mealTypeName } = req.body;
+        const result = await Recipe.updateOne({ _id: recipeId, userId: req.user._id }, { $set: { mealType: mealTypeName } });
+        return res.status(200).json({
+            success: true,
+        });
+    } catch (err) {
+        console.log(`${err}`.red);
+        return res.status(500).json({
+            success: false,
+            error: "Server Error",
+        });
+    }
+};
