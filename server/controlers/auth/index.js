@@ -61,6 +61,7 @@ exports.signUp = async (req, res, next) => {
 // Helper method to create new user
 exports.createNewUser = async (localUser, authUser) => {
     let newUser = {};
+    console.log("HHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEE");
     console.log(localUser);
     if (localUser) {
         newUser = new User({
@@ -77,6 +78,7 @@ exports.createNewUser = async (localUser, authUser) => {
             authType: authUser.type,
             email: authUser.profile.emails.length > 0 ? authUser.profile.emails[0].value : "",
             password: authUser.profile.id,
+            mealTypes: userDefaults.mealTypes
         });
     }
     const savedUser = await User.create(newUser);
@@ -93,14 +95,6 @@ exports.setUserDefaults = (userId) => {
             }
             grocerySections["userId"] = userId;
             GrocerySections.create(grocerySections);
-        });
-        jsonReader("./server/controlers/auth/data/SignUpMealTypes.json", (err, mealTypes) => {
-            if (err) {
-                console.log(`${err}`.red);
-                return;
-            }
-            mealTypes["userId"] = userId;
-            MealTypes.create(mealTypes);
         });
         jsonReader("./server/controlers/auth/data/SignUpShoppinglist.json", (err, shoppingList) => {
             if (err) {
